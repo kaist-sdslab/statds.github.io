@@ -1,6 +1,6 @@
   </main>
   {{ $contact := site.Home.Params.contact }}
-  <footer><div class="shell footer-inner"><div><p class="footer-title">{{ $contact.title }}</p><address>{{ $contact.address }}</address></div><span class="copyright">© {{ now.Year }} SDS Lab · KAIST</span></div></footer>
+  <footer><div class="shell footer-inner"><div><p class="footer-title">{{ $contact.title }}</p><address>{{ $contact.address }}</address></div><span class="copyright">© {{ now.Year }} {{ site.Data.interface.site.copyright }}</span></div></footer>
   {{ if .IsHome }}
     {{ $script := resources.Get "js/home.js" | minify | fingerprint }}
     <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}" defer></script>
@@ -9,5 +9,11 @@
     {{ $script := resources.Get "js/publications.js" | minify | fingerprint }}
     <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}" defer></script>
   {{ end }}
+  {{ if eq .Layout "people" }}
+    {{ $script := resources.Get "js/people.js" | minify | fingerprint }}
+    <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}" defer></script>
+  {{ end }}
+  {{ $transitions := resources.Get "js/page-transitions.js" | minify | fingerprint }}
+  <script src="{{ $transitions.RelPermalink }}" integrity="{{ $transitions.Data.Integrity }}" defer></script>
 </body>
 </html>

@@ -1,0 +1,8 @@
+<article class="person-compact intern-row">
+  <h3>{{ .name }}</h3>
+  {{ with .internship }}
+    {{ with .period }}<span class="person-compact-meta">{{ . }}</span>{{ end }}
+    {{ with .program }}<span class="person-compact-detail">{{ . }}</span>{{ end }}
+  {{ end }}
+  {{ if or .website .github }}{{ partial "people/links.html" (dict "website" .website "github" .github) }}{{ end }}
+</article>

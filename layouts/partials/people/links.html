@@ -1,0 +1,5 @@
+<div class="person-links">
+  {{ with .email }}<a href="mailto:{{ . }}">{{ . }}</a>{{ end }}
+  {{ with .website }}<a href="{{ . | relURL }}">{{ site.Data.interface.links.website }} <span aria-hidden="true">↗</span></a>{{ end }}
+  {{ with .github }}<a href="{{ . | relURL }}">{{ site.Data.interface.links.github }} <span aria-hidden="true">↗</span></a>{{ end }}
+</div>

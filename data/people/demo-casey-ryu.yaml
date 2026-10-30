@@ -1,0 +1,10 @@
+name: Casey Ryu
+group: alumni
+order: 40
+alumni:
+  degree: M.S.
+  graduation_year: 2023
+  thesis: Anomaly Detection for Multivariate Functional Sensor Data
+  position: Research engineer
+visible: true
+demo: true

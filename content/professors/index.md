@@ -1,5 +1,5 @@
 ---
-title: Professors
+title: Professor
 description: Jeongyoun Ahn, Professor at KAIST. Research interests, education, professional experience, and editorial service.
 layout: professors
 name: Jeongyoun Ahn

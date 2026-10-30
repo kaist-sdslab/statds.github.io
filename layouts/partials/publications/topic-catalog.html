@@ -1,0 +1,18 @@
+{{- $byID := dict -}}
+{{- $aliases := dict -}}
+{{- range site.Data.publication_topics.topics -}}
+  {{- $byID = merge $byID (dict .id (dict "id" .id "label" .label)) -}}
+  {{- $aliases = merge $aliases (dict (partial "publications/topic-key.html" .id) .id (partial "publications/topic-key.html" .label) .id) -}}
+{{- end -}}
+{{- range where site.RegularPages "Params.layout" "publication" -}}
+  {{- range .Params.topics -}}
+    {{- $label := replaceRE `\s+` " " (trim . " \t\r\n") -}}
+    {{- $key := partial "publications/topic-key.html" $label -}}
+    {{- if and $key (not (isset $aliases $key)) -}}
+      {{- $byID = merge $byID (dict $label (dict "id" $label "label" $label)) -}}
+      {{- $aliases = merge $aliases (dict $key $label) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $topics := slice -}}{{- range $byID -}}{{- $topics = $topics | append . -}}{{- end -}}
+{{- return (dict "topics" (sort $topics "label") "byID" $byID "aliases" $aliases) -}}

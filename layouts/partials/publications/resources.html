@@ -1,0 +1,8 @@
+<div class="publication-resources" aria-label="Publication resources">
+      {{ range slice (dict "icon" "paper" "label" site.Data.interface.links.paper "missing" site.Data.interface.links.no_paper "url" .Params.url_paper) (dict "icon" "github" "label" site.Data.interface.links.github_title "missing" site.Data.interface.links.no_github "url" .Params.url_code) }}
+        {{ if .url }}<a href="{{ .url | relURL }}" aria-label="{{ .label }}" title="{{ .label }}">{{ partial "publications/resource-icon.html" .icon }}</a>
+        {{ else }}<span class="resource-unavailable" role="img" aria-label="{{ .missing }}" title="{{ .missing }}">{{ partial "publications/resource-icon.html" .icon }}</span>{{ end }}
+      {{ end }}
+      {{ with .Params.url_pdf }}<a href="{{ . | relURL }}" title="Read PDF">{{ site.Data.interface.links.pdf }}</a>{{ end }}
+      {{ with .Params.url_data }}<a href="{{ . | relURL }}" title="Research data">{{ site.Data.interface.links.data }}</a>{{ end }}
+    </div>

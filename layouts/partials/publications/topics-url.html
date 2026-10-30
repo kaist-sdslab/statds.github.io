@@ -1,0 +1,7 @@
+{{- $params := slice -}}
+{{- range partial "publications/resolve-topics.html" . -}}
+  {{- $params = $params | append (printf "topic=%s" (.id | urlquery)) -}}
+{{- end -}}
+{{- $url := "" -}}
+{{- if $params -}}{{- $url = printf "%s?%s" ("publications/" | relURL) (delimit $params "&") -}}{{- end -}}
+{{- return $url -}}

@@ -1,0 +1,29 @@
+{{ partial "site/start.html" . }}
+{{ $items := slice }}
+{{ range index site.Data .Params.resource_type }}{{ if ne .visible false }}{{ $items = $items | append . }}{{ end }}{{ end }}
+<section class="shell resources-page" aria-labelledby="resources-title">
+  <h1 id="resources-title">{{ .Title }}</h1>
+  <div class="resource-list">
+    {{ range sort $items "order" }}
+    <article class="resource-item{{ if eq $.Params.resource_type "courses" }} course-item{{ else }} software-item{{ end }}">
+      <div class="resource-information">
+        {{ if eq $.Params.resource_type "courses" }}
+          {{ with .code }}<p class="course-code">{{ . }}</p>{{ end }}
+        {{ end }}
+        <h2>{{ .title }}</h2>
+        {{ if eq $.Params.resource_type "courses" }}
+          {{ $terms := .terms | default slice }}
+          {{ with $terms }}<p class="course-terms"><span>{{ site.Data.interface.resources.offered }}</span>{{ delimit . " · " }}</p>{{ end }}
+        {{ else }}{{ with .description }}<p class="resource-description">{{ . }}</p>{{ end }}{{ end }}
+      </div>
+      {{ if eq $.Params.resource_type "software" }}
+        <div class="resource-links software-links">
+          {{ if .github }}<a class="software-github" href="{{ .github | relURL }}" aria-label="{{ printf "GitHub repository: %s" .title }}" title="{{ site.Data.interface.links.github_title }}">{{ partial "publications/resource-icon.html" "github" }}</a>
+          {{ else }}<span class="software-github resource-unavailable" role="img" aria-label="{{ site.Data.interface.links.no_github }}" title="{{ site.Data.interface.links.no_github }}">{{ partial "publications/resource-icon.html" "github" }}</span>{{ end }}
+        </div>
+      {{ end }}
+    </article>
+    {{ else }}<p class="resources-empty">{{ site.Data.interface.resources.empty }}</p>{{ end }}
+  </div>
+</section>
+{{ partial "site/end.html" . }}

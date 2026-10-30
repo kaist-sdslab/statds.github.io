@@ -1,0 +1,9 @@
+name: Alex Chen
+group: phd
+order: 30
+research_interests:
+- Data privacy
+- Synthetic data generation
+email: alex.chen@example.org
+visible: true
+demo: true

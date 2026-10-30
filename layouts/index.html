@@ -6,18 +6,20 @@
       </div>
     </section>
     <section class="research-section shell" id="research" aria-labelledby="research-title">
-      <div class="section-heading" data-reveal><h2 id="research-title">Research Areas</h2></div>
+      <div class="section-heading" data-reveal><h2 id="research-title">{{ site.Data.interface.home.research_heading }}</h2></div>
       <div class="research-list">{{ range $index, $area := .Params.research }}
+        {{ $publicationURL := "" }}{{ with .publication_topics }}{{ $publicationURL = partial "publications/topics-url.html" . }}{{ end }}
         <article class="research-item" data-reveal aria-labelledby="research-{{ $index }}">
-          <h3 class="research-heading" id="research-{{ $index }}">{{ .title }}</h3>
+          <h3 class="research-heading" id="research-{{ $index }}">{{ if $publicationURL }}<a href="{{ $publicationURL }}">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}</h3>
           <div class="research-visual">
             {{ $image := resources.Get .image }}
-            {{ $large := $image.Resize "1200x webp" }}
-            {{ $small := $image.Resize "600x webp" }}
-            <img src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} 600w, {{ $large.RelPermalink }} 1200w" sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1248px) 44vw, 540px" width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .image_alt }}" {{ if gt $index 0 }}loading="lazy"{{ end }} decoding="async">
+            {{ $large := $image.Fit "1200x1200 webp" }}
+            {{ $small := $image.Fit "600x600 webp" }}
+            <img src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ $large.RelPermalink }} {{ $large.Width }}w" sizes="(max-width: 480px) calc(100vw - 60px), (max-width: 760px) calc(100vw - 72px), (max-width: 1248px) 44vw, 540px" width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .image_alt }}" {{ if gt $index 0 }}loading="lazy"{{ end }} decoding="async">
           </div>
           <div class="research-copy">
             <div class="research-description">{{ .description | markdownify }}</div>
+            {{ with $publicationURL }}<a class="research-publications" href="{{ . }}">{{ site.Data.interface.home.related_publications }} <span aria-hidden="true">→</span></a>{{ end }}
 
           </div>
         </article>

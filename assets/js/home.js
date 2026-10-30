@@ -1,14 +1,18 @@
 // Content remains visible without JavaScript or animation support.
 (() => {
   const sections = document.querySelectorAll('[data-reveal]');
+  const root = document.documentElement;
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (motion.matches || !('IntersectionObserver' in window)) return;
-
   let observer;
   const showAll = () => {
+    root.classList.remove('reveal-enabled', 'reveal-initialized');
     sections.forEach(section => section.removeAttribute('data-reveal'));
     if (observer) observer.disconnect();
   };
+  if (motion.matches || !('IntersectionObserver' in window) || !root.classList.contains('reveal-enabled')) {
+    showAll();
+    return;
+  }
 
   try {
     observer = new IntersectionObserver(entries => {
@@ -22,12 +26,16 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
 
     sections.forEach(section => {
-      section.setAttribute('data-reveal', 'pending');
       observer.observe(section);
     });
+    root.classList.add('reveal-initialized');
 
     motion.addEventListener('change', event => {
       if (event.matches) showAll();
+    });
+    // Back/forward restoration must never leave content hidden mid-animation.
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) showAll();
     });
   } catch {
     showAll();

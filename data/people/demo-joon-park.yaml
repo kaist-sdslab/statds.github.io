@@ -1,0 +1,10 @@
+name: Joon Park
+group: phd
+order: 20
+research_interests:
+- Kernel methods
+- Dimension reduction
+email: joon.park@example.org
+note: Co-advised with the Department of Mathematical Sciences.
+visible: true
+demo: true

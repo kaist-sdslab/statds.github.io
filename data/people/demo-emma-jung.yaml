@@ -1,0 +1,10 @@
+name: Emma Jung
+group: intern
+order: 20
+internship:
+  program: Individual Research
+  period: '2026'
+research_interests:
+- Synthetic data evaluation
+visible: true
+demo: true

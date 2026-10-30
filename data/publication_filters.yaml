@@ -1,0 +1,11 @@
+# These lists control filter buttons, not the metadata allowed on publications.
+years: [2026, 2025, 2024, 2023, 2022, 2021]
+topics:
+  - transfer-learning
+  - high-dimensional-data
+  - compositional-data
+  - synthetic-data
+  - data-privacy
+  - interpretable-learning
+  - functional-data
+  - kernel-methods

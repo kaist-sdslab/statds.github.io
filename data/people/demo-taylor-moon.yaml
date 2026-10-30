@@ -1,0 +1,10 @@
+name: Taylor Moon
+group: alumni
+order: 30
+alumni:
+  degree: Ph.D.
+  graduation_year: 2024
+  thesis: Kernel-based Statistical Methods for Zero-inflated Compositional Observations
+  position: Assistant professor
+visible: true
+demo: true

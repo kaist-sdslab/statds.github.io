@@ -1,0 +1,15 @@
+{{- $catalog := partialCached "publications/topic-catalog.html" site -}}
+{{- $topics := slice -}}
+{{- $seen := slice -}}
+{{- range . -}}
+  {{- $key := partial "publications/topic-key.html" . -}}
+  {{- with index $catalog.aliases $key -}}
+    {{- if not (in $seen .) -}}
+      {{- $topics = $topics | append (index $catalog.byID .) -}}
+      {{- $seen = $seen | append . -}}
+    {{- end -}}
+  {{- else -}}
+    {{- errorf "Unknown publication topic %q: assign it to a publication before selecting it for Home or filters" . -}}
+  {{- end -}}
+{{- end -}}
+{{- return $topics -}}

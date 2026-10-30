@@ -1,0 +1,9 @@
+name: Sora Kim
+group: masters
+order: 30
+research_interests:
+- Functional data analysis
+- Anomaly detection
+email: sora.kim@example.org
+visible: true
+demo: true

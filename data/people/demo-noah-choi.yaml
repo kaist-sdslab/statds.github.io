@@ -1,0 +1,11 @@
+name: Noah Choi
+group: intern
+order: 10
+research_interests:
+- Privacy-preserving statistical analysis
+internship:
+  program: Undergraduate Research Program
+  period: Jun–Aug 2026
+email: noah.choi@example.org
+visible: true
+demo: true

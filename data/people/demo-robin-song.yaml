@@ -1,0 +1,10 @@
+name: Robin Song
+group: alumni
+order: 10
+alumni:
+  degree: Ph.D.
+  graduation_year: 2026
+  thesis: Interpretable Transfer Learning for High-dimensional Covariance Estimation
+  position: Postdoctoral researcher
+visible: true
+demo: true

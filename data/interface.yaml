@@ -1,0 +1,77 @@
+site:
+  logo: SDS Lab
+  name: Statistical Data Science Lab
+  institution: KAIST
+  copyright: SDS Lab · KAIST
+  title_suffix: SDS Lab
+  home_title_suffix: KAIST
+  skip_link: Skip to content
+home:
+  research_heading: Research Areas
+  related_publications: View related publications
+professor:
+  email: Email
+  office: Office
+  interests: Research Interests
+  education: Education
+  experience: Professional Experience
+  editorial: Editorial Service
+people:
+  members_tab: Members
+  interns_tab: Interns
+  alumni_tab: Alumni
+  phd_heading: Ph.D. Students
+  masters_heading: M.S. Students
+  interns_heading: Interns
+  alumni_heading: Alumni
+  research_interests: Research interests
+  empty: Profiles will be added soon.
+publications:
+  search: Search
+  search_placeholder: Title, author, venue, or topic
+  type: Type
+  year: Year
+  topic: Topic
+  all: All
+  journal_filter: Journal
+  conference_filter: Conference
+  preprint_filter: Preprint
+  journal_label: Journal article
+  conference_label: Conference paper
+  preprint_label: Preprint
+  reset: Reset filters
+  sort: Sort by
+  newest: Newest year
+  oldest: Oldest year
+  title_sort: Title (A–Z)
+  empty_title: No publications found
+  empty_text: Try a different search or remove some filters.
+  no_script: Enable JavaScript to search and filter. All publications are listed below.
+  previous: ← Prev
+  next: Next →
+  page_label: Page {page}
+  count: '{start}–{end} of {total} {noun}'
+  empty_count: '0 {noun}'
+  singular: publication
+  plural: publications
+  total_suffix: ' ({total} total)'
+  back: ← All publications
+  abstract: Abstract
+  no_abstract: Abstract not available.
+  page_size: 10
+links:
+  website: Website
+  github: GitHub
+  paper: Read paper
+  no_paper: Paper link not available
+  github_title: GitHub repository
+  no_github: GitHub repository not available
+  pdf: PDF
+  data: Data
+resources:
+  offered: Offered
+  empty: Entries will be added soon.
+not_found:
+  title: Page not found
+  description: The page you requested is not available.
+  back: Back to Home

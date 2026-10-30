@@ -1,0 +1,6 @@
+title: Synthetic Data Benchmarks
+description: Example evaluation toolkit for comparing statistical utility and privacy
+  risks in synthetic datasets.
+order: 30
+visible: true
+demo: true

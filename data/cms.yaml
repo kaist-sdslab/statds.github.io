@@ -30,6 +30,12 @@ collections:
             fields:
               - {label: Title, name: title, widget: string}
               - {label: Description, name: description, widget: text}
+              - label: Related publication topics
+                name: publication_topics
+                widget: publication-tags
+                allow_create: false
+                required: false
+                hint: Choose tags to preselect when visitors open related publications. Papers matching any selected tag are included.
               - {label: Image, name: image, widget: image}
               - {label: Image description, name: image_alt, widget: string}
           - label: Footer
@@ -39,9 +45,9 @@ collections:
               - {label: Lab name, name: title, widget: string}
               - {label: Address, name: address, widget: text}
       - name: professors
-        label: Professors
+        label: Professor
         file: content/professors/index.md
-        media_folder: assets/media/people
+        media_folder: ../../assets/media/people
         public_folder: media/people
         fields:
           - {label: Title, name: title, widget: string}
@@ -98,6 +104,138 @@ collections:
         file: content/people/index.md
         fields:
           - {label: Title, name: title, widget: string}
+          - {label: Description, name: description, widget: text}
+          - {name: layout, widget: hidden, default: people}
+      - name: software
+        label: Softwares
+        file: content/software/index.md
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: Description, name: description, widget: text}
+          - {name: layout, widget: hidden, default: resources}
+          - {name: resource_type, widget: hidden, default: software}
+      - name: courses
+        label: Courses
+        file: content/courses/index.md
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: Description, name: description, widget: text}
+          - {name: layout, widget: hidden, default: resources}
+          - {name: resource_type, widget: hidden, default: courses}
+
+  - name: software
+    label: Softwares
+    label_singular: Software entry
+    folder: data/software
+    extension: yaml
+    format: yaml
+    create: true
+    slug: '{{slug}}'
+    summary: '{{title}}'
+    sortable_fields: [order, title]
+    editor:
+      preview: false
+    fields:
+      - {label: Name, name: title, widget: string}
+      - {label: Description, name: description, widget: text, required: false}
+      - {label: GitHub URL, name: github, widget: string, required: false}
+      - {label: Display order, name: order, widget: number, value_type: int, min: 0, default: 10}
+      - {label: Show on website, name: visible, widget: boolean, default: true}
+
+  - name: courses
+    label: Courses
+    label_singular: Course
+    folder: data/courses
+    extension: yaml
+    format: yaml
+    create: true
+    slug: '{{slug}}'
+    summary: '{{code}} · {{title}}'
+    sortable_fields: [order, title, code]
+    editor:
+      preview: false
+    fields:
+      - {label: Course title, name: title, widget: string}
+      - {label: Course code, name: code, widget: string, required: false}
+      - label: Teaching terms
+        name: terms
+        widget: list
+        required: false
+        default: []
+        field: {label: Term, name: term, widget: string}
+        hint: Add each offering separately, for example Fall 2026 and Fall 2025. Displayed below the course title in the order entered.
+      - {label: Display order, name: order, widget: number, value_type: int, min: 0, default: 10}
+      - {label: Show on website, name: visible, widget: boolean, default: true}
+
+  - name: people
+    label: People
+    label_singular: Person
+    folder: data/people
+    extension: yaml
+    format: yaml
+    identifier_field: name
+    slug: '{{slug}}'
+    create: true
+    summary: '{{name}} · {{group}}'
+    sortable_fields: [group, order, name]
+    view_filters:
+      - {label: Ph.D. Students, field: group, pattern: '^phd$'}
+      - {label: M.S. Students, field: group, pattern: '^masters$'}
+      - {label: Interns, field: group, pattern: '^intern$'}
+      - {label: Alumni, field: group, pattern: '^alumni$'}
+    media_folder: ../../assets/media/people
+    public_folder: media/people
+    editor:
+      preview: false
+    fields:
+      - {label: Name, name: name, widget: string}
+      - label: Group
+        name: group
+        widget: select
+        options:
+          - {label: Ph.D. Student, value: phd}
+          - {label: M.S. Student, value: masters}
+          - {label: Intern, value: intern}
+          - {label: Alumni, value: alumni}
+        hint: Change the group to move a profile between sections. For graduates, select Alumni and fill the alumni details below.
+      - {label: Display order, name: order, widget: number, value_type: int, default: 10, min: 0, hint: Smaller numbers appear first within the selected group.}
+      - {label: Show on website, name: visible, widget: boolean, default: true}
+      - {label: Sample record (fictional), name: demo, widget: boolean, default: false}
+      - {label: Photo, name: photo, widget: image, required: false, hint: Optional for Ph.D. and M.S. students. Without a photo, a colored initials placeholder is shown.}
+      - label: Research interests
+        name: research_interests
+        widget: list
+        required: false
+        default: []
+        hint: Add interests as separate items. They are independent of publication tags.
+      - {label: Email, name: email, widget: string, required: false, hint: Not displayed for interns.}
+      - {label: Personal website, name: website, widget: string, required: false}
+      - {label: GitHub URL, name: github, widget: string, required: false}
+      - label: Internship details
+        name: internship
+        widget: object
+        required: false
+        collapsed: true
+        hint: Optional; use for lab interns, individual research, or undergraduate research projects.
+        fields:
+          - {label: Program, name: program, widget: string, required: false}
+          - {label: Period, name: period, widget: string, required: false, hint: 'For example: Jun–Aug 2026 or 2025–2026.'}
+      - label: Alumni details
+        name: alumni
+        widget: object
+        required: false
+        collapsed: true
+        hint: Displayed in the Alumni section. Other student-specific fields may be kept for reference.
+        fields:
+          - label: Degree / Former role
+            name: degree
+            widget: select
+            required: false
+            options: ['Ph.D.', 'M.S.', 'B.S.', 'Research intern', 'Other']
+          - {label: Graduation / Completion year, name: graduation_year, widget: number, value_type: int, required: false, min: 1900, max: 2100}
+          - {label: Thesis / Dissertation title, name: thesis, widget: text, required: false}
+          - {label: Current / Next position, name: position, widget: string, required: false}
+      - {label: Additional note, name: note, widget: text, required: false, hint: 'Optional, for example: co-advised with another department.'}
 
   - name: papers
     label: Publications
@@ -109,7 +247,7 @@ collections:
     filter:
       field: layout
       value: publication
-    sortable_fields: [year, title, submitted_date]
+    sortable_fields: [year, title]
     editor:
       preview: false
     fields:
@@ -141,23 +279,31 @@ collections:
         required: false
       - label: Topics
         name: topics
-        widget: relation
-        collection: settings
-        file: publication_topics
-        multiple: true
-        search_fields: ['topics.*.label', 'topics.*.id']
-        value_field: topics.*.id
-        display_fields: ['topics.*.label']
-        hint: Add a topic under Settings → Publication Topics before selecting it here.
+        widget: publication-tags
+        allow_create: true
+        hint: Search existing tags, or type a new tag and press Enter. New tags become reusable when this paper is saved.
       - {label: Demonstration record (fictional), name: demo, widget: boolean, default: false}
-      - {label: Paper URL, name: url_paper, widget: string, required: false}
+      - label: Abstract
+        name: abstract
+        widget: text
+        required: false
+        hint: Displayed on the publication detail page when its title is clicked.
+      - label: Paper URL
+        name: url_paper
+        widget: string
+        required: false
+        hint: Optional. Enables the paper icon in the publication row and below its detail-page metadata. Leave empty for a gray unavailable icon.
       - label: PDF
         name: url_pdf
         widget: file
         required: false
-        media_folder: static/uploads/publications
+        media_folder: ../../static/uploads/publications
         public_folder: uploads/publications
-      - {label: Code URL, name: url_code, widget: string, required: false}
+      - label: GitHub URL
+        name: url_code
+        widget: string
+        required: false
+        hint: Optional repository URL. Enables the GitHub icon in the publication row and below its detail-page metadata. Leave empty for a gray unavailable icon.
       - {label: Data URL, name: url_data, widget: string, required: false}
       - {label: Additional notes, name: body, widget: markdown, required: false}
   - name: settings
@@ -165,8 +311,304 @@ collections:
     editor:
       preview: false
     files:
+      - name: navigation
+        label: Navigation
+        file: config/_default/menus.yaml
+        fields:
+        - label: Menu items
+          name: main
+          widget: list
+          summary: '{{name}}'
+          fields:
+          - label: Label
+            name: name
+            widget: string
+          - label: Page path
+            name: url
+            widget: string
+            required: false
+            hint: Keep existing page paths unless you also move the page.
+          - label: Display order
+            name: weight
+            widget: number
+            value_type: int
+      - name: interface
+        label: Site Labels
+        file: data/interface.yaml
+        fields:
+        - label: Header and footer
+          name: site
+          widget: object
+          collapsed: true
+          fields:
+          - label: Logo
+            name: logo
+            widget: string
+          - label: Name
+            name: name
+            widget: string
+          - label: Institution
+            name: institution
+            widget: string
+          - label: Copyright
+            name: copyright
+            widget: string
+          - label: Title suffix
+            name: title_suffix
+            widget: string
+          - label: Home title suffix
+            name: home_title_suffix
+            widget: string
+          - label: Skip link
+            name: skip_link
+            widget: string
+        - label: Home labels
+          name: home
+          widget: object
+          collapsed: true
+          fields:
+          - label: Research heading
+            name: research_heading
+            widget: string
+          - label: Related publications
+            name: related_publications
+            widget: string
+        - label: Professor section labels
+          name: professor
+          widget: object
+          collapsed: true
+          fields:
+          - label: Email
+            name: email
+            widget: string
+          - label: Office
+            name: office
+            widget: string
+          - label: Interests
+            name: interests
+            widget: string
+          - label: Education
+            name: education
+            widget: string
+          - label: Experience
+            name: experience
+            widget: string
+          - label: Editorial
+            name: editorial
+            widget: string
+        - label: People tabs and headings
+          name: people
+          widget: object
+          collapsed: true
+          fields:
+          - label: Members tab
+            name: members_tab
+            widget: string
+          - label: Interns tab
+            name: interns_tab
+            widget: string
+          - label: Alumni tab
+            name: alumni_tab
+            widget: string
+          - label: Phd heading
+            name: phd_heading
+            widget: string
+          - label: Masters heading
+            name: masters_heading
+            widget: string
+          - label: Interns heading
+            name: interns_heading
+            widget: string
+          - label: Alumni heading
+            name: alumni_heading
+            widget: string
+          - label: Research interests
+            name: research_interests
+            widget: string
+          - label: Empty
+            name: empty
+            widget: string
+        - label: Publications controls and messages
+          name: publications
+          widget: object
+          collapsed: true
+          fields:
+          - label: Search
+            name: search
+            widget: string
+          - label: Search placeholder
+            name: search_placeholder
+            widget: string
+          - label: Type
+            name: type
+            widget: string
+          - label: Year
+            name: year
+            widget: string
+          - label: Topic
+            name: topic
+            widget: string
+          - label: All
+            name: all
+            widget: string
+          - label: Journal filter
+            name: journal_filter
+            widget: string
+          - label: Conference filter
+            name: conference_filter
+            widget: string
+          - label: Preprint filter
+            name: preprint_filter
+            widget: string
+          - label: Journal label
+            name: journal_label
+            widget: string
+          - label: Conference label
+            name: conference_label
+            widget: string
+          - label: Preprint label
+            name: preprint_label
+            widget: string
+          - label: Reset
+            name: reset
+            widget: string
+          - label: Sort
+            name: sort
+            widget: string
+          - label: Newest
+            name: newest
+            widget: string
+          - label: Oldest
+            name: oldest
+            widget: string
+          - label: Title sort
+            name: title_sort
+            widget: string
+          - label: Empty title
+            name: empty_title
+            widget: string
+          - label: Empty text
+            name: empty_text
+            widget: string
+          - label: No script
+            name: no_script
+            widget: string
+          - label: Previous
+            name: previous
+            widget: string
+          - label: Next
+            name: next
+            widget: string
+          - label: Page label
+            name: page_label
+            widget: string
+            hint: Keep placeholders such as {start}, {end}, {total}, and {page} unchanged.
+          - label: Count
+            name: count
+            widget: string
+            hint: Keep placeholders such as {start}, {end}, {total}, and {page} unchanged.
+          - label: Empty count
+            name: empty_count
+            widget: string
+          - label: Singular result name
+            name: singular
+            widget: string
+          - label: Plural result name
+            name: plural
+            widget: string
+          - label: Total suffix
+            name: total_suffix
+            widget: string
+            hint: Keep placeholders such as {start}, {end}, {total}, and {page} unchanged.
+          - label: Back
+            name: back
+            widget: string
+          - label: Abstract
+            name: abstract
+            widget: string
+          - label: No abstract
+            name: no_abstract
+            widget: string
+          - label: Page size
+            name: page_size
+            widget: number
+            value_type: int
+            min: 1
+            max: 100
+        - label: Link labels and unavailable states
+          name: links
+          widget: object
+          collapsed: true
+          fields:
+          - label: Website
+            name: website
+            widget: string
+          - label: Github
+            name: github
+            widget: string
+          - label: Paper
+            name: paper
+            widget: string
+          - label: No paper
+            name: no_paper
+            widget: string
+          - label: Github title
+            name: github_title
+            widget: string
+          - label: No github
+            name: no_github
+            widget: string
+          - label: Pdf
+            name: pdf
+            widget: string
+          - label: Data
+            name: data
+            widget: string
+        - label: Softwares and Courses labels
+          name: resources
+          widget: object
+          collapsed: true
+          fields:
+          - label: Offered
+            name: offered
+            widget: string
+          - label: Empty
+            name: empty
+            widget: string
+        - label: Not-found page
+          name: not_found
+          widget: object
+          collapsed: true
+          fields:
+          - label: Title
+            name: title
+            widget: string
+          - label: Description
+            name: description
+            widget: string
+          - label: Back
+            name: back
+            widget: string
+      - name: publication_filters
+        label: Publication Filter Display
+        file: data/publication_filters.yaml
+        fields:
+          - label: Years shown in filters
+            name: years
+            widget: list
+            required: false
+            default: []
+            field: {label: Year, name: year, widget: number, value_type: int, min: 1900, max: 2100}
+            hint: Only these years appear as filter buttons, newest first. Other publications remain searchable and visible under All. Leave empty to hide the Year row.
+          - label: Topics shown in filters
+            name: topics
+            widget: publication-tags
+            allow_create: false
+            required: false
+            default: []
+            hint: Choose tags used by publications. This only controls visible filter buttons; leave empty to hide the Topic row.
       - name: publication_topics
-        label: Publication Topics
+        label: Topic Display Names (optional)
         file: data/publication_topics.yaml
         fields:
           - label: Topics

@@ -1,0 +1,11 @@
+<article class="person-compact alumnus-row">
+  <div class="alumnus-identity">
+    <h3>{{ .name }}</h3>
+    {{ with .alumni }}{{ if or .degree .graduation_year }}<span class="person-compact-meta alumnus-degree">{{ with .degree }}{{ . }}{{ end }}{{ if and .degree .graduation_year }}, {{ end }}{{ with .graduation_year }}{{ . }}{{ end }}</span>{{ end }}{{ end }}
+  </div>
+  {{ with .alumni }}
+    {{ with .thesis }}<span class="person-compact-detail">{{ . }}</span>{{ end }}
+    {{ with .position }}<span class="person-compact-meta alumnus-position">{{ . }}</span>{{ end }}
+  {{ end }}
+  {{ if or .email .website .github }}{{ partial "people/links.html" . }}{{ end }}
+</article>

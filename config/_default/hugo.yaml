@@ -11,6 +11,11 @@ imaging:
   resampleFilter: lanczos
   quality: 80
   anchor: smart
+caches:
+  images:
+    dir: ':cacheDir/images'
+  assets:
+    dir: ':cacheDir/assets'
 mediaTypes:
   application/yaml:
     suffixes: [yml]
