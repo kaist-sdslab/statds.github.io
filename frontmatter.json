@@ -51,16 +51,7 @@
   "frontMatter.preview.host": "http://localhost:1313",
   "frontMatter.content.pageFolders": [
     {
-      "title": "publication",
-      "path": "[[workspace]]/content/publication"
-    },
-    {
-      "title": "people",
-      "path": "[[workspace]]/content/people"
-    },
-    {
-      "title": "contact",
-      "path": "[[workspace]]/content/contact"
+      "path": "[[workspace]]/statds.github.io/content"
     }
   ]
 }

@@ -1,0 +1,26 @@
+{{ partial "site/start.html" . }}
+    <section class="hero shell" aria-labelledby="welcome-title">
+      <div class="lab-introduction">
+        <h1 id="welcome-title" data-reveal>{{ .Params.hero.welcome }}</h1>
+        <p class="hero-description" data-reveal>{{ .Params.hero.description }}</p>
+      </div>
+    </section>
+    <section class="research-section shell" id="research" aria-labelledby="research-title">
+      <div class="section-heading" data-reveal><h2 id="research-title">Research Areas</h2></div>
+      <div class="research-list">{{ range $index, $area := .Params.research }}
+        <article class="research-item" data-reveal aria-labelledby="research-{{ $index }}">
+          <h3 class="research-heading" id="research-{{ $index }}">{{ .title }}</h3>
+          <div class="research-visual">
+            {{ $image := resources.Get .image }}
+            {{ $large := $image.Resize "1200x webp" }}
+            {{ $small := $image.Resize "600x webp" }}
+            <img src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} 600w, {{ $large.RelPermalink }} 1200w" sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1248px) 44vw, 540px" width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .image_alt }}" {{ if gt $index 0 }}loading="lazy"{{ end }} decoding="async">
+          </div>
+          <div class="research-copy">
+            <div class="research-description">{{ .description | markdownify }}</div>
+
+          </div>
+        </article>
+      {{ end }}</div>
+    </section>
+{{ partial "site/end.html" . }}

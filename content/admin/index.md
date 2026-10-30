@@ -1,8 +1,7 @@
 ---
-# Generate Decap CMS
-type: decap_cms
-private: true
-outputs:
-  - decap_cms_config
-  - HTML
+title: Content Manager
+type: cms
+outputs: [HTML, cms_config]
+_build:
+  list: never
 ---

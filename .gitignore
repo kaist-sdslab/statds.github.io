@@ -6,3 +6,7 @@
 /resources/
 public/
 assets/jsconfig.json
+
+# Local editor state and Hugo lock
+.frontmatter/
+.hugo_build.lock

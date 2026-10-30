@@ -1,0 +1,10 @@
+{{- $p := . -}}
+{{- $date := printf "%v" $p.Params.year -}}
+{{- $topics := slice -}}
+{{- range $p.Params.topics -}}
+  {{- $id := . -}}
+  {{- $label := $id -}}
+  {{- range site.Data.publication_topics.topics -}}{{- if eq .id $id -}}{{- $label = .label -}}{{- end -}}{{- end -}}
+  {{- $topics = $topics | append (dict "id" $id "label" $label) -}}
+{{- end -}}
+{{- return (dict "page" $p "date" $date "topics" $topics) -}}

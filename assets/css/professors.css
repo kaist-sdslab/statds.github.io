@@ -1,0 +1,51 @@
+.professor-page { padding-top: 42px; padding-bottom: 44px; }
+.professor-page-title { font-family: var(--serif); font-size: 31px; font-weight: 400; line-height: 1.4; letter-spacing: -.02em; }
+.professor-profile { display: grid; grid-template-columns: 280px 1fr; gap: 58px; align-items: center; padding: 32px 0 48px; }
+.professor-photo { display: block; width: 100%; height: auto; }
+.professor-identity { min-width: 0; }
+.professor-identity h2 { font-family: var(--serif); font-size: 40px; font-weight: 400; letter-spacing: -.025em; line-height: 1.2; }
+.professor-roles { list-style: none; padding: 0; margin: 23px 0 0; }
+.professor-roles li + li { margin-top: 13px; }
+.professor-roles strong { font-size: 16px; font-weight: 600; display: inline; }
+.professor-roles span { font-size: 16px; color: var(--body-text); display: inline; }
+.professor-roles strong::after { content: ', '; }
+.professor-institution { font-size: 14px; color: var(--muted); margin-top: 17px; }
+.professor-contact { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 22px 0 0; font-size: 14px; }
+.professor-contact div { display: flex; gap: 12px; }
+.professor-contact dt { font-weight: 600; }
+.professor-contact dd { margin: 0; color: var(--body-text); }
+.professor-contact a { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; }
+.professor-section { display: grid; grid-template-columns: minmax(300px, max-content) minmax(0,1fr); gap: 40px; border-top: 1px solid var(--line); padding: 33px 0 36px; }
+.professor-section > h2 { font-family: var(--serif); font-size: 25px; font-weight: 400; line-height: 1.4; text-wrap: initial; white-space: nowrap; }
+.professor-records { margin: 0; padding: 0; list-style: none; }
+.professor-records li + li { margin-top: 22px; }
+.professor-records h3 { font-family: var(--sans); font-size: 16px; font-weight: 600; line-height: 1.6; text-wrap: initial; }
+.record-institution { color: var(--body-text); font-size: 16px; margin-top: 3px; }
+.record-detail { color: var(--body-text); font-size: 15px; line-height: 1.75; margin-top: 3px; }
+.dated-record { display: grid; grid-template-columns: 132px minmax(0,1fr); gap: 20px; }
+.record-period { color: var(--blue); font-size: 14px; font-variant-numeric: tabular-nums; padding-top: 2px; }
+@media (max-width: 1000px) {
+  .professor-profile { gap: 35px; grid-template-columns: 240px minmax(0,1fr); }
+  .professor-section { grid-template-columns: minmax(285px, max-content) minmax(0,1fr); gap: 30px; }
+}
+@media (max-width: 760px) {
+  .professor-page { padding-top: 30px; padding-bottom: 20px; }
+  .professor-page-title { font-size: 27px; }
+  .professor-profile { grid-template-columns: 1fr; gap: 26px; padding: 27px 0 33px; }
+  .professor-photo { max-width: 240px; }
+  .professor-identity h2 { font-size: 33px; }
+  .professor-roles { margin-top: 20px; }
+  .professor-roles strong, .professor-roles span { font-size: 15px; }
+  .professor-contact { flex-direction: column; gap: 9px; margin-top: 20px; }
+  .professor-section { grid-template-columns: 1fr; gap: 21px; padding: 27px 0 29px; }
+  .professor-section > h2 { font-size: clamp(20px, 4.5vw, 24px); white-space: nowrap; }
+  .dated-record { grid-template-columns: 112px minmax(0,1fr); gap: 15px; }
+  .professor-records h3 { font-size: 15px; }
+  .record-institution, .record-detail { font-size: 14px; }
+  .record-period { font-size: 13px; }
+}
+@media (max-width: 400px) {
+  .dated-record { grid-template-columns: 1fr; gap: 5px; }
+}
+
+#experience-title { white-space: nowrap; text-wrap: nowrap; }

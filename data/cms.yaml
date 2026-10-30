@@ -1,0 +1,181 @@
+# Authentication must be configured before using CMS on the hosted site.
+# Keep the existing Git Gateway backend; development uses a local proxy.
+backend:
+  name: git-gateway
+  branch: main
+  squash_merges: true
+media_folder: assets/media/research
+public_folder: media/research
+collections:
+  - name: pages
+    label: Pages
+    editor:
+      preview: false
+    files:
+      - name: home
+        label: Home
+        file: content/_index.md
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: Description, name: description, widget: text}
+          - label: Introduction
+            name: hero
+            widget: object
+            fields:
+              - {label: Welcome, name: welcome, widget: string}
+              - {label: Description, name: description, widget: text}
+          - label: Research Areas
+            name: research
+            widget: list
+            fields:
+              - {label: Title, name: title, widget: string}
+              - {label: Description, name: description, widget: text}
+              - {label: Image, name: image, widget: image}
+              - {label: Image description, name: image_alt, widget: string}
+          - label: Footer
+            name: contact
+            widget: object
+            fields:
+              - {label: Lab name, name: title, widget: string}
+              - {label: Address, name: address, widget: text}
+      - name: professors
+        label: Professors
+        file: content/professors/index.md
+        media_folder: assets/media/people
+        public_folder: media/people
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: Description, name: description, widget: text}
+          - {name: layout, widget: hidden, default: professors}
+          - {label: Name, name: name, widget: string}
+          - {label: Photo, name: photo, widget: image}
+          - {label: Photo description, name: photo_alt, widget: string}
+          - {label: Institution, name: institution, widget: string}
+          - label: Positions
+            name: roles
+            widget: list
+            fields:
+              - {label: Title, name: title, widget: string}
+              - {label: Department, name: department, widget: string}
+          - {label: Email, name: email, widget: string}
+          - {label: Office, name: office, widget: string}
+          - label: Research Interests
+            name: research_interests
+            widget: list
+            fields:
+              - {label: Main topic, name: title, widget: string}
+              - {label: Details, name: detail, widget: text, required: false}
+          - label: Education
+            name: education
+            widget: list
+            fields:
+              - {label: Degree, name: degree, widget: string}
+              - {label: Department, name: department, widget: string}
+              - {label: Institution, name: institution, widget: string}
+          - label: Professional Experience
+            name: experience
+            widget: list
+            fields:
+              - {label: Role, name: role, widget: string}
+              - {label: Institution, name: institution, widget: string}
+              - {label: Period, name: period, widget: string}
+          - label: Editorial Service
+            name: editorial_service
+            widget: list
+            fields:
+              - {label: Role, name: role, widget: string}
+              - {label: Journal, name: journal, widget: string}
+              - {label: Period, name: period, widget: string}
+      - name: publications
+        label: Publications
+        file: content/publications/_index.md
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: Description, name: description, widget: text}
+          - {name: layout, widget: hidden, default: publications}
+      - name: people
+        label: People
+        file: content/people/index.md
+        fields:
+          - {label: Title, name: title, widget: string}
+
+  - name: papers
+    label: Publications
+    label_singular: Publication
+    folder: content/publications
+    create: true
+    slug: '{{slug}}'
+    summary: '{{title}} ({{year}})'
+    filter:
+      field: layout
+      value: publication
+    sortable_fields: [year, title, submitted_date]
+    editor:
+      preview: false
+    fields:
+      - {label: Title, name: title, widget: string}
+      - {name: layout, widget: hidden, default: publication}
+      - label: Authors (in order)
+        name: authors
+        widget: list
+        min: 1
+      - label: Type
+        name: publication_type
+        widget: select
+        options:
+          - {label: Journal article, value: journal}
+          - {label: Conference paper, value: conference}
+          - {label: Preprint / Working paper, value: preprint}
+      - label: Year
+        name: year
+        widget: number
+        value_type: int
+        min: 1900
+        hint: Year displayed in the publication list.
+      - label: Journal / Conference / Repository
+        name: venue
+        widget: string
+      - label: Volume / Issue / Pages / Notes
+        name: venue_details
+        widget: string
+        required: false
+      - label: Topics
+        name: topics
+        widget: relation
+        collection: settings
+        file: publication_topics
+        multiple: true
+        search_fields: ['topics.*.label', 'topics.*.id']
+        value_field: topics.*.id
+        display_fields: ['topics.*.label']
+        hint: Add a topic under Settings → Publication Topics before selecting it here.
+      - {label: Demonstration record (fictional), name: demo, widget: boolean, default: false}
+      - {label: Paper URL, name: url_paper, widget: string, required: false}
+      - label: PDF
+        name: url_pdf
+        widget: file
+        required: false
+        media_folder: static/uploads/publications
+        public_folder: uploads/publications
+      - {label: Code URL, name: url_code, widget: string, required: false}
+      - {label: Data URL, name: url_data, widget: string, required: false}
+      - {label: Additional notes, name: body, widget: markdown, required: false}
+  - name: settings
+    label: Settings
+    editor:
+      preview: false
+    files:
+      - name: publication_topics
+        label: Publication Topics
+        file: data/publication_topics.yaml
+        fields:
+          - label: Topics
+            name: topics
+            widget: list
+            fields:
+              - label: Topic ID
+                name: id
+                widget: string
+                hint: A unique stable ID. Keep it unchanged when renaming a topic already used by papers.
+                pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 'Use lowercase letters, numbers, and hyphens.']
+              - {label: Display name, name: label, widget: string}

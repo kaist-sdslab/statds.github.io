@@ -1,0 +1,2 @@
+{{- $config := merge site.Data.cms (dict "local_backend" (not hugo.IsProduction)) -}}
+{{- $config | transform.Remarshal "yaml" -}}

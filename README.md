@@ -1,48 +1,88 @@
-# [Hugo Research Group Theme](https://github.com/wowchemy/starter-hugo-research-group)
+# Statistical Data Science Lab website
 
-[![Screenshot](preview.png)](https://hugoblox.com/hugo-themes/)
+Custom Hugo website for SDS Lab at KAIST. The public site uses local layouts,
+CSS, and JavaScript, without a theme or Hugo module dependencies.
 
-The **Research Group Template** empowers your research group to easily create a beautiful website with a stunning homepage, news, academic publications, events, team profiles, and a contact form.
+## Local development
 
-️**Trusted by 250,000+ researchers, educators, and students.** Highly customizable via the integrated **no-code, widget-based Wowchemy page builder**, making every site truly personalized ⭐⭐⭐⭐⭐
+Use Hugo Extended 0.135.0 (the version used by GitHub Actions):
 
-[![Get Started](https://img.shields.io/badge/-Get%20started-ff4655?style=for-the-badge)](https://hugoblox.com/hugo-themes/)
-[![Discord](https://img.shields.io/discord/722225264733716590?style=for-the-badge)](https://discord.com/channels/722225264733716590/742892432458252370/742895548159492138)  
-[![Twitter Follow](https://img.shields.io/twitter/follow/GetResearchDev?label=Follow%20on%20Twitter)](https://twitter.com/wowchemy)
+```sh
+hugo server --disableFastRender
+```
 
-Easily write technical content with plain text Markdown, LaTeX math, diagrams, RMarkdown, or Jupyter, and import publications from BibTeX.
+A checkout-local executable, when available, can be used as
+`.tools/hugo/hugo server --disableFastRender`. Open http://localhost:1313/.
 
-[Check out the latest demo](https://research-group.netlify.app/) of what you'll get in less than 60 seconds, or [view the showcase](https://hugoblox.com/creators/).
+## Structure
 
-The integrated [**Wowchemy**](https://hugoblox.com) website builder and CMS makes it easy to create a beautiful website for free. Edit your site in the CMS (or your favorite editor), generate it with [Hugo](https://github.com/gohugoio/hugo), and deploy with GitHub or Netlify. Customize anything on your site with widgets, light/dark themes, and language packs.
+- `content/_index.md`: Home introduction, research areas, and footer address.
+- `content/professors/`: professor profile, interests, education, experience, and editorial service.
+- `content/publications/`: searchable publication index, individual records, and eight fictional demo papers.
+- `content/people/`: page title using a shared preparation page.
+- `data/publication_topics.yaml`: editable topic IDs and display names.
+- `assets/media/people/`: professor photographs and source notes.
+- `assets/media/research/`: original lab research illustrations and source notes.
+- `assets/css/home.css`: shared site styles and responsive layouts.
+- `assets/css/professors.css`, `layouts/_default/professors.html`: professor page styles and layout.
+- `assets/js/home.js`: optional Home fade-in effects, with reduced-motion support.
+- `assets/css/publications.css`, `assets/js/publications.js`: publication layout, search, filters and sorting.
+- `layouts/partials/publications/`: shared record normalization and article presentation.
+- `layouts/index.html`: Home layout.
+- `layouts/partials/site/`: shared document, navigation, footer, and preparation page.
+- `layouts/_default/`: fallback page layouts; `layouts/404.html`: missing-page layout.
+- `config/_default/menus.yaml`: navigation links and ordering.
+- `config/_default/hugo.yaml`: site URL, outputs, and image settings.
+- `content/admin/`, `layouts/cms/`, `data/cms.yaml`: independent Decap CMS entry point
+  and form definitions for the current content.
 
-- 👉 [**Get Started**](https://hugoblox.com/hugo-themes/)
-- 📚 [View the **documentation**](https://docs.hugoblox.com/)
-- 💬 [Chat with the **Wowchemy research community**](https://discord.gg/z8wNYzb) or [**Hugo community**](https://discourse.gohugo.io)
-- ⬇️ **Automatically import citations from BibTeX** with the [Hugo Academic CLI](https://github.com/GetRD/academic-file-converter)
-- 🐦 Share your new site with the community: [@wowchemy](https://twitter.com/wowchemy) [@GeorgeCushen](https://twitter.com/GeorgeCushen) [#MadeWithWowchemy](https://twitter.com/search?q=%23MadeWithWowchemy&src=typed_query)
-- 🗳 [Take the survey and help us improve #OpenSource](https://forms.gle/NioD9VhUg7PNmdCAA)
-- 🚀 [Contribute improvements](https://github.com/HugoBlox/hugo-blox-builder/blob/main/CONTRIBUTING.md) or [suggest improvements](https://github.com/HugoBlox/hugo-blox-builder/issues)
-- ⬆️ **Updating?** View the [Update Guide](https://docs.hugoblox.com/hugo-tutorials/update/) and [Release Notes](https://github.com/HugoBlox/hugo-blox-builder/releases)
+## CMS status
 
-## We ask you, humbly, to support this open source movement
+`/admin/` remains available. Its forms match Home, Professors and Publications.
+People currently exposes only its title. Home image fields use resource paths
+such as `media/research/transfer-learning.png`; professor photographs use
+`media/people/jeongyoun-ahn.jpg`.
 
-Today we ask you to defend the open source independence of the Wowchemy website builder and themes 🐧
+The existing Git Gateway authentication setup is retained. Hosted sign-in and
+saving still require backend/authentication configuration; this cleanup does
+not configure an authentication service. In development, the generated CMS
+configuration enables the local backend, which requires a separate Decap proxy.
+The public website does not require the CMS scripts to load.
 
-We're an open source movement that depends on your support to stay online and thriving, but 99.9% of our creators don't give; they simply look the other way.
+## Build and deployment
 
-### [❤️ Click here to become a GitHub Sponsor, unlocking awesome perks such as _exclusive academic templates and widgets_](https://github.com/sponsors/gcushen)
+```sh
+hugo --minify
+```
 
-## Demo credits
+GitHub Actions builds `public/` and deploys it to GitHub Pages on pushes to
+`main`. `.tools/`, `public/`, `resources/`, and editor databases are local or
+generated files, excluded from version control. The configured default base URL
+uses a repository subdirectory; Actions supplies the actual Pages base URL.
 
-Please replace the demo images with your own.
+The original starter's MIT license notice is retained in `LICENSE.md`.
 
-- [Female scientist](https://unsplash.com/photos/uVnRa6mOLOM)
-- [2 Coders](https://unsplash.com/photos/kwzWjTnDPLk)
-- [Cafe](https://unsplash.com/photos/RnDGGnMEOao)
-- Blog posts
-  - https://unsplash.com/photos/AndE50aaHn4
-  - https://unsplash.com/photos/OYzbqk2y26c
-- Avatars
-  - https://unsplash.com/photos/5yENNRbbat4
-  - https://unsplash.com/photos/WNoLnJo7tS8
+## Publications demo and editing
+
+All eight `content/publications/demo-*.md` records are fictional. Each is visibly
+marked as Demo on the index and its detail page. No real lab publications have
+been imported. Remove the demo files when replacing the demonstration with real
+records; new CMS entries default to `demo: false`.
+
+In CMS, use **Publications** to add a record. Titles, ordered authors, type,
+year, venue, volume/issue/pages or short notes, and optional resource links have
+separate fields. Each record has its own detail page. Records use the year for
+chronological sorting. The compact list does not include abstracts, submission
+history, status badges, or selected-paper features.
+
+Use **Settings → Publication Topics** to create topic IDs and display names.
+Then select one or more topics on a publication. Display names can be changed
+without changing the IDs already referenced by papers. IDs must be unique;
+do not rename or remove an ID while papers still reference it. Topic filters
+are generated from this registry on build.
+
+Search matches all entered words across title, authors, venue and topic labels.
+Type and year filters are combined with AND; multiple selected topics use OR.
+Filter state is stored in URL parameters for sharing and restored on load.
+Sorting supports newest/oldest year and title. Without JavaScript, every record
+remains readable. All demo records are fictional and visibly labeled.

@@ -1,0 +1,18 @@
+{{ $record := .record }}{{ $page := $record.page }}{{ $p := $page.Params }}
+{{ $kinds := dict "journal" "Journal article" "conference" "Conference paper" "preprint" "Preprint" }}
+
+<article class="publication-card" data-paper data-kind="{{ $p.publication_type }}" data-year="{{ $p.year }}" data-date="{{ $record.date }}" data-title="{{ $page.Title }}" data-topics="{{ $p.topics | jsonify }}" data-search="{{ printf "%s %s %s %s" $page.Title (delimit $p.authors " ") $p.venue (delimit (apply $record.topics "index" "." "label") " ") }}">
+  <div class="publication-year">{{ $p.year }}</div>
+  <div class="publication-card-body">
+
+    {{ if .detail }}<h1>{{ $page.Title }}</h1>{{ else }}<h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>{{ end }}
+    <p class="publication-authors">{{ delimit $p.authors ", " }}</p>
+    <p class="publication-venue">{{ $p.venue }}{{ with $p.venue_details }}<span> · {{ . }}</span>{{ end }}</p>
+    <div class="publication-footer"><span class="publication-kind">{{ index $kinds $p.publication_type }}</span>{{ if $p.demo }}<span class="publication-demo">Demo</span>{{ end }}
+    <div class="publication-topics" aria-label="Research topics">{{ range $record.topics }}<a href="{{ "publications/" | relURL }}?topic={{ .id | urlquery }}" data-topic="{{ .id }}">{{ .label }}</a>{{ end }}</div>
+
+    {{ if or $p.url_paper $p.url_pdf $p.url_code $p.url_data }}<div class="publication-resources">{{ with $p.url_paper }}<a href="{{ . | relURL }}">Paper ↗</a>{{ end }}{{ with $p.url_pdf }}<a href="{{ . | relURL }}">PDF ↗</a>{{ end }}{{ with $p.url_code }}<a href="{{ . | relURL }}">Code ↗</a>{{ end }}{{ with $p.url_data }}<a href="{{ . | relURL }}">Data ↗</a>{{ end }}</div>{{ end }}
+    </div>
+    {{ if .detail }}{{ with $page.Content }}<div class="publication-content">{{ . }}</div>{{ end }}{{ end }}
+  </div>
+</article>
