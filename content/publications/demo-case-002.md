@@ -7,7 +7,7 @@ publication_type: "conference"
 year: 2020
 venue: "Example Conference on Data Science Methods"
 venue_details: "Fictional proceedings"
-topics: ["compositional-data", "interpretable-learning"]
+topics: [Compositional data, Interpretable learning]
 abstract: "We consider multivariate observations that contain relative information and satisfy a constant-sum constraint. The framework accounts for zero components and the geometry of the simplex without requiring an arbitrary replacement of zeros. The methodological questions include interpretable representations, estimation near the boundary, and uncertainty assessment for sparse compositions. This is an illustrative abstract for a fictional sample publication."
 ---
 

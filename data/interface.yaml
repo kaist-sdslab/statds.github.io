@@ -35,10 +35,8 @@ publications:
   all: All
   journal_filter: Journal
   conference_filter: Conference
-  preprint_filter: Preprint
   journal_label: Journal article
   conference_label: Conference paper
-  preprint_label: Preprint
   reset: Reset filters
   sort: Sort by
   newest: Newest year
@@ -67,7 +65,6 @@ links:
   github_title: GitHub repository
   no_github: GitHub repository not available
   pdf: PDF
-  data: Data
 resources:
   offered: Offered
   empty: Entries will be added soon.

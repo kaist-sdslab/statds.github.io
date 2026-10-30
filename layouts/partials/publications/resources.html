@@ -4,5 +4,4 @@
         {{ else }}<span class="resource-unavailable" role="img" aria-label="{{ .missing }}" title="{{ .missing }}">{{ partial "publications/resource-icon.html" .icon }}</span>{{ end }}
       {{ end }}
       {{ with .Params.url_pdf }}<a href="{{ . | relURL }}" title="Read PDF">{{ site.Data.interface.links.pdf }}</a>{{ end }}
-      {{ with .Params.url_data }}<a href="{{ . | relURL }}" title="Research data">{{ site.Data.interface.links.data }}</a>{{ end }}
     </div>

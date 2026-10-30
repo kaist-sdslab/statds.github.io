@@ -49,6 +49,7 @@
     <link rel="stylesheet" href="{{ $resourceStyle.RelPermalink }}" integrity="{{ $resourceStyle.Data.Integrity }}">
   {{ end }}
   {{ if or (eq .Layout "publications") (eq .Layout "publication") }}
+
     {{ $publicationStyle := resources.Get "css/publications.css" | minify | fingerprint }}
     <link rel="stylesheet" href="{{ $publicationStyle.RelPermalink }}" integrity="{{ $publicationStyle.Data.Integrity }}">
   {{ end }}

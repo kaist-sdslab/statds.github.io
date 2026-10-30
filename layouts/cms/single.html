@@ -5,13 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title>Content Manager · SDS Lab</title>
+
   {{ $tagsStyle := resources.Get "css/cms-tags.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $tagsStyle.RelPermalink }}" integrity="{{ $tagsStyle.Data.Integrity }}">
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
+  {{/* Publish originals so CMS image URLs work alongside responsive site images. */}}
+  {{ range resources.Match "media/**" }}{{ $url := .RelPermalink }}{{ end }}
   <script>window.CMS_MANUAL_INIT = true;</script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  {{ $colorsScript := resources.Get "js/cms-colors.js" | minify | fingerprint }}
+  <script src="{{ $colorsScript.RelPermalink }}" integrity="{{ $colorsScript.Data.Integrity }}"></script>
+  <script id="cms-media-settings" type="application/json">{{ dict "basePath" site.Home.RelPermalink | jsonify | safeJS }}</script>
+  {{ $mediaScript := resources.Get "js/cms-media.js" | minify | fingerprint }}
+  <script src="{{ $mediaScript.RelPermalink }}" integrity="{{ $mediaScript.Data.Integrity }}"></script>
   {{ $catalog := partialCached "publications/topic-catalog.html" site }}
   <script id="publication-tag-catalog" type="application/json">{{ $catalog.topics | jsonify | safeJS }}</script>
   {{ $tagsScript := resources.Get "js/cms-tags.js" | minify | fingerprint }}

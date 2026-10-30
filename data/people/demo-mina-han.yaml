@@ -1,9 +1,9 @@
-name: Mina Han
-group: phd
+name: Alumni Kim
+group: alumni
 order: 10
-research_interests:
-- High-dimensional inference
-- Transfer learning
-email: mina.han@example.org
 visible: true
 demo: true
+research_interests:
+  - High-dimensional inference
+  - Transfer learning
+email: mina.han@example.org

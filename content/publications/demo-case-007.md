@@ -7,7 +7,7 @@ publication_type: "conference"
 year: 2016
 venue: "Example Symposium on Statistical Learning"
 venue_details: "Fictional proceedings"
-topics: ["high-dimensional-data", "kernel-methods"]
+topics: [High-dimensional data, Kernel methods]
 url_paper: "https://example.org/publications/demo-case-007"
 abstract: "We consider statistical estimation when the number of measured variables is large relative to the available sample size. The framework combines regularization with structural assumptions on dependence to obtain useful summaries for downstream analysis. The methodological questions include tuning, robustness, and uncertainty in high-dimensional estimates. This is an illustrative abstract for a fictional sample publication."
 ---

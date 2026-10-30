@@ -7,7 +7,7 @@ publication_type: "journal"
 year: 2025
 venue: "Example Annals of Data Science"
 venue_details: "Vol. 5, No. 3, pp. 103–111 · fictional venue"
-topics: ["high-dimensional-data"]
+topics: [High-dimensional data]
 url_paper: "https://example.org/publications/demo-case-031"
 abstract: "We consider statistical estimation when the number of measured variables is large relative to the available sample size. The framework combines regularization with structural assumptions on dependence to obtain useful summaries for downstream analysis. The methodological questions include tuning, robustness, and uncertainty in high-dimensional estimates. This is an illustrative abstract for a fictional sample publication."
 ---

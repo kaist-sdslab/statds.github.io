@@ -30,13 +30,14 @@ collections:
             fields:
               - {label: Title, name: title, widget: string}
               - {label: Description, name: description, widget: text}
+              - {label: Accent color, name: color, widget: color, allowInput: true, pattern: ['^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$', 'Enter a HEX color such as #285c9b.'], default: "#285c9b", hint: Color of this research title and related-publications link.}
               - label: Related publication topics
                 name: publication_topics
                 widget: publication-tags
                 allow_create: false
                 required: false
                 hint: Choose tags to preselect when visitors open related publications. Papers matching any selected tag are included.
-              - {label: Image, name: image, widget: image}
+              - {label: Image, name: image, widget: image, media_library: {allow_multiple: false}}
               - {label: Image description, name: image_alt, widget: string}
           - label: Footer
             name: contact
@@ -54,7 +55,7 @@ collections:
           - {label: Description, name: description, widget: text}
           - {name: layout, widget: hidden, default: professors}
           - {label: Name, name: name, widget: string}
-          - {label: Photo, name: photo, widget: image}
+          - {label: Photo, name: photo, widget: image, media_library: {allow_multiple: false}}
           - {label: Photo description, name: photo_alt, widget: string}
           - {label: Institution, name: institution, widget: string}
           - label: Positions
@@ -201,7 +202,7 @@ collections:
       - {label: Display order, name: order, widget: number, value_type: int, default: 10, min: 0, hint: Smaller numbers appear first within the selected group.}
       - {label: Show on website, name: visible, widget: boolean, default: true}
       - {label: Sample record (fictional), name: demo, widget: boolean, default: false}
-      - {label: Photo, name: photo, widget: image, required: false, hint: Optional for Ph.D. and M.S. students. Without a photo, a colored initials placeholder is shown.}
+      - {label: Photo, name: photo, widget: image, media_library: {allow_multiple: false}, required: false, hint: Optional for Ph.D. and M.S. students. Without a photo, a colored initials placeholder is shown.}
       - label: Research interests
         name: research_interests
         widget: list
@@ -243,7 +244,7 @@ collections:
     folder: content/publications
     create: true
     slug: '{{slug}}'
-    summary: '{{title}} ({{year}})'
+    summary: '{{title}} ({{fields.year}})'
     filter:
       field: layout
       value: publication
@@ -263,14 +264,13 @@ collections:
         options:
           - {label: Journal article, value: journal}
           - {label: Conference paper, value: conference}
-          - {label: Preprint / Working paper, value: preprint}
       - label: Year
         name: year
         widget: number
         value_type: int
         min: 1900
         hint: Year displayed in the publication list.
-      - label: Journal / Conference / Repository
+      - label: Journal / Conference
         name: venue
         widget: string
       - label: Volume / Issue / Pages / Notes
@@ -304,7 +304,6 @@ collections:
         widget: string
         required: false
         hint: Optional repository URL. Enables the GitHub icon in the publication row and below its detail-page metadata. Leave empty for a gray unavailable icon.
-      - {label: Data URL, name: url_data, widget: string, required: false}
       - {label: Additional notes, name: body, widget: markdown, required: false}
   - name: settings
     label: Settings
@@ -457,17 +456,11 @@ collections:
           - label: Conference filter
             name: conference_filter
             widget: string
-          - label: Preprint filter
-            name: preprint_filter
-            widget: string
           - label: Journal label
             name: journal_label
             widget: string
           - label: Conference label
             name: conference_label
-            widget: string
-          - label: Preprint label
-            name: preprint_label
             widget: string
           - label: Reset
             name: reset
@@ -561,9 +554,6 @@ collections:
           - label: Pdf
             name: pdf
             widget: string
-          - label: Data
-            name: data
-            widget: string
         - label: Softwares and Courses labels
           name: resources
           widget: object
@@ -607,17 +597,23 @@ collections:
             required: false
             default: []
             hint: Choose tags used by publications. This only controls visible filter buttons; leave empty to hide the Topic row.
-      - name: publication_topics
-        label: Topic Display Names (optional)
-        file: data/publication_topics.yaml
+      - name: topic_colors
+        label: Topic Colors
+        file: data/topic_colors.yaml
         fields:
-          - label: Topics
-            name: topics
+          - label: Color assignments
+            name: assignments
             widget: list
+            required: false
             fields:
-              - label: Topic ID
-                name: id
-                widget: string
-                hint: A unique stable ID. Keep it unchanged when renaming a topic already used by papers.
-                pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 'Use lowercase letters, numbers, and hyphens.']
-              - {label: Display name, name: label, widget: string}
+              - label: Topics
+                name: topics
+                widget: publication-tags
+                allow_create: false
+                hint: Choose saved publication tags to use this color. Unassigned tags use blue.
+              - label: Color
+                name: color
+                widget: color
+                allowInput: true
+                pattern: ['^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$', 'Enter a HEX color such as #285c9b.']
+                default: "#285c9b"

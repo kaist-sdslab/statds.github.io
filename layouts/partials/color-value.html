@@ -1,0 +1,5 @@
+{{- $color := lower (default "#285c9b" .) -}}
+{{- if not (findRE `^#([0-9a-f]{3}|[0-9a-f]{6})$` $color) -}}
+  {{- $color = "#285c9b" -}}
+{{- end -}}
+{{- return $color -}}

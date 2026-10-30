@@ -7,7 +7,7 @@ publication_type: "conference"
 year: 2017
 venue: "Example Conference on Data Science Methods"
 venue_details: "Fictional proceedings"
-topics: ["data-privacy"]
+topics: [Data privacy]
 abstract: "We consider statistical analysis and data release subject to privacy constraints. The framework examines how disclosure risk, perturbation mechanisms, and population heterogeneity interact with the accuracy of statistical summaries. The methodological questions include privacy calibration and the evaluation of utility across different analysis tasks. This is an illustrative abstract for a fictional sample publication."
 ---
 

@@ -7,7 +7,7 @@ publication_type: "journal"
 year: 2016
 venue: "Example Journal of Statistical Methods"
 venue_details: "Vol. 6, No. 1, pp. 109–117 · fictional venue"
-topics: ["transfer-learning", "high-dimensional-data", "interpretable-learning"]
+topics: [Transfer learning, High-dimensional data, Interpretable learning]
 url_code: "https://github.com/example/demo-case-033"
 abstract: "We consider statistical learning when a target dataset is small but auxiliary observations are available from related populations. The proposed framework compares shared structure across sources and adapts the contribution of each source to the target task. The methodological questions include robustness to distribution shift, source selection, and uncertainty in the transferred estimates. This is an illustrative abstract for a fictional sample publication."
 ---

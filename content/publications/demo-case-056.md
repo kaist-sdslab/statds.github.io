@@ -7,7 +7,7 @@ publication_type: "journal"
 year: 2026
 venue: "Example Annals of Data Science"
 venue_details: "Vol. 8, No. 4, pp. 178–186 · fictional venue"
-topics: ["data-privacy"]
+topics: [Data privacy]
 abstract: "We consider statistical analysis and data release subject to privacy constraints. The framework examines how disclosure risk, perturbation mechanisms, and population heterogeneity interact with the accuracy of statistical summaries. The methodological questions include privacy calibration and the evaluation of utility across different analysis tasks. This is an illustrative abstract for a fictional sample publication."
 ---
 

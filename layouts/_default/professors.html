@@ -2,7 +2,7 @@
 <article class="shell professor-page">
   <h1 class="professor-page-title">{{ .Title }}</h1>
   <section class="professor-profile" aria-labelledby="professor-name">
-    {{ $photo := resources.Get .Params.photo }}
+    {{ $photo := partial "media-resource.html" .Params.photo }}
     {{ $small := $photo.Resize "400x webp" }}
     {{ $large := $photo.Resize "800x webp" }}
     <img class="professor-photo" src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} 400w, {{ $large.RelPermalink }} 800w" sizes="(max-width: 760px) 180px, (max-width: 1000px) 240px, 280px" width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .Params.photo_alt }}">

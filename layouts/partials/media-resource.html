@@ -1,0 +1,3 @@
+{{- /* CMS stores public URLs; Hugo image processing uses paths inside assets. */ -}}
+{{- $path := replaceRE `^.*?/media/` "media/" . -}}
+{{- return (resources.Get $path) -}}

@@ -1,6 +1,11 @@
 (() => {
   const key = value => String(value).normalize('NFKC').trim().replace(/\s+/g, ' ').toLowerCase();
   const clean = value => String(value).normalize('NFKC').trim().replace(/\s+/g, ' ');
+  const colorValue = value => /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(value || '') ? value : '#285c9b';
+  const colorStyle = value => {
+    const color = colorValue(value);
+    return { '--topic-color': color, '--topic-soft': `color-mix(in srgb, ${color} 9%, white)`, '--topic-line': `color-mix(in srgb, ${color} 25%, white)` };
+  };
   const catalog = new Map();
   const listeners = new Set();
   const remember = (topic, persisted = false) => {
@@ -51,7 +56,7 @@
       return h('div', { className: `${this.props.classNameWrapper || ''} publication-tag-editor` },
         h('div', { className: 'cms-tag-selection' }, selected.map(id => {
           const label = (lookup(id) || { label: id }).label;
-          return h('span', { className: 'cms-tag-chip', key: id },
+          return h('span', { className: 'cms-tag-chip', key: id, style: colorStyle((lookup(id) || {}).color) },
             label,
             h('button', { type: 'button', 'aria-label': `Remove ${label}`, onClick: () => this.props.onChange(selected.filter(value => value !== id)) }, '×'));
         })),
@@ -70,7 +75,7 @@
           }),
           h('button', { type: 'button', disabled: !canAdd, onClick: this.addTag },
             canCreate && clean(this.state.query) && !lookup(this.state.query) ? 'Create tag' : 'Add tag')),
-        h('datalist', { id: listID }, suggestions.map(topic => h('option', { key: topic.id, value: topic.label }, topic.id))),
+        h('datalist', { id: listID }, suggestions.map(topic => h('option', { key: topic.id, value: topic.label }))),
         h('p', { id: messageID, className: 'cms-tag-help', role: 'status' }, this.state.message || 'Select a suggestion and press Enter or Add tag.')
       );
     }
@@ -80,6 +85,17 @@
   CMS.registerEventListener({ name: 'postSave', handler: ({ entry }) => {
     const topics = values(entry.getIn(['data', 'topics']));
     topics.forEach(value => { if (typeof value === 'string' && clean(value)) remember({ id: clean(value), label: clean(value) }, true); });
+    const assignments = entry.getIn(['data', 'assignments']);
+    if (assignments !== undefined) {
+      catalog.forEach(topic => { topic.color = '#285c9b'; });
+      const rules = assignments && typeof assignments.toJS === 'function' ? assignments.toJS() : assignments;
+      (rules || []).forEach(rule => {
+        (rule.topics || []).forEach(value => {
+          const topic = lookup(value);
+          if (topic) topic.color = colorValue(rule.color);
+        });
+      });
+    }
     listeners.forEach(refresh => refresh());
   } });
   CMS.init();

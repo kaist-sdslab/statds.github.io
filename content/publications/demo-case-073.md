@@ -7,7 +7,7 @@ publication_type: "journal"
 year: 2019
 venue: "Example Annals of Data Science"
 venue_details: "Vol. 11, No. 1, pp. 229–237 · fictional venue"
-topics: ["transfer-learning", "high-dimensional-data"]
+topics: [Transfer learning, High-dimensional data]
 url_paper: "https://example.org/publications/demo-case-073"
 abstract: "We consider statistical learning when a target dataset is small but auxiliary observations are available from related populations. The proposed framework compares shared structure across sources and adapts the contribution of each source to the target task. The methodological questions include robustness to distribution shift, source selection, and uncertainty in the transferred estimates. This is an illustrative abstract for a fictional sample publication."
 ---

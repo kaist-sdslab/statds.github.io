@@ -7,7 +7,7 @@ publication_type: "conference"
 year: 2023
 venue: "Example Conference on Data Science Methods"
 venue_details: "Fictional proceedings"
-topics: ["functional-data", "interpretable-learning"]
+topics: [Functional data, Interpretable learning]
 url_paper: "https://example.org/publications/demo-case-077"
 abstract: "We consider observations collected as curves or multichannel sensor trajectories. The framework accounts for irregular sampling, temporal dependence, and heterogeneous noise when estimating common patterns or identifying unusual signals. The methodological questions include localization of deviations and interpretable summaries of functional variation. This is an illustrative abstract for a fictional sample publication."
 ---

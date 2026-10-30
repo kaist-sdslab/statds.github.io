@@ -1,0 +1,20 @@
+{{- $result := dict -}}
+{{- range $key, $value := . -}}
+  {{- if eq $key "public_folder" -}}
+    {{- $value = strings.TrimPrefix "/" $value | relURL -}}
+  {{- else if reflect.IsMap $value -}}
+    {{- $value = partial "cms/config-paths.html" $value -}}
+  {{- else if reflect.IsSlice $value -}}
+    {{- $items := slice -}}
+    {{- range $value -}}
+      {{- if reflect.IsMap . -}}
+        {{- $items = $items | append (partial "cms/config-paths.html" .) -}}
+      {{- else -}}
+        {{- $items = $items | append . -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $value = $items -}}
+  {{- end -}}
+  {{- $result = merge $result (dict $key $value) -}}
+{{- end -}}
+{{- return $result -}}

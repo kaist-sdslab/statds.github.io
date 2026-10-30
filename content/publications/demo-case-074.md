@@ -3,11 +3,11 @@ title: "Confidence regions for sparse compositional mean vectors"
 layout: "publication"
 demo: true
 authors: ["Example Author 06", "Example Author 07", "Example Author 08", "Example Author 09", "Example Author 10"]
-publication_type: "preprint"
+publication_type: "journal"
 year: 2023
-venue: "Example Preprint Repository"
+venue: "Example Journal of Statistics"
 venue_details: "Fictional working paper"
-topics: ["compositional-data"]
+topics: [Compositional data]
 abstract: "We consider multivariate observations that contain relative information and satisfy a constant-sum constraint. The framework accounts for zero components and the geometry of the simplex without requiring an arbitrary replacement of zeros. The methodological questions include interpretable representations, estimation near the boundary, and uncertainty assessment for sparse compositions. This is an illustrative abstract for a fictional sample publication."
 ---
 

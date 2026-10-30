@@ -1,0 +1,2 @@
+{{- $color := partial "color-value.html" . -}}
+{{- return (printf "--topic-color: %s; --topic-soft: color-mix(in srgb, %s 9%%, white); --topic-line: color-mix(in srgb, %s 25%%, white);" $color $color $color | safeCSS) -}}

@@ -1,7 +1,7 @@
 <article class="person-card">
   <div class="person-portrait">
     {{ if .photo }}
-      {{ $photo := resources.Get .photo }}
+      {{ $photo := partial "media-resource.html" .photo }}
       {{ if $photo }}{{ $small := $photo.Fit "240x300 webp" }}{{ $large := $photo.Fit "480x600 webp" }}
       <img src="{{ $small.RelPermalink }}" srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ $large.RelPermalink }} {{ $large.Width }}w" sizes="(max-width: 480px) 104px, 140px" width="{{ $small.Width }}" height="{{ $small.Height }}" alt="{{ .name }}" loading="lazy" decoding="async">
       {{ else }}{{ errorf "Photo %q for %q was not found in assets" .photo .name }}{{ end }}

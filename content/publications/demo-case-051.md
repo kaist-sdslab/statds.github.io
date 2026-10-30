@@ -7,7 +7,7 @@ publication_type: "journal"
 year: 2018
 venue: "Example Journal of Statistical Methods"
 venue_details: "Vol. 8, No. 3, pp. 163–171 · fictional venue"
-topics: ["synthetic-data", "data-privacy"]
+topics: [Synthetic data, Data privacy]
 abstract: "We consider synthetic data generation for scientific datasets that cannot be shared directly. The framework balances statistical fidelity with domain validity and disclosure risk, including dependence among variables and consistency constraints. The methodological questions include preserving downstream inferential utility and assessing the sensitivity of privacy evaluations. This is an illustrative abstract for a fictional sample publication."
 ---
 

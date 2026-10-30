@@ -7,7 +7,7 @@ publication_type: "journal"
 year: 2018
 venue: "Example Statistical Learning Review"
 venue_details: "Vol. 12, No. 2, pp. 268–276 · fictional venue"
-topics: ["kernel-methods"]
+topics: [Kernel methods]
 url_paper: "https://example.org/publications/demo-case-086"
 url_code: "https://github.com/example/demo-case-086"
 abstract: "We consider nonparametric learning using kernel representations of complex scientific observations. The framework examines the interaction between bandwidth selection, computational approximation, and the geometry of the observation space. The methodological questions include stable estimation and interpretable comparisons between distributions. This is an illustrative abstract for a fictional sample publication."

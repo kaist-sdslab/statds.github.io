@@ -58,7 +58,10 @@ if (typeof document !== 'undefined') (() => {
       const value = params.get(key) || '';
       if (allowed(key).includes(value)) state[key] = value;
     }
-    state.topics = [...new Set(params.getAll('topic'))].filter(topic => topic && allowed('topic').includes(topic));
+    // Continue accepting old hyphenated topic links after switching to names.
+    state.topics = [...new Set(params.getAll('topic').map(topic =>
+      topicIDs.find(id => id === topic) || topicIDs.find(id => PublicationFilters.normalize(id) === PublicationFilters.normalize(topic))
+    ).filter(Boolean))];
     const value = params.get('sort');
     if (['newest', 'oldest', 'title'].includes(value)) state.sort = value;
     const page = Number(params.get('page'));

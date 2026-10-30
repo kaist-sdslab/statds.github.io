@@ -1,0 +1,10 @@
+assignments:
+  - topics:
+      - Compositional data
+      - Kernel methods
+      - Functional data
+    color: "#176a62"
+  - topics:
+      - Synthetic data
+      - Data privacy
+    color: "#991abc"

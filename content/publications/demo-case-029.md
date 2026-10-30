@@ -3,11 +3,11 @@ title: "Low-rank representations of partially observed functional data: estimati
 layout: "publication"
 demo: true
 authors: ["Example Author 26", "Example Author 27", "Example Author 28", "Example Author 29", "Example Author 30"]
-publication_type: "preprint"
+publication_type: "journal"
 year: 2017
-venue: "Example Preprint Repository"
+venue: "Example Journal of Statistics"
 venue_details: "Fictional working paper"
-topics: ["functional-data", "interpretable-learning"]
+topics: [Functional data, Interpretable learning]
 url_paper: "https://example.org/publications/demo-case-029"
 url_code: "https://github.com/example/demo-case-029"
 abstract: "We consider observations collected as curves or multichannel sensor trajectories. The framework accounts for irregular sampling, temporal dependence, and heterogeneous noise when estimating common patterns or identifying unusual signals. The methodological questions include localization of deviations and interpretable summaries of functional variation. This is an illustrative abstract for a fictional sample publication."

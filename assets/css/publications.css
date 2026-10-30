@@ -17,8 +17,6 @@
 .filter-options button:hover { border-color: var(--blue); }
 /* Shared topic colors connect the research overview, tags, and active filters. */
 :where(.publication-topics a, .filter-options button[data-filter="topic"]) { --topic-color: var(--accent-blue); --topic-soft: var(--accent-blue-soft); --topic-line: var(--accent-blue-line); }
-:is([data-topic="compositional-data"], [data-topic="kernel-methods"], [data-topic="functional-data"], [data-filter="topic"][data-value="compositional-data"], [data-filter="topic"][data-value="kernel-methods"], [data-filter="topic"][data-value="functional-data"]) { --topic-color: var(--accent-teal); --topic-soft: var(--accent-teal-soft); --topic-line: var(--accent-teal-line); }
-:is([data-topic="synthetic-data"], [data-topic="data-privacy"], [data-filter="topic"][data-value="synthetic-data"], [data-filter="topic"][data-value="data-privacy"]) { --topic-color: var(--accent-purple); --topic-soft: var(--accent-purple-soft); --topic-line: var(--accent-purple-line); }
 .filter-options button[data-filter="topic"][data-value]:not([data-value=""])[aria-pressed="true"] { color: var(--topic-color); background: var(--topic-soft); border-color: var(--topic-color); }
 .filter-options button[data-filter="topic"][data-value]:not([data-value=""]):hover { border-color: var(--topic-color); }
 button:focus-visible, select:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }

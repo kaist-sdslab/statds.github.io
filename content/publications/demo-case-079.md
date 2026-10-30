@@ -3,11 +3,11 @@ title: "Robust correlation estimation from contaminated observations"
 layout: "publication"
 demo: true
 authors: ["Example Author 21"]
-publication_type: "preprint"
+publication_type: "journal"
 year: 2019
-venue: "Example Preprint Repository"
+venue: "Example Journal of Statistics"
 venue_details: "Fictional working paper"
-topics: ["high-dimensional-data"]
+topics: [High-dimensional data]
 abstract: "We consider statistical estimation when the number of measured variables is large relative to the available sample size. The framework combines regularization with structural assumptions on dependence to obtain useful summaries for downstream analysis. The methodological questions include tuning, robustness, and uncertainty in high-dimensional estimates. This is an illustrative abstract for a fictional sample publication."
 ---
 

@@ -7,7 +7,7 @@ publication_type: "journal"
 year: 2024
 venue: "Example Journal of Computational Inference"
 venue_details: "Vol. 2, No. 3, pp. 19–27 · fictional venue"
-topics: ["synthetic-data", "data-privacy", "functional-data"]
+topics: [Synthetic data, Data privacy, Functional data]
 url_code: "https://github.com/example/demo-case-003"
 abstract: "We consider synthetic data generation for scientific datasets that cannot be shared directly. The framework balances statistical fidelity with domain validity and disclosure risk, including dependence among variables and consistency constraints. The methodological questions include preserving downstream inferential utility and assessing the sensitivity of privacy evaluations. This is an illustrative abstract for a fictional sample publication."
 ---

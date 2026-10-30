@@ -6,7 +6,7 @@ authors: ["Demo Author L", "Demo Author M"]
 publication_type: "journal"
 year: 2026
 venue: "Example Journal of Statistical Learning"
-topics: ["transfer-learning", "high-dimensional-data"]
+topics: [Transfer learning, High-dimensional data]
 venue_details: "Under review"
 url_paper: "https://example.org/publications/demo-source-selection"
 url_code: "https://github.com/example/demo-source-selection"

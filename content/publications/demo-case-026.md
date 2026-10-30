@@ -7,7 +7,7 @@ publication_type: "journal"
 year: 2017
 venue: "Example Journal of Statistical Methods"
 venue_details: "Vol. 5, No. 2, pp. 88–96 · fictional venue"
-topics: ["compositional-data"]
+topics: [Compositional data]
 url_paper: "https://example.org/publications/demo-case-026"
 url_code: "https://github.com/example/demo-case-026"
 abstract: "We consider multivariate observations that contain relative information and satisfy a constant-sum constraint. The framework accounts for zero components and the geometry of the simplex without requiring an arbitrary replacement of zeros. The methodological questions include interpretable representations, estimation near the boundary, and uncertainty assessment for sparse compositions. This is an illustrative abstract for a fictional sample publication."

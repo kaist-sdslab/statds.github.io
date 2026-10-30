@@ -3,11 +3,11 @@ title: "Robust prediction from high-frequency wearable sensor trajectories: esti
 layout: "publication"
 demo: true
 authors: ["Example Author 22", "Example Author 23", "Example Author 24"]
-publication_type: "preprint"
+publication_type: "journal"
 year: 2020
-venue: "Example Preprint Repository"
+venue: "Example Journal of Statistics"
 venue_details: "Fictional working paper"
-topics: ["functional-data", "interpretable-learning", "kernel-methods"]
+topics: [Functional data, Interpretable learning, Kernel methods]
 url_code: "https://github.com/example/demo-case-069"
 abstract: "We consider observations collected as curves or multichannel sensor trajectories. The framework accounts for irregular sampling, temporal dependence, and heterogeneous noise when estimating common patterns or identifying unusual signals. The methodological questions include localization of deviations and interpretable summaries of functional variation. This is an illustrative abstract for a fictional sample publication."
 ---

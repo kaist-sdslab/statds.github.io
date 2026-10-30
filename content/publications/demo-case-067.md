@@ -7,7 +7,7 @@ publication_type: "conference"
 year: 2024
 venue: "Example Conference on Data Science Methods"
 venue_details: "Fictional proceedings"
-topics: ["synthetic-data", "data-privacy", "interpretable-learning"]
+topics: [Synthetic data, Data privacy, Interpretable learning]
 abstract: "We consider synthetic data generation for scientific datasets that cannot be shared directly. The framework balances statistical fidelity with domain validity and disclosure risk, including dependence among variables and consistency constraints. The methodological questions include preserving downstream inferential utility and assessing the sensitivity of privacy evaluations. This is an illustrative abstract for a fictional sample publication."
 ---
 

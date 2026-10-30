@@ -7,7 +7,7 @@ publication_type: "journal"
 year: 2015
 venue: "Example Journal of Computational Inference"
 venue_details: "Vol. 11, No. 2, pp. 244–252 · fictional venue"
-topics: ["kernel-methods"]
+topics: [Kernel methods]
 url_paper: "https://example.org/publications/demo-case-078"
 abstract: "We consider nonparametric learning using kernel representations of complex scientific observations. The framework examines the interaction between bandwidth selection, computational approximation, and the geometry of the observation space. The methodological questions include stable estimation and interpretable comparisons between distributions. This is an illustrative abstract for a fictional sample publication."
 ---

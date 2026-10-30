@@ -7,7 +7,7 @@ publication_type: "journal"
 year: 2024
 venue: "Example Annals of Data Science"
 venue_details: "Vol. 6, No. 2, pp. 124–132 · fictional venue"
-topics: ["kernel-methods"]
+topics: [Kernel methods]
 url_paper: "https://example.org/publications/demo-case-038"
 url_code: "https://github.com/example/demo-case-038"
 abstract: "We consider nonparametric learning using kernel representations of complex scientific observations. The framework examines the interaction between bandwidth selection, computational approximation, and the geometry of the observation space. The methodological questions include stable estimation and interpretable comparisons between distributions. This is an illustrative abstract for a fictional sample publication."
