@@ -448,7 +448,9 @@ collections:
     field: layout
     value: publication
   sortable_fields:
-  - year
+  - field: year
+    label: Year
+    default_sort: desc
   - month
   - title
   editor:

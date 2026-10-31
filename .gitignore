@@ -10,3 +10,17 @@ assets/jsconfig.json
 # Local editor state and Hugo lock
 .frontmatter/
 .hugo_build.lock
+
+# Local credentials and authentication tooling
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+.wrangler/
+.aws/
+.codex/
+.agents/
+*.pem
+*.key
+*.p12
+*.pfx

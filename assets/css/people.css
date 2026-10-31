@@ -6,9 +6,9 @@
 .people-tabs button:hover { color: var(--accent-blue); }
 .people-tabs button:focus-visible, .people-panel:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 4px; }
 .people-tabs[hidden], .people-panel[hidden] { display: none; }
-.people-section { --people-accent: var(--accent-blue); --people-soft: var(--accent-blue-soft); scroll-margin-top: 24px; }
-.people-accent-teal { --people-accent: var(--accent-teal); --people-soft: var(--accent-teal-soft); }
-.people-accent-purple { --people-accent: var(--accent-purple); --people-soft: var(--accent-purple-soft); }
+.people-section { --people-accent: var(--accent-blue); scroll-margin-top: 24px; }
+.people-accent-teal { --people-accent: var(--accent-teal); }
+.people-accent-purple { --people-accent: var(--accent-purple); }
 .people-accent-neutral { --people-accent: var(--muted); }
 .people-section + .people-section { margin-top: 44px; }
 .people-section-heading { display: flex; align-items: baseline; }
@@ -26,10 +26,8 @@
 .person-links a { display: inline-flex; align-items: center; gap: 4px; min-height: 30px; font-size: 14px; color: var(--accent-blue); overflow-wrap: anywhere; max-width: 100%; }
 .person-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .people-empty { padding: 22px 0; font-size: 14px; color: var(--muted); }
-.person-compact { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; padding: 9px 0; }
 .person-compact h3 { flex-shrink: 0; font-size: 16px; line-height: 1.7; font-weight: 600; text-wrap: initial; }
 .person-compact-meta { font-size: 14px; line-height: 1.7; color: var(--muted); }
-.person-compact-detail { flex: 1; min-width: 160px; font-size: 14px; line-height: 1.7; color: var(--body-text); }
 .people-compact-list { padding-top: 14px; }
 .people-scroll-list { max-height: min(56vh, 480px); overflow-y: auto; scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: #b2bdc7 transparent; padding-right: 14px; }
 .people-scroll-list:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 4px; }
@@ -37,7 +35,7 @@
 .intern-row { display: block; min-width: 0; padding: 12px 0; }
 .intern-row h3 { font-size: 16px; }
 .intern-row .person-compact-meta { white-space: nowrap; }
-.intern-row .person-compact-detail { min-width: 0; margin-left: 9px; font-size: 12px; color: var(--muted); }
+.intern-row .person-compact-detail { margin-left: 9px; font-size: 12px; line-height: 1.7; color: var(--muted); }
 .alumnus-row { display: block; padding: 12px 0 16px; }
 .alumnus-identity { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 12px; }
 .alumnus-summary { margin-top: 4px; font-size: 14px; line-height: 1.8; color: var(--body-text); text-wrap: initial; }
