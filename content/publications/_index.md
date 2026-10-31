@@ -30,9 +30,5 @@ labels:
   plural: publications
   total_suffix: ' ({total} total)'
   back: ← All publications
-  abstract: Abstract
-  no_abstract: Abstract not available.
   page_size: 10
-  paper: Read paper
-  no_paper: Paper link not available
 ---

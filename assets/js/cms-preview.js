@@ -65,8 +65,8 @@
     ...(type === 'github' ? ['M9 19c-4.3 1.3-4.3-2.5-6-3m12 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 19 4.77 5.07 5.07 0 0 0 18.91 1S17.73.65 15 2.48a13.38 13.38 0 0 0-6 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22'] : ['M15 3h6v6M10 14 21 3', 'M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5']).map(d => h('path', { d })));
   const link = (label, className, children) => h('a', { href: '#', className, title: label, 'aria-label': label }, children);
   const resource = (type, url, labels, className) => url
-    ? link(type === 'github' ? labels.github_title : labels.paper, className, icon(type))
-    : h('span', { className: `${className || ''} resource-unavailable`, role: 'img', title: type === 'github' ? labels.no_github : labels.no_paper }, icon(type));
+    ? link(labels.github_title, className, icon(type))
+    : h('span', { className: `${className || ''} resource-unavailable`, role: 'img', title: labels.no_github }, icon(type));
   const image = (path, alt, props, className, extra = {}) => path ? h('img', {
     src: String(window.SDSCMSMedia.resolveAsset(props.getAsset, path)), alt: alt || '', className, decoding: 'async', ...extra
   }) : null;
@@ -252,7 +252,6 @@
       const labels = { ...seed.labels, site: common.site, links: common.links };
       const labelSection = { home: 'home', professors: 'professor', publications: 'publications', people: 'people' }[name];
       if (collection === 'pages' && labelSection) labels[labelSection] = data.labels;
-      labels.links = { ...labels.links, paper: labels.publications.paper, no_paper: labels.publications.no_paper };
       const ctx = { name, data, collection, editable: name === 'home' || name === 'professors', props: this.props, labels, colors: name === 'topic_colors' ? data : seed.colors, filters: name === 'publication_filters' ? data : seed.filters, papers: seed.papers, state: this.state, update: patch => this.setState(patch) };
       let content, page = name;
       if (name === 'site_settings') page = this.state.previewPage;

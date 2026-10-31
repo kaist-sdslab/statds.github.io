@@ -105,8 +105,3 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--blue); out
   .publication-sort { width: 100%; justify-content: space-between; gap: 8px; }
   .publication-sort select { max-width: 180px; }
 }
-
-.publication-abstract { width: 100%; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--line); }
-.publication-abstract h2 { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
-.publication-abstract p { font-size: 16px; line-height: 1.85; color: var(--body-text); white-space: pre-line; text-align: justify; text-align-last: left; text-wrap: wrap; hyphens: auto; overflow-wrap: break-word; }
-.publication-abstract .publication-abstract-empty { color: var(--muted); font-style: italic; text-align: left; }
