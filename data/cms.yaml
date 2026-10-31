@@ -594,6 +594,15 @@ collections:
     default: 10
     min: 0
     hint: Smaller numbers appear first within the selected member group.
+  - label: Member note
+    name: member_note
+    widget: people-conditional
+    control_widget: string
+    groups:
+    - phd
+    - masters
+    required: false
+    hint: Optional text shown below the name without a label, e.g. Co-advising.
   - label: Photo
     name: photo
     widget: people-conditional
