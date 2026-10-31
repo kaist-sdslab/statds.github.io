@@ -125,12 +125,11 @@
     const ctx = recordContext(context, p);
     const field = (path, tag, cls, ...children) => edit(ctx, path, node(tag, cls, ...children));
     return node('article', 'publication-card', field('year', 'div', 'publication-year', p.year), node('div', 'publication-card-body',
-      field('title', detail ? 'h1' : 'h2', null, detail ? p.title : link(p.title, null, p.title)),
+      field('title', detail ? 'h1' : 'h2', null, p.url_paper ? h('a', { href: p.url_paper }, p.title) : p.title),
       node('div', 'publication-citation', node('p', 'publication-authors', ...list(p.authors).map((author, index) => field(`authors.${index}`, 'span', null, author, index < p.authors.length - 1 ? ', ' : ''))),
         field('venue', 'p', 'publication-venue', p.venue, p.venue_details && field('venue_details', 'span', null, ` · ${p.venue_details}`))),
       node('div', 'publication-footer', field('publication_type', 'span', 'publication-kind', p.publication_type === 'conference' ? ctx.labels.publications.conference_label : ctx.labels.publications.journal_label),
-        field('topics', 'div', 'publication-topics', ...topics(p.topics, ctx.colors, ctx)), node('div', 'publication-resources', edit(ctx, 'url_paper', resource('paper', p.url_paper, ctx.labels.links)), edit(ctx, 'url_code', resource('github', p.url_code, ctx.labels.links)))),
-      detail && node('section', 'publication-abstract', labelEdit(ctx, 'publications.abstract', node('h2', null, ctx.labels.publications.abstract)), field('abstract', 'p', p.abstract ? null : 'publication-abstract-empty', p.abstract || ctx.labels.publications.no_abstract))));
+        field('topics', 'div', 'publication-topics', ...topics(p.topics, ctx.colors, ctx)), p.url_code && node('div', 'publication-resources', edit(ctx, 'url_code', resource('github', p.url_code, ctx.labels.links))))));
   };
   const home = (data, ctx) => node('div', null,
     node('section', 'hero shell', node('div', 'lab-introduction', edit(ctx, 'hero.welcome', node('h1', null, data.hero?.welcome)), edit(ctx, 'hero.description', node('p', 'hero-description', data.hero?.description)))),
@@ -262,7 +261,7 @@
       const pageData = name === 'site_settings' ? seed.pages[page] : data;
       if (page === 'home') content = home(pageData, ctx);
       else if (page === 'professors') content = professor(pageData, ctx);
-      else if (name === 'papers') content = node('div', 'shell publications-page publication-detail', link(ctx.labels.publications.back, 'publication-back', ctx.labels.publications.back), paper(data, ctx, true));
+      else if (name === 'papers') content = node('div', 'shell publications-page', paper(data, ctx));
       else if (page === 'people') {
         const records = collection === 'people' ? replaceRecord(seed.people, this.props.entry, data) : seed.people;
         ctx.editing = collection === 'people' ? data : null;

@@ -5,7 +5,7 @@
   <div class="publication-year">{{ $p.year }}</div>
   <div class="publication-card-body">
 
-    {{ if .detail }}<h1>{{ $page.Title }}</h1>{{ else }}<h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>{{ end }}
+    {{ if .detail }}<h1>{{ with $p.url_paper }}<a href="{{ . | relURL }}">{{ $page.Title }}</a>{{ else }}{{ $page.Title }}{{ end }}</h1>{{ else }}<h2>{{ with $p.url_paper }}<a href="{{ . | relURL }}">{{ $page.Title }}</a>{{ else }}{{ $page.Title }}{{ end }}</h2>{{ end }}
     <div class="publication-citation">
       <p class="publication-authors">{{ delimit $p.authors ", " }}</p>
       <p class="publication-venue">{{ $p.venue }}{{ with $p.venue_details }}<span> · {{ . }}</span>{{ end }}</p>
@@ -14,11 +14,6 @@
     <div class="publication-topics" aria-label="Research topics">{{ range $record.topics }}<a href="{{ "publications/" | relURL }}?topic={{ .id | urlquery }}" data-topic="{{ .id }}" style="{{ partial "color-style.html" .color }}">{{ .label }}</a>{{ end }}</div>
     {{ partial "publications/resources.html" $page }}
     </div>
-    {{ if .detail }}
-    <section class="publication-abstract" aria-labelledby="abstract-title">
-      <h2 id="abstract-title">{{ (site.GetPage "publications").Params.labels.abstract }}</h2>
-      {{ with $p.abstract }}<p>{{ . }}</p>{{ else }}<p class="publication-abstract-empty">{{ (site.GetPage "publications").Params.labels.no_abstract }}</p>{{ end }}
-    </section>
-    {{ end }}
+
   </div>
 </article>

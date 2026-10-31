@@ -507,23 +507,16 @@ collections:
     widget: publication-tags
     allow_create: true
     hint: Search existing tags, or type a new tag and press Enter. New tags become reusable when this paper is saved.
-  - label: Abstract
-    name: abstract
-    widget: text
-    required: false
-    hint: Displayed on the publication detail page when its title is clicked.
   - label: Paper URL
     name: url_paper
     widget: string
     required: false
-    hint: Optional. Enables the paper icon in the publication row and below its detail-page metadata. Leave empty for a gray
-      unavailable icon.
+    hint: Optional. Clicking the publication title opens this URL. Without a URL, the title is plain text.
   - label: GitHub URL
     name: url_code
     widget: string
     required: false
-    hint: Optional repository URL. Enables the GitHub icon in the publication row and below its detail-page metadata. Leave
-      empty for a gray unavailable icon.
+    hint: Optional repository URL. The GitHub button is shown only when this URL is filled in.
 - name: people
   label: People
   label_singular: Person

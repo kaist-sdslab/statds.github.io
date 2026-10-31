@@ -1,6 +1,5 @@
+{{ with .Params.url_code }}
 <div class="publication-resources" aria-label="Publication resources">
-      {{ range slice (dict "icon" "paper" "label" (site.GetPage "publications").Params.labels.paper "missing" (site.GetPage "publications").Params.labels.no_paper "url" .Params.url_paper) (dict "icon" "github" "label" site.Data.site_settings.links.github_title "missing" site.Data.site_settings.links.no_github "url" .Params.url_code) }}
-        {{ if .url }}<a href="{{ .url | relURL }}" aria-label="{{ .label }}" title="{{ .label }}">{{ partial "publications/resource-icon.html" .icon }}</a>
-        {{ else }}<span class="resource-unavailable" role="img" aria-label="{{ .missing }}" title="{{ .missing }}">{{ partial "publications/resource-icon.html" .icon }}</span>{{ end }}
-      {{ end }}
-    </div>
+  <a href="{{ . | relURL }}" aria-label="{{ site.Data.site_settings.links.github_title }}" title="{{ site.Data.site_settings.links.github_title }}">{{ partial "publications/resource-icon.html" "github" }}</a>
+</div>
+{{ end }}
