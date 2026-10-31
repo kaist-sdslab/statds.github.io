@@ -584,6 +584,16 @@ collections:
     - masters
     required: false
     hint: Optional text shown below the name without a label, e.g. Co-advising.
+  - label: Affiliation
+    name: affiliation
+    widget: people-conditional
+    control_widget: string
+    groups:
+    - phd
+    - masters
+    - intern
+    required: false
+    hint: Department or school shown below the name.
   - label: Photo
     name: photo
     widget: people-conditional

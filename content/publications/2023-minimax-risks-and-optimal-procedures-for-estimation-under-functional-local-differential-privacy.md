@@ -7,9 +7,9 @@ authors:
 - Park, C.
 year: 2023
 publication_type: conference
-venue: Proceedings of the 37th
+venue: Proceedings of the 37th Conference on Neural Information Processing Systems (NeurIPS)
 topics:
 - Data Privacy
 - Non-Euclidean data
-venue_details: Conference on Neural Information Processing Systems (NeurIPS), 2526:57964 - 57975
+venue_details: 2526:57964 - 57975
 ---

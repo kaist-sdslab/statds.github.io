@@ -7,8 +7,8 @@ authors:
 - Park, C.
 year: 2024
 publication_type: conference
-venue: Proceedings of the 38th
+venue: Proceedings of the 38th Conference on Neural Information Processing Systems (NeurIPS)
 topics:
 - Data Privacy
-venue_details: Conference on Neural Information Processing Systems (NeurIPS), 666:21141-21171
+venue_details: 666:21141-21171
 ---

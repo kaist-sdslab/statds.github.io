@@ -107,6 +107,7 @@
     if (p.group === 'intern') {
       const period = internshipPeriod(p.internship);
       return node('article', 'person-compact intern-row', field('name', 'h3', null, p.name),
+        p.affiliation && field('affiliation', 'p', 'person-note', p.affiliation),
         period.start && node('span', 'person-compact-meta', field('internship.start_date', 'span', null, period.start), period.start === period.end ? '' : ' – ', period.start !== period.end && field('internship.end_date', 'span', null, period.end)),
         p.internship?.program && field('internship.program', 'span', 'person-compact-detail', p.internship.program));
     }
@@ -119,7 +120,7 @@
         (a.thesis || a.position) && node('p', 'alumnus-summary', a.thesis && field('alumni.thesis', 'span', 'alumnus-thesis', `“${a.thesis}”`), a.thesis && a.position && node('span', 'alumnus-separator', ' · '), a.position && field('alumni.position', 'span', 'alumnus-position', a.position)));
     }
     return node('article', 'person-card', edit(ctx, p.photo ? 'photo_frame' : 'photo', node('div', 'person-portrait', p.photo ? image(p.photo, p.name, ctx.props, undefined, { style: portraitStyle(p.photo_frame) }) : node('div', 'person-initials', text(p.name).split(' ').slice(0, 2).map(word => word[0]).join('')))),
-      node('div', 'person-info', field('name', 'h3', null, p.name), p.member_note && field('member_note', 'p', 'person-note', p.member_note), list(p.research_interests).length > 0 && field('research_interests', 'p', 'person-interests', labelEdit(ctx, 'people.research_interests', node('span', null, ctx.labels.people.research_interests)), p.research_interests.join(', ')), email(p, ctx)));
+      node('div', 'person-info', field('name', 'h3', null, p.name), p.affiliation && field('affiliation', 'p', 'person-note', p.affiliation), p.member_note && field('member_note', 'p', 'person-note', p.member_note), list(p.research_interests).length > 0 && field('research_interests', 'p', 'person-interests', labelEdit(ctx, 'people.research_interests', node('span', null, ctx.labels.people.research_interests)), p.research_interests.join(', ')), email(p, ctx)));
   };
   const paper = (p, context, detail = false) => {
     const ctx = recordContext(context, p);

@@ -12,6 +12,7 @@
   </div>
   <div class="person-info">
     <h3>{{ .name }}</h3>
+    {{ with .affiliation }}<p class="person-note">{{ . }}</p>{{ end }}
     {{ with .member_note }}<p class="person-note">{{ . }}</p>{{ end }}
     {{ with .research_interests }}<p class="person-interests"><span>{{ (site.GetPage "people").Params.labels.research_interests }}</span>{{ delimit . ", " }}</p>{{ end }}
     {{ if .email }}{{ partial "people/links.html" . }}{{ end }}
