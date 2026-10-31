@@ -1,6 +1,8 @@
 {{- $params := slice -}}
+{{- $allowed := partial "publications/resolve-topics.html" (site.Data.publication_filters.topics | default slice) -}}
+{{- $allowedIDs := apply $allowed "index" "." "id" -}}
 {{- range partial "publications/resolve-topics.html" . -}}
-  {{- $params = $params | append (printf "topic=%s" (.id | urlquery)) -}}
+  {{- if in $allowedIDs .id -}}{{- $params = $params | append (printf "topic=%s" (.id | urlquery)) -}}{{- end -}}
 {{- end -}}
 {{- $url := "" -}}
 {{- if $params -}}{{- $url = printf "%s?%s" ("publications/" | relURL) (delimit $params "&") -}}{{- end -}}

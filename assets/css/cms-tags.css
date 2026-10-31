@@ -1,4 +1,7 @@
 .publication-tag-editor { padding: 12px; }
+[data-cms-group-hidden] { display: none !important; }
+.cms-person-error { margin: 8px 0; color: #a32525; font-size: 14px; }
+.cms-media-focus:focus { outline: 2px solid #285c9b; outline-offset: 3px; }
 .cms-color-control { display: flex; align-items: center; gap: 10px; }
 .cms-color-control input[type="color"] { flex: 0 0 48px; width: 48px; height: 42px; padding: 3px; border: 1px solid #9ca7b3; border-radius: 4px; background: white; cursor: pointer; }
 .cms-color-control input[type="text"] { flex: 1; min-width: 0; }
@@ -11,3 +14,18 @@
 .cms-tag-input-row button:disabled { opacity: .45; cursor: default; }
 .publication-tag-editor :focus-visible { outline: 2px solid #285c9b; outline-offset: 2px; }
 .cms-tag-help { margin: 8px 0 0; color: #536273; font-size: 12px; line-height: 1.5; }
+
+.cms-person-date { display: flex; align-items: center; gap: 10px; }
+.cms-person-date select { flex: 0 0 auto; padding: 10px; border: 1px solid #9ca7b3; border-radius: 4px; background: white; font: inherit; }
+.cms-person-date input { flex: 1; min-width: 0; }
+
+.cms-portrait-control { padding: 12px; }
+.cms-portrait-control:focus-visible { outline: 2px solid #285c9b; outline-offset: 2px; }
+.cms-portrait-frame { width: 200px; max-width: 100%; overflow: hidden; position: relative; background: #f1f4f6; touch-action: none; cursor: grab; }
+.cms-portrait-frame:active { cursor: grabbing; }
+.cms-portrait-frame img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; }
+.cms-portrait-frame > span { display: grid; height: 100%; align-items: center; padding: 12px; font-size: 13px; }
+.cms-portrait-slider { display: grid; grid-template-columns: 120px minmax(70px, 1fr) 42px; align-items: center; gap: 8px; margin: 12px 0; font-size: 13px; }
+.cms-portrait-slider input { width: 100%; min-width: 0; accent-color: #285c9b; }
+.cms-portrait-slider output { text-align: right; font-variant-numeric: tabular-nums; }
+.cms-portrait-reset { padding: 5px 9px; border: 1px solid #afbec9; border-radius: 3px; background: white; color: #285c9b; cursor: pointer; }

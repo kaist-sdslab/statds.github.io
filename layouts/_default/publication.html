@@ -1,6 +1,6 @@
 {{ partial "site/start.html" . }}
 <div class="shell publications-page publication-detail">
-  <a class="publication-back" href="{{ "publications/" | relURL }}">{{ site.Data.interface.publications.back }}</a>
+  <a class="publication-back" href="{{ "publications/" | relURL }}">{{ (site.GetPage "publications").Params.labels.back }}</a>
   {{ partial "publications/card.html" (dict "record" (partial "publications/record.html" .) "detail" true) }}
 </div>
 {{ partial "site/end.html" . }}

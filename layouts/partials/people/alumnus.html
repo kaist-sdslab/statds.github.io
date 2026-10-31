@@ -4,8 +4,6 @@
     {{ with .alumni }}{{ if or .degree .graduation_year }}<span class="person-compact-meta alumnus-degree">{{ with .degree }}{{ . }}{{ end }}{{ if and .degree .graduation_year }}, {{ end }}{{ with .graduation_year }}{{ . }}{{ end }}</span>{{ end }}{{ end }}
   </div>
   {{ with .alumni }}
-    {{ with .thesis }}<span class="person-compact-detail">{{ . }}</span>{{ end }}
-    {{ with .position }}<span class="person-compact-meta alumnus-position">{{ . }}</span>{{ end }}
+    {{ if or .thesis .position }}<p class="alumnus-summary">{{ with .thesis }}<span class="alumnus-thesis">“{{ . }}”</span>{{ end }}{{ if and .thesis .position }}<span class="alumnus-separator"> · </span>{{ end }}{{ with .position }}<span class="alumnus-position">{{ . }}</span>{{ end }}</p>{{ end }}
   {{ end }}
-  {{ if or .email .website .github }}{{ partial "people/links.html" . }}{{ end }}
 </article>

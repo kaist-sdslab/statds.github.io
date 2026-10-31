@@ -1,0 +1,16 @@
+/* Only loaded inside Decap's preview iframe. The other styles are the site's. */
+html { scroll-behavior: auto; }
+body { margin: 0; }
+.cms-site-preview { min-height: 100vh; }
+.cms-preview-toolbar { padding: 10px 24px; border-bottom: 1px solid var(--line); background: #f7f9fb; font-size: 13px; }
+.cms-preview-toolbar label { display: flex; align-items: center; gap: 12px; }
+.cms-preview-toolbar select { padding: 5px 9px; border: 1px solid #afbec9; background: white; color: var(--ink); font: inherit; }
+.cms-site-preview .site-header { position: static; }
+.cms-site-preview main { opacity: 1; transform: none; }
+.cms-site-preview [data-reveal] { opacity: 1; transform: none; }
+.cms-site-preview .people-tabs { margin-bottom: 24px; }
+.cms-site-preview .research-description p { white-space: pre-line; }
+.cms-site-preview [data-cms-field] { cursor: pointer; }
+.cms-site-preview [data-cms-field]:hover { outline: 1px dashed var(--accent-blue); outline-offset: 3px; }
+.cms-site-preview [data-cms-field]:focus-visible,
+.cms-site-preview [data-cms-selected] { outline: 2px solid var(--accent-blue); outline-offset: 3px; }

@@ -16,10 +16,10 @@
           {{- end -}}
         {{- end -}}
       {{- end -}}
-      {{- $byID = merge $byID (dict $label (dict "id" $label "label" $label "color" $color)) -}}
+      {{- $byID = merge $byID (dict $label (dict "id" $label "label" $label "color" $color "key" $key)) -}}
       {{- $aliases = merge $aliases (dict $key $label) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
 {{- $topics := slice -}}{{- range $byID -}}{{- $topics = $topics | append . -}}{{- end -}}
-{{- return (dict "topics" (sort $topics "label") "byID" $byID "aliases" $aliases) -}}
+{{- return (dict "topics" (sort $topics "key") "byID" $byID "aliases" $aliases) -}}

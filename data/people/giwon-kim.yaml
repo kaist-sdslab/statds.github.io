@@ -1,0 +1,12 @@
+name: Giwon Kim
+group: phd
+order: 20
+photo: media/people/giwon-kim.jpg
+photo_frame:
+  position_x: 0
+  position_y: 0
+  zoom: 1.05
+research_interests:
+  - Kernel-based ML
+  - Dimension Reduction
+email: 71_won@kaist.ac.kr

@@ -1,0 +1,12 @@
+{{- $start := partial "people/date.html" (dict "value" (.start_date | default "") "end" false) -}}
+{{- $startLabel := $start.label -}}
+{{- $endKey := 99991231 -}}
+{{- $endLabel := "Present" -}}
+{{- with .end_date -}}
+  {{- $end := partial "people/date.html" (dict "value" . "end" true) -}}
+  {{- if lt $end.key $start.key -}}{{- errorf "Internship end_date %q is earlier than start_date %q" . $start.label -}}{{- end -}}
+  {{- $endKey = $end.key -}}
+  {{- $endLabel = $end.label -}}
+  {{- if and (not $start.year_only) (not $end.year_only) (eq $start.date.Year $end.date.Year) -}}{{- $startLabel = $start.date.Format "Jan 2" -}}{{- end -}}
+{{- end -}}
+{{- return (dict "start_label" $startLabel "end_label" $endLabel "start_key" $start.key "end_key" $endKey) -}}

@@ -1,0 +1,19 @@
+{{- $result := sort .items "order" -}}
+{{- if eq .group "alumni" -}}
+{{- $ranked := slice -}}
+{{- range .items -}}
+  {{- $alumni := .alumni | default dict -}}
+  {{- $year := int ($alumni.graduation_year | default 0) -}}
+  {{- $ranked = $ranked | append (dict "person" . "key" (printf "%04d-%s" (sub 9999 $year) (lower .name))) -}}
+{{- end -}}
+{{- $result = slice -}}{{- range sort $ranked "key" -}}{{- $result = $result | append .person -}}{{- end -}}
+{{- end -}}
+{{- if eq .group "intern" -}}
+  {{- $ranked := slice -}}
+  {{- range .items -}}
+    {{- $period := partial "people/internship.html" (.internship | default dict) -}}
+    {{- $ranked = $ranked | append (dict "person" . "key" (printf "%08d-%08d-%s" (sub 99991231 $period.start_key) (sub 99991231 $period.end_key) (lower .name))) -}}
+  {{- end -}}
+  {{- $result = slice -}}{{- range sort $ranked "key" -}}{{- $result = $result | append .person -}}{{- end -}}
+{{- end -}}
+{{- return $result -}}

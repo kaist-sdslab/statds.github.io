@@ -6,16 +6,16 @@
 .people-tabs button:hover { color: var(--accent-blue); }
 .people-tabs button:focus-visible, .people-panel:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 4px; }
 .people-tabs[hidden], .people-panel[hidden] { display: none; }
-.people-section { --people-accent: var(--accent-blue); --people-soft: var(--accent-blue-soft); --people-line: var(--accent-blue-line); scroll-margin-top: 24px; }
-.people-accent-teal { --people-accent: var(--accent-teal); --people-soft: var(--accent-teal-soft); --people-line: var(--accent-teal-line); }
-.people-accent-purple { --people-accent: var(--accent-purple); --people-soft: var(--accent-purple-soft); --people-line: var(--accent-purple-line); }
+.people-section { --people-accent: var(--accent-blue); --people-soft: var(--accent-blue-soft); scroll-margin-top: 24px; }
+.people-accent-teal { --people-accent: var(--accent-teal); --people-soft: var(--accent-teal-soft); }
+.people-accent-purple { --people-accent: var(--accent-purple); --people-soft: var(--accent-purple-soft); }
 .people-accent-neutral { --people-accent: var(--muted); }
 .people-section + .people-section { margin-top: 44px; }
 .people-section-heading { display: flex; align-items: baseline; }
 .people-section-heading h2 { border-left: 3px solid var(--people-accent); padding-left: 12px; font-size: 22px; font-weight: 600; line-height: 1.4; letter-spacing: -.02em; }
 .people-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; }
 .person-card { display: grid; grid-template-columns: 140px minmax(0, 1fr); align-items: start; gap: 24px; padding: 22px 0; }
-.person-portrait { width: 140px; aspect-ratio: 4 / 5; border: 1px solid var(--people-line); border-radius: 4px; overflow: hidden; background: var(--people-soft); }
+.person-portrait { width: 140px; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: transparent; }
 .person-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .person-initials { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 36px; font-weight: 500; letter-spacing: -.03em; color: var(--people-accent); }
 .person-info { min-width: 0; }
@@ -25,18 +25,28 @@
 .person-links { display: flex; flex-wrap: wrap; gap: 3px 14px; margin-top: 9px; }
 .person-links a { display: inline-flex; align-items: center; gap: 4px; min-height: 30px; font-size: 14px; color: var(--accent-blue); overflow-wrap: anywhere; max-width: 100%; }
 .person-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.person-note { margin-top: 7px; font-size: 13px; line-height: 1.7; color: var(--muted); }
 .people-empty { padding: 22px 0; font-size: 14px; color: var(--muted); }
 .person-compact { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; padding: 9px 0; }
 .person-compact h3 { flex-shrink: 0; font-size: 16px; line-height: 1.7; font-weight: 600; text-wrap: initial; }
 .person-compact-meta { font-size: 14px; line-height: 1.7; color: var(--muted); }
 .person-compact-detail { flex: 1; min-width: 160px; font-size: 14px; line-height: 1.7; color: var(--body-text); }
-.person-compact .person-links { margin: 0 0 0 auto; }
 .people-compact-list { padding-top: 14px; }
-.alumnus-identity { display: contents; }
+.people-scroll-list { max-height: min(56vh, 480px); overflow-y: auto; scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: #b2bdc7 transparent; padding-right: 14px; }
+.people-scroll-list:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 4px; }
+.intern-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 30px; align-content: start; }
+.intern-row { display: block; min-width: 0; padding: 12px 0; }
+.intern-row h3 { font-size: 16px; }
+.intern-row .person-compact-meta { white-space: nowrap; }
+.intern-row .person-compact-detail { min-width: 0; margin-left: 9px; font-size: 12px; color: var(--muted); }
+.alumnus-row { display: block; padding: 12px 0 16px; }
+.alumnus-identity { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 12px; }
+.alumnus-summary { margin-top: 4px; font-size: 14px; line-height: 1.8; color: var(--body-text); text-wrap: initial; }
+.alumnus-position { color: var(--muted); }
+.alumnus-separator { color: #a5afb9; }
 .alumnus-degree { white-space: nowrap; }
 @media (max-width: 1000px) {
   .people-grid { column-gap: 26px; }
+  .intern-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .person-card { gap: 16px; }
 }
 @media (max-width: 760px) {
@@ -49,10 +59,9 @@
   .people-section + .people-section { margin-top: 32px; }
   .person-card { padding: 22px 0; }
   .person-links a { min-height: 40px; }
-  .alumnus-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 5px; padding: 15px 0; }
-  .alumnus-identity { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 12px; }
-  .alumnus-row .person-compact-detail { min-width: 0; line-height: 1.65; }
-  .alumnus-row .person-links { margin: 2px 0 0; }
+  .people-scroll-list { max-height: 55vh; padding-right: 9px; }
+  .intern-list { column-gap: 20px; }
+  .alumnus-row { padding: 12px 0 16px; }
 }
 @media (max-width: 480px) {
   .person-card { grid-template-columns: 104px minmax(0, 1fr); gap: 16px; }

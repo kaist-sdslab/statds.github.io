@@ -1,0 +1,7 @@
+title: 'SMOCL: Sparse Monotone Clustering with Ordinal Interpretation'
+description: 'R package (Version 0.1.0) for sparse monotone clustering with ordinal interpretation.
+
+
+  Reference: Chung, H. C., An, S., Cha, H., and Ahn, J. Monotone Clusters with Ordinal Interpretation.'
+github: https://github.com/Mos-start2092/SMOCL
+order: 10

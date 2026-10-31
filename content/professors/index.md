@@ -54,4 +54,11 @@ editorial_service:
   - role: Editorial Board
     journal: Chemometrics and Intelligent Laboratory Systems
     period: 2016–present
+labels:
+  email: Email
+  office: Office
+  interests: Research Interests
+  education: Education
+  experience: Professional Experience
+  editorial: Editorial Service
 ---

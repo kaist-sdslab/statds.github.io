@@ -1,4 +1,6 @@
 {{- $p := . -}}
-{{- $date := printf "%v" $p.Params.year -}}
+{{- $month := int ($p.Params.month | default 0) -}}
+{{- if or (lt $month 0) (gt $month 12) -}}{{- errorf "Invalid publication month %v for %q" $month $p.Title -}}{{- end -}}
+{{- $date := printf "%04d-%02d" (int $p.Params.year) $month -}}
 {{- $topics := partial "publications/resolve-topics.html" ($p.Params.topics | default slice) -}}
 {{- return (dict "page" $p "date" $date "topics" $topics) -}}

@@ -33,7 +33,11 @@ if (typeof document !== 'undefined') (() => {
   const labels = JSON.parse(root.dataset.labels);
   const label = (name, values = {}) => labels[name].replace(/\{(\w+)\}/g, (placeholder, key) => values[key] ?? placeholder);
   const pageSize = Math.max(1, Math.min(100, Number(labels.page_size) || 10));
-  const buttons = Array.from(root.querySelectorAll('button[data-filter]'));
+  const buttons = () => Array.from(root.querySelectorAll('button[data-filter]'));
+  const topicRow = root.querySelector('[data-topic-filter-row]');
+  const topicOptions = root.querySelector('[data-topic-filter-options]');
+  const permanentTopics = new Set(buttons().filter(button => button.dataset.filter === 'topic' && button.dataset.value).map(button => button.dataset.value));
+  const topicCatalog = new Map(JSON.parse(root.dataset.topicCatalog || '[]').map(topic => [topic.id, topic]));
   const papers = Array.from(list.querySelectorAll('[data-paper]')).map(element => ({
     element, title: element.dataset.title, search: PublicationFilters.normalize(element.dataset.search),
     kind: element.dataset.kind, year: element.dataset.year,
@@ -45,7 +49,7 @@ if (typeof document !== 'undefined') (() => {
   const topicIDs = JSON.parse(root.dataset.topicIds || '[]');
   const allowed = filter => {
     if (filter === 'topic') return topicIDs;
-    const displayed = buttons.filter(button => button.dataset.filter === filter).map(button => button.dataset.value);
+    const displayed = buttons().filter(button => button.dataset.filter === filter).map(button => button.dataset.value);
     return filter === 'year' ? [...displayed, ...papers.map(paper => paper.year)] : displayed;
   };
   let state = defaults();
@@ -78,6 +82,34 @@ if (typeof document !== 'undefined') (() => {
     if (state.sort !== 'newest') url.searchParams.set('sort', state.sort);
     if (state.page > 1) url.searchParams.set('page', state.page);
     try { window.history.replaceState(null, '', url); } catch { /* Filtering works even if URL updates are unavailable. */ }
+  };
+  const renderTopics = () => {
+    const temporary = state.topics.filter(id => !permanentTopics.has(id) && topicCatalog.has(id))
+      .sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base', numeric: true }));
+    let restoreFocus = false;
+    topicOptions.querySelectorAll('[data-temporary-topic]').forEach(button => {
+      if (temporary.includes(button.dataset.value)) return;
+      restoreFocus = restoreFocus || button === document.activeElement;
+      button.remove();
+    });
+    temporary.forEach(id => {
+      let button = [...topicOptions.querySelectorAll('[data-temporary-topic]')].find(button => button.dataset.value === id);
+      if (!button) {
+        const topic = topicCatalog.get(id);
+        button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.filter = 'topic';
+        button.dataset.value = id;
+        button.setAttribute('data-temporary-topic', '');
+        button.textContent = topic.label;
+        button.style.setProperty('--topic-color', topic.color);
+        button.style.setProperty('--topic-soft', `color-mix(in srgb, ${topic.color} 9%, white)`);
+        button.style.setProperty('--topic-line', `color-mix(in srgb, ${topic.color} 25%, white)`);
+      }
+      topicOptions.appendChild(button);
+    });
+    topicRow.hidden = !permanentTopics.size && !temporary.length;
+    if (restoreFocus) (topicRow.hidden ? query : topicOptions.querySelector('[data-value=""]')).focus({ preventScroll: true });
   };
   const renderPages = totalPages => {
     pagination.hidden = totalPages <= 1;
@@ -115,6 +147,7 @@ if (typeof document !== 'undefined') (() => {
     pageNumbers.replaceChildren(fragment);
   };
   const render = (updateURL = true) => {
+    renderTopics();
     // Search and filters do not change order. Move nodes only on sort changes.
     if (renderedSort !== state.sort) {
       papers.sort((a, b) => PublicationFilters.compare(a, b, state.sort));
@@ -134,7 +167,7 @@ if (typeof document !== 'undefined') (() => {
       const visible = visiblePapers.has(paper);
       if (paper.element.hidden !== !visible) paper.element.hidden = !visible;
     });
-    buttons.forEach(button => {
+    buttons().forEach(button => {
       const key = button.dataset.filter;
       const value = button.dataset.value;
       const pressed = key === 'topic' ? (value ? state.topics.includes(value) : !state.topics.length) : state[key] === value;
@@ -172,10 +205,17 @@ if (typeof document !== 'undefined') (() => {
     }
     const topic = event.target.closest('a[data-topic]');
     if (topic && root.contains(topic)) {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
-      toggleTopic(topic.dataset.topic);
+      const selectedTopic = topic.dataset.topic;
+      toggleTopic(selectedTopic);
       state.page = 1;
       render();
+      const target = topicRow.hidden ? query : [...topicOptions.querySelectorAll('button')].find(button => button.dataset.value === selectedTopic)
+        || topicOptions.querySelector('[data-value=""]');
+      target.focus({ preventScroll: true });
+      const bounds = topicRow.getBoundingClientRect();
+      if (!topicRow.hidden && (bounds.top < 0 || bounds.bottom > window.innerHeight)) topicRow.scrollIntoView({ block: 'nearest' });
       return;
     }
     if (event.target.closest('[data-reset]')) {

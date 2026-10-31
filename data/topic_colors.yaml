@@ -1,10 +1,11 @@
 assignments:
-  - topics:
-      - Compositional data
-      - Kernel methods
-      - Functional data
-    color: "#176a62"
-  - topics:
-      - Synthetic data
-      - Data privacy
-    color: "#991abc"
+- topics:
+  - Compositional data
+  - Non-Euclidean data
+  color: '#176a62'
+- topics:
+  - Data Privacy
+  color: '#991abc'
+- topics:
+  - Interdisciplinary Research
+  color: '#9b651e'

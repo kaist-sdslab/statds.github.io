@@ -1,11 +1,15 @@
-# These lists control filter buttons, not the metadata allowed on publications.
-years: [2026, 2025, 2024, 2023, 2022, 2021]
+years:
+- 2026
+- 2025
+- 2024
+- 2023
+- 2022
+- 2021
 topics:
-  - Transfer learning
-  - High-dimensional data
-  - Compositional data
-  - Synthetic data
-  - Data privacy
-  - Interpretable learning
-  - Functional data
-  - Kernel methods
+- Compositional data
+- Data Privacy
+- Dimension reduction
+- High-dimension
+- Interdisciplinary Research
+- Non-Euclidean data
+- Variable selection

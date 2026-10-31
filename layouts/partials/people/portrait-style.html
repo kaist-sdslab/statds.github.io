@@ -1,0 +1,6 @@
+{{- $frame := . | default dict -}}
+{{- $x := 50.0 -}}{{- $y := 50.0 -}}{{- $zoom := 1.0 -}}
+{{- if isset $frame "position_x" -}}{{- $x = math.Max 0 (math.Min 100 (float $frame.position_x)) -}}{{- end -}}
+{{- if isset $frame "position_y" -}}{{- $y = math.Max 0 (math.Min 100 (float $frame.position_y)) -}}{{- end -}}
+{{- if isset $frame "zoom" -}}{{- $zoom = math.Max 1 (math.Min 3 (float $frame.zoom)) -}}{{- end -}}
+{{- return (printf "object-position: %g%% %g%%; transform: scale(%g); transform-origin: %g%% %g%%;" $x $y $zoom $x $y | safeCSS) -}}

@@ -1,0 +1,33 @@
+site:
+  logo: SDS Lab
+  name: Statistical Data Science Lab
+  institution: KAIST
+  copyright: SDS Lab · KAIST
+  title_suffix: SDS Lab
+  home_title_suffix: KAIST
+  skip_link: Skip to content
+links:
+  github_title: GitHub repository
+  no_github: GitHub repository not available
+contact:
+  title: Statistical Data Science Lab
+  address: '#2111, E2-2, KAIST, 291 Daehak-ro, Yuseong-gu, Daejeon 305-701, Republic of Korea'
+navigation:
+- name: Home
+  url: ''
+  weight: 10
+- name: Professor
+  url: professors/
+  weight: 20
+- name: Publications
+  url: publications/
+  weight: 30
+- name: People
+  url: people/
+  weight: 40
+- name: Softwares
+  url: software/
+  weight: 50
+- name: Courses
+  url: courses/
+  weight: 60

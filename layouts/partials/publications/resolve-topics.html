@@ -8,8 +8,6 @@
       {{- $topics = $topics | append (index $catalog.byID .) -}}
       {{- $seen = $seen | append . -}}
     {{- end -}}
-  {{- else -}}
-    {{- errorf "Unknown publication topic %q: assign it to a publication before selecting it for Home or filters" . -}}
   {{- end -}}
 {{- end -}}
-{{- return $topics -}}
+{{- return (sort $topics "key") -}}

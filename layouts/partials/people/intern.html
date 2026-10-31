@@ -1,8 +1,8 @@
 <article class="person-compact intern-row">
   <h3>{{ .name }}</h3>
   {{ with .internship }}
-    {{ with .period }}<span class="person-compact-meta">{{ . }}</span>{{ end }}
+    {{ $period := partial "people/internship.html" . }}
+    <span class="person-compact-meta"><time datetime="{{ .start_date }}">{{ $period.start_label }}</time>{{ if ne $period.start_label $period.end_label }} – {{ if .end_date }}<time datetime="{{ .end_date }}">{{ $period.end_label }}</time>{{ else }}<span>{{ $period.end_label }}</span>{{ end }}{{ end }}</span>
     {{ with .program }}<span class="person-compact-detail">{{ . }}</span>{{ end }}
   {{ end }}
-  {{ if or .website .github }}{{ partial "people/links.html" (dict "website" .website "github" .github) }}{{ end }}
 </article>

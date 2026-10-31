@@ -14,14 +14,31 @@
   {{/* Publish originals so CMS image URLs work alongside responsive site images. */}}
   {{ range resources.Match "media/**" }}{{ $url := .RelPermalink }}{{ end }}
   <script>window.CMS_MANUAL_INIT = true;</script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  {{ $preferencesScript := resources.Get "js/cms-preferences.js" | minify | fingerprint }}
+  <script src="{{ $preferencesScript.RelPermalink }}" integrity="{{ $preferencesScript.Data.Integrity }}"></script>
+  {{ $cmsScript := resources.Get "vendor/decap-cms.js" | fingerprint }}
+  <script src="{{ $cmsScript.RelPermalink }}" integrity="{{ $cmsScript.Data.Integrity }}"></script>
   {{ $colorsScript := resources.Get "js/cms-colors.js" | minify | fingerprint }}
   <script src="{{ $colorsScript.RelPermalink }}" integrity="{{ $colorsScript.Data.Integrity }}"></script>
   <script id="cms-media-settings" type="application/json">{{ dict "basePath" site.Home.RelPermalink | jsonify | safeJS }}</script>
   {{ $mediaScript := resources.Get "js/cms-media.js" | minify | fingerprint }}
   <script src="{{ $mediaScript.RelPermalink }}" integrity="{{ $mediaScript.Data.Integrity }}"></script>
+  {{ $portraitScript := resources.Get "js/cms-portrait.js" | minify | fingerprint }}
+  <script src="{{ $portraitScript.RelPermalink }}" integrity="{{ $portraitScript.Data.Integrity }}"></script>
+  {{ $peopleScript := resources.Get "js/cms-people.js" | minify | fingerprint }}
+  <script src="{{ $peopleScript.RelPermalink }}" integrity="{{ $peopleScript.Data.Integrity }}"></script>
   {{ $catalog := partialCached "publications/topic-catalog.html" site }}
   <script id="publication-tag-catalog" type="application/json">{{ $catalog.topics | jsonify | safeJS }}</script>
+  {{ $previewStyles := slice }}
+  {{ range slice "home" "professors" "people" "publications" "resources" "cms-preview" }}
+    {{ $style := resources.Get (printf "css/%s.css" .) | minify | fingerprint }}
+    {{ $previewStyles = $previewStyles | append $style.RelPermalink }}
+  {{ end }}
+  <script id="cms-preview-settings" type="application/json">{{ dict "data" (partial "cms/preview-data.html" .) "styles" $previewStyles | jsonify | safeJS }}</script>
+  {{ $focusScript := resources.Get "js/cms-focus.js" | minify | fingerprint }}
+  <script src="{{ $focusScript.RelPermalink }}" integrity="{{ $focusScript.Data.Integrity }}"></script>
+  {{ $previewScript := resources.Get "js/cms-preview.js" | minify | fingerprint }}
+  <script src="{{ $previewScript.RelPermalink }}" integrity="{{ $previewScript.Data.Integrity }}"></script>
   {{ $tagsScript := resources.Get "js/cms-tags.js" | minify | fingerprint }}
   <script src="{{ $tagsScript.RelPermalink }}" integrity="{{ $tagsScript.Data.Integrity }}"></script>
 </body>

@@ -1,7 +1,7 @@
 {{ partial "site/start.html" . }}
 <section class="shell pending-page" aria-labelledby="page-title">
-  <h1 id="page-title">{{ site.Data.interface.not_found.title }}</h1>
-  <p>{{ site.Data.interface.not_found.description }}</p>
-  <a class="pending-home" href="{{ site.Home.RelPermalink }}">{{ site.Data.interface.not_found.back }} <span aria-hidden="true">→</span></a>
+  <h1 id="page-title">{{ (site.GetPage "not-found").Params.title }}</h1>
+  <p>{{ (site.GetPage "not-found").Params.description }}</p>
+  <a class="pending-home" href="{{ site.Home.RelPermalink }}">{{ (site.GetPage "not-found").Params.back }} <span aria-hidden="true">→</span></a>
 </section>
 {{ partial "site/end.html" . }}

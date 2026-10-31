@@ -1,6 +1,7 @@
 .professor-page { padding-top: 42px; padding-bottom: 44px; }
 .professor-page-title { font-family: var(--heading); font-size: 31px; font-weight: 600; line-height: 1.4; letter-spacing: -.02em; }
 .professor-profile { display: grid; grid-template-columns: 280px 1fr; gap: 58px; align-items: center; padding: 32px 0 48px; }
+.professor-portrait { width: 100%; overflow: hidden; }
 .professor-photo { display: block; width: 100%; height: auto; }
 .professor-identity { min-width: 0; }
 .professor-identity h2 { font-family: var(--academic); font-size: 40px; font-weight: 400; letter-spacing: 0; line-height: 1.2; }
@@ -32,7 +33,7 @@
   .professor-page { padding-top: 30px; padding-bottom: 20px; }
   .professor-page-title { font-size: 27px; }
   .professor-profile { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 24px 0 30px; }
-  .professor-photo { max-width: 180px; }
+  .professor-portrait { max-width: 180px; }
   .professor-identity h2 { font-size: 30px; }
   .professor-roles { margin-top: 20px; }
   .professor-roles strong, .professor-roles span { font-size: 15px; }

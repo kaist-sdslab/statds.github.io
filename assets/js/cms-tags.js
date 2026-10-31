@@ -15,9 +15,11 @@
     return existing || catalog.get(topic.id);
   };
   JSON.parse(document.getElementById('publication-tag-catalog').textContent).forEach(topic => remember(topic, true));
+  const sorted = value => [...value].sort((a, b) => (lookup(a) || { label: a }).label.localeCompare((lookup(b) || { label: b }).label, 'en', { sensitivity: 'base', numeric: true }));
   const values = value => value && typeof value.toArray === 'function' ? value.toArray() : (value || []);
   const lookup = (value, persistedOnly = false) => [...catalog.values()].find(item => (!persistedOnly || item.persisted) && (key(item.id) === key(value) || key(item.label) === key(value)));
 
+  const permitted = (topic, field) => field.get('topic_scope') !== 'filters' || filterTopics.some(value => key(value) === key(topic.id));
   const TagsControl = createClass({
     getInitialState() { return { query: '', message: '' }; },
     componentDidMount() {
@@ -30,29 +32,29 @@
       if (!text) return;
       const canCreate = this.props.field.get('allow_create', false);
       let topic = lookup(text, !canCreate);
-      if (!topic && !canCreate) {
-        this.setState({ message: 'Choose a saved publication tag. Save its publication first if the tag is new.' });
+      if ((!topic || !permitted(topic, this.props.field)) && !canCreate) {
+        this.setState({ message: this.props.field.get('topic_scope') === 'filters' ? 'Choose a topic enabled in Publication Filter Display.' : 'Choose a saved publication tag. Save its publication first if the tag is new.' });
         return;
       }
       if (!topic) {
         topic = remember({ id: text, label: text });
         listeners.forEach(refresh => refresh());
       }
-      const selected = values(this.props.value);
+      const selected = sorted(values(this.props.value)).filter(value => this.props.field.get('topic_scope') !== 'filters' || lookup(value, true) && permitted(lookup(value, true), this.props.field));
       if (!selected.some(id => key((lookup(id) || { id }).id) === key(topic.id))) {
-        this.props.onChange([...selected, topic.id]);
+        this.props.onChange(sorted([...selected, topic.id]));
       }
       this.setState({ query: '', message: '' });
     },
     render() {
-      const selected = values(this.props.value);
+      const selected = sorted(values(this.props.value)).filter(value => this.props.field.get('topic_scope') !== 'filters' || lookup(value, true) && permitted(lookup(value, true), this.props.field));
       const selectedIDs = new Set(selected.map(value => (lookup(value) || { id: value }).id));
       const canCreate = this.props.field.get('allow_create', false);
-      const suggestions = [...catalog.values()].filter(topic => (canCreate || topic.persisted) && !selectedIDs.has(topic.id)).sort((a, b) => a.label.localeCompare(b.label));
+      const suggestions = [...catalog.values()].filter(topic => (canCreate || topic.persisted) && permitted(topic, this.props.field) && !selectedIDs.has(topic.id)).sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base', numeric: true }));
       const inputID = this.props.forID;
       const listID = `${inputID}-suggestions`;
       const messageID = `${inputID}-message`;
-      const canAdd = clean(this.state.query) && (canCreate || lookup(this.state.query, true));
+      const canAdd = clean(this.state.query) && (canCreate || lookup(this.state.query, true) && permitted(lookup(this.state.query, true), this.props.field));
       return h('div', { className: `${this.props.classNameWrapper || ''} publication-tag-editor` },
         h('div', { className: 'cms-tag-selection' }, selected.map(id => {
           const label = (lookup(id) || { label: id }).label;
@@ -81,22 +83,47 @@
     }
   });
   CMS.registerWidget('publication-tags', TagsControl);
-  // Keep new tags available across editors in this session, without a second save.
+  // Tags belong to papers. Filter/Home selections never create or delete them.
+  const previewData = JSON.parse(document.getElementById('cms-preview-settings').textContent).data;
+  let filterTopics = previewData?.filters?.topics || [];
+  let colorAssignments = previewData?.colors?.assignments || [];
+  const paperUsage = new Map((previewData?.papers || []).map(paper => [paper._slug, paper.topics || []]));
+  const refreshUsage = () => {
+    catalog.forEach(topic => { topic.persisted = false; });
+    paperUsage.forEach(topics => topics.forEach(value => {
+      if (typeof value === 'string' && clean(value)) remember({ id: clean(value), label: clean(value) }, true);
+    }));
+    for (const [id, topic] of catalog) if (!topic.persisted) catalog.delete(id);
+  };
+  window.SDSCMSTopics = { resolve: (selected, scope) => sorted(values(selected).map(value => lookup(value, true)?.id).filter(value => value && (scope !== 'filters' || filterTopics.some(topic => key(topic) === key(value))))) };
   CMS.registerEventListener({ name: 'postSave', handler: ({ entry }) => {
-    const topics = values(entry.getIn(['data', 'topics']));
-    topics.forEach(value => { if (typeof value === 'string' && clean(value)) remember({ id: clean(value), label: clean(value) }, true); });
-    const assignments = entry.getIn(['data', 'assignments']);
-    if (assignments !== undefined) {
-      catalog.forEach(topic => { topic.color = '#285c9b'; });
-      const rules = assignments && typeof assignments.toJS === 'function' ? assignments.toJS() : assignments;
-      (rules || []).forEach(rule => {
-        (rule.topics || []).forEach(value => {
-          const topic = lookup(value);
-          if (topic) topic.color = colorValue(rule.color);
-        });
-      });
+    if (entry.get('collection') === 'papers') {
+      paperUsage.set(entry.get('slug'), values(entry.getIn(['data', 'topics'])));
+      refreshUsage();
     }
+    if (entry.get('collection') === 'settings' && entry.get('slug') === 'publication_filters') filterTopics = values(entry.getIn(['data', 'topics']));
+    const assignments = entry.getIn(['data', 'assignments']);
+    if (assignments !== undefined) colorAssignments = assignments?.toJS ? assignments.toJS() : assignments || [];
+    catalog.forEach(topic => { topic.color = '#285c9b'; });
+    colorAssignments.forEach(rule => {
+      (rule.topics || []).forEach(value => {
+        const topic = lookup(value);
+        if (topic) topic.color = colorValue(rule.color);
+      });
+    });
     listeners.forEach(refresh => refresh());
+  } });
+  CMS.registerEventListener({ name: 'preSave', handler: ({ entry }) => {
+    const sortFields = (data, paths) => paths.reduce((result, path) => {
+      const current = result.getIn(path);
+      const selected = current && path[path.length - 1] === 'publication_topics' ? current.filter(value => window.SDSCMSTopics.resolve([value], 'filters').length) : current;
+      return selected && typeof selected.toArray === 'function' ? result.setIn(path, selected.sort((a, b) => clean(a).localeCompare(clean(b), 'en', { sensitivity: 'base', numeric: true }))) : result;
+    }, data);
+    let data = sortFields(entry.get('data'), [['topics']]);
+    for (const [field, nested] of [['research', 'publication_topics'], ['assignments', 'topics']]) {
+      if (data.get(field)?.map) data = data.update(field, rows => rows.map(row => sortFields(row, [[nested]])));
+    }
+    return data;
   } });
   CMS.init();
 })();

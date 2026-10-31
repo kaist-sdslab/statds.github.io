@@ -1,0 +1,11 @@
+{{- $value := string .value -}}
+{{- $yearOnly := gt (len (findRE `^[1-9]\d{3}$` $value)) 0 -}}
+{{- if not (or $yearOnly (findRE `^\d{4}-\d{2}-\d{2}$` $value)) -}}
+  {{- errorf "Internship date must be YYYY or YYYY-MM-DD, got %q" $value -}}
+{{- end -}}
+{{- $dateValue := $value -}}
+{{- if $yearOnly -}}{{- $dateValue = printf "%s-01-01" $value -}}{{- end -}}
+{{- $date := time.AsTime $dateValue "UTC" -}}
+{{- $key := add (mul $date.Year 10000) (mul (int $date.Month) 100) $date.Day -}}
+{{- if and $yearOnly .end -}}{{- $key = add (mul $date.Year 10000) 1231 -}}{{- end -}}
+{{- return (dict "date" $date "label" (cond $yearOnly $value ($date.Format "Jan 2, 2006")) "key" $key "year_only" $yearOnly) -}}

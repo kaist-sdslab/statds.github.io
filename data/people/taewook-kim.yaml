@@ -1,0 +1,12 @@
+name: Taewook Kim
+group: masters
+order: 20
+photo: media/people/taewook-kim.jpg
+photo_frame:
+  position_x: 45
+  position_y: 17.194630872483216
+  zoom: 1
+research_interests:
+  - Synthetic Data Generation
+  - Data Privacy
+email: twkim@kaist.ac.kr

@@ -5,36 +5,36 @@
     {{ $photo := partial "media-resource.html" .Params.photo }}
     {{ $small := $photo.Resize "400x webp" }}
     {{ $large := $photo.Resize "800x webp" }}
-    <img class="professor-photo" src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} 400w, {{ $large.RelPermalink }} 800w" sizes="(max-width: 760px) 180px, (max-width: 1000px) 240px, 280px" width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .Params.photo_alt }}">
+    <div class="professor-portrait"><img class="professor-photo" src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} 400w, {{ $large.RelPermalink }} 800w" sizes="(max-width: 760px) 180px, (max-width: 1000px) 240px, 280px" width="{{ $large.Width }}" height="{{ $large.Height }}" style="{{ partial "people/portrait-style.html" .Params.photo_frame }}" alt="{{ .Params.photo_alt }}"></div>
     <div class="professor-identity">
       <h2 id="professor-name">{{ .Params.name }}</h2>
       <ul class="professor-roles">{{ range .Params.roles }}
         <li><strong>{{ .title }}</strong><span>{{ .department }}</span></li>
       {{ end }}</ul>
       <p class="professor-institution">{{ .Params.institution }}</p>
-      <dl class="professor-contact"><div><dt>{{ site.Data.interface.professor.email }}</dt><dd><a href="mailto:{{ .Params.email }}">{{ .Params.email }}</a></dd></div><div><dt>{{ site.Data.interface.professor.office }}</dt><dd>{{ .Params.office }}</dd></div></dl>
+      <dl class="professor-contact"><div><dt>{{ (site.GetPage "professors").Params.labels.email }}</dt><dd><a href="mailto:{{ .Params.email }}">{{ .Params.email }}</a></dd></div><div><dt>{{ (site.GetPage "professors").Params.labels.office }}</dt><dd>{{ .Params.office }}</dd></div></dl>
     </div>
   </section>
   <section class="professor-section" aria-labelledby="interests-title">
-    <h2 id="interests-title">{{ site.Data.interface.professor.interests }}</h2>
+    <h2 id="interests-title">{{ (site.GetPage "professors").Params.labels.interests }}</h2>
     <ul class="professor-records">{{ range .Params.research_interests }}
       <li><h3>{{ .title }}</h3>{{ with .detail }}<p class="record-detail">{{ . }}</p>{{ end }}</li>
     {{ end }}</ul>
   </section>
   <section class="professor-section" aria-labelledby="education-title">
-    <h2 id="education-title">{{ site.Data.interface.professor.education }}</h2>
+    <h2 id="education-title">{{ (site.GetPage "professors").Params.labels.education }}</h2>
     <ul class="professor-records education-records">{{ range .Params.education }}
       <li><h3>{{ .degree }}</h3><p class="record-institution">{{ .institution }}</p><p class="record-detail">{{ .department }}</p></li>
     {{ end }}</ul>
   </section>
   <section class="professor-section" aria-labelledby="experience-title">
-    <h2 id="experience-title">{{ site.Data.interface.professor.experience }}</h2>
+    <h2 id="experience-title">{{ (site.GetPage "professors").Params.labels.experience }}</h2>
     <ul class="professor-records">{{ range .Params.experience }}
       <li class="dated-record"><p class="record-period">{{ .period }}</p><div><h3>{{ .role }}</h3><p class="record-detail">{{ .institution }}</p></div></li>
     {{ end }}</ul>
   </section>
   <section class="professor-section" aria-labelledby="editorial-title">
-    <h2 id="editorial-title">{{ site.Data.interface.professor.editorial }}</h2>
+    <h2 id="editorial-title">{{ (site.GetPage "professors").Params.labels.editorial }}</h2>
     <ul class="professor-records">{{ range .Params.editorial_service }}
       <li class="dated-record"><p class="record-period">{{ .period }}</p><div><h3>{{ .journal }}</h3><p class="record-detail">{{ .role }}</p></div></li>
     {{ end }}</ul>

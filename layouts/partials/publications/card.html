@@ -1,5 +1,5 @@
 {{ $record := .record }}{{ $page := $record.page }}{{ $p := $page.Params }}
-{{ $kinds := dict "journal" site.Data.interface.publications.journal_label "conference" site.Data.interface.publications.conference_label }}
+{{ $kinds := dict "journal" (site.GetPage "publications").Params.labels.journal_label "conference" (site.GetPage "publications").Params.labels.conference_label }}
 
 <article class="publication-card" data-paper data-kind="{{ $p.publication_type }}" data-year="{{ $p.year }}" data-date="{{ $record.date }}" data-title="{{ $page.Title }}" data-topics="{{ (apply $record.topics "index" "." "id") | jsonify }}" data-search="{{ printf "%s %s %s %s" $page.Title (delimit $p.authors " ") $p.venue (delimit (apply $record.topics "index" "." "label") " ") }}">
   <div class="publication-year">{{ $p.year }}</div>
@@ -16,10 +16,9 @@
     </div>
     {{ if .detail }}
     <section class="publication-abstract" aria-labelledby="abstract-title">
-      <h2 id="abstract-title">{{ site.Data.interface.publications.abstract }}</h2>
-      {{ with $p.abstract }}<p>{{ . }}</p>{{ else }}<p class="publication-abstract-empty">{{ site.Data.interface.publications.no_abstract }}</p>{{ end }}
+      <h2 id="abstract-title">{{ (site.GetPage "publications").Params.labels.abstract }}</h2>
+      {{ with $p.abstract }}<p>{{ . }}</p>{{ else }}<p class="publication-abstract-empty">{{ (site.GetPage "publications").Params.labels.no_abstract }}</p>{{ end }}
     </section>
-    {{ with $page.Content }}<div class="publication-content">{{ . }}</div>{{ end }}
     {{ end }}
   </div>
 </article>

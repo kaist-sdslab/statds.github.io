@@ -1,6 +1,6 @@
   </main>
-  {{ $contact := site.Home.Params.contact }}
-  <footer><div class="shell footer-inner"><div><p class="footer-title">{{ $contact.title }}</p><address>{{ $contact.address }}</address></div><span class="copyright">© {{ now.Year }} {{ site.Data.interface.site.copyright }}</span></div></footer>
+  {{ $contact := site.Data.site_settings.contact }}
+  <footer><div class="shell footer-inner"><div><p class="footer-title">{{ $contact.title }}</p><address>{{ $contact.address }}</address></div><span class="copyright">© {{ now.Year }} {{ site.Data.site_settings.site.copyright }}</span></div></footer>
   {{ if .IsHome }}
     {{ $script := resources.Get "js/home.js" | minify | fingerprint }}
     <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}" defer></script>
