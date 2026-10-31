@@ -1,6 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: TaeW00kKim/statds.github.io
   branch: main
+  base_url: https://sds-cms-auth.xodnr35.workers.dev
+  auth_endpoint: auth
   squash_merges: true
 media_folder: assets/media/research
 public_folder: media/research

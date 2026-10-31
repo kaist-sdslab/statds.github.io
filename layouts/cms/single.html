@@ -8,7 +8,6 @@
 
   {{ $tagsStyle := resources.Get "css/cms-tags.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $tagsStyle.RelPermalink }}" integrity="{{ $tagsStyle.Data.Integrity }}">
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   {{/* Publish originals so CMS image URLs work alongside responsive site images. */}}
