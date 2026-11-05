@@ -48,7 +48,7 @@ nav a.active { color: var(--accent-blue); border-color: var(--accent-blue); }
 .lab-introduction h1 { font-family: var(--heading); font-size: 31px; font-weight: 600; line-height: 1.4; letter-spacing: -.02em; }
 .hero-description { max-width: 1040px; margin-top: 18px; font-weight: 400; font-size: 18px; line-height: 1.85; color: var(--body-text); }
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-top: 0; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
-.section-heading h2 { font-family: var(--heading); font-size: 30px; line-height: 1.25; font-weight: 600; letter-spacing: -.02em; }
+.section-heading h2, .section-heading h1 { font-family: var(--heading); font-size: 30px; line-height: 1.25; font-weight: 600; letter-spacing: -.02em; }
 .research-item { --research-accent: var(--topic-color, var(--accent-blue)); --research-line: var(--topic-line, var(--accent-blue-line)); display: grid; grid-template-columns: .95fr 1.25fr; gap: 24px 55px; align-items: center; padding: 40px 0 48px; }
 .research-item:nth-child(even) { grid-template-columns: 1.25fr .95fr; }
 .research-item + .research-item { border-top: 1px solid var(--line); padding-top: 48px; }
@@ -93,7 +93,7 @@ address { font-style: normal; max-width: 440px; font-size: 11px; line-height: 1.
   .lab-introduction h1 { font-size: clamp(25px, 5.8vw, 30px); line-height: 1.3; text-wrap: initial; }
   .hero-description { font-size: 16px; line-height: 1.75; margin-top: 16px; }
   .section-heading { padding: 0 0 17px; }
-  .section-heading h2 { font-size: 25px; }
+  .section-heading h2, .section-heading h1 { font-size: 25px; }
   .research-item, .research-item:nth-child(even), .research-item + .research-item { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 26px 0 32px; }
   .research-heading, .research-visual, .research-copy, .research-item:nth-child(even) .research-visual, .research-item:nth-child(even) .research-copy { grid-column: 1; grid-row: auto; }
   .research-visual { padding: 12px; margin-top: 0; }
@@ -136,7 +136,6 @@ address { font-style: normal; max-width: 440px; font-size: 11px; line-height: 1.
   .pending-page h1 { font-size: 30px; }
 }
 
-.about-intro { padding-top: 42px; padding-bottom: 36px; }
-.about-intro h1 { font-size: 31px; font-weight: 600; }
-.about-intro p { margin-top: 12px; color: var(--muted); }
+.about-research { padding-top: 42px; }
+@media (max-width: 760px) { .about-research { padding-top: 30px; } }
 @media (min-width: 1001px) { .header-inner { column-gap: 24px; } nav { gap: 20px; font-size: 15px; } }

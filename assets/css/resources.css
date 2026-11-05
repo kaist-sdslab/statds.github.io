@@ -1,9 +1,9 @@
 .resources-page { min-height: 60vh; padding-top: 42px; padding-bottom: 56px; }
 .resources-page > h1 { font-size: 31px; font-weight: 600; line-height: 1.4; letter-spacing: -.02em; margin-bottom: 14px; }
 .resource-item { display: flex; align-items: baseline; justify-content: space-between; gap: 20px 40px; padding: 25px 0; }
-.resource-item + .resource-item { border-top: 1px solid var(--line); }
-.software-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 16px; }
-.software-links { align-self: flex-end; }
+.resource-item.course-item + .course-item { border-top: 1px solid var(--line); }
+.software-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 24px; margin-top: 18px; padding: 24px 26px; border: 1px solid #dfe6eb; border-radius: 4px; background: #fafbfc; }
+.software-links { align-self: start; }
 .resource-information { min-width: 0; max-width: 800px; }
 .resource-item h2 { font-size: 19px; font-weight: 600; line-height: 1.5; text-wrap: initial; }
 .resource-description { margin-top: 8px; font-size: 15px; line-height: 1.8; color: var(--body-text); }
@@ -22,6 +22,7 @@
   .resources-page > h1 { font-size: 27px; }
   .resource-item { flex-direction: column; align-items: stretch; gap: 10px; padding: 22px 0; }
   .resource-item h2 { font-size: 18px; }
+  .resource-item.software-item { padding: 20px; gap: 18px; }
   .course-code { font-size: 15px; }
   .course-item h2 { font-size: 20px; }
   .resource-links { max-width: none; }

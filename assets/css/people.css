@@ -69,16 +69,17 @@
   .person-info h3 { font-size: 20px; }
 }
 
-/* Members use portrait-led profile frames; compact intern/alumni lists stay concise. */
-.people-grid { gap: 22px; margin-top: 24px; }
-.person-card { padding: 24px; gap: 22px; border: 1px solid var(--line); border-top: 3px solid var(--people-accent); border-radius: 8px; background: linear-gradient(135deg, #f7f9fb, #fff 60%); }
-.person-portrait { border-radius: 6px; background: #edf2f6; }
-.person-info h3 { font-size: 21px; }
-.person-biography { margin-top: 12px; color: var(--body-text); font-size: 14px; line-height: 1.75; }
-.person-links { align-items: center; gap: 8px; margin-top: 14px; }
+/* Quiet profile rows keep the photograph and introduction in focus. */
+.people-grid { gap: 0 36px; margin-top: 20px; }
+.people-section-heading h2 { padding-left: 0; border-left: 0; font-size: 21px; }
+.person-card { grid-template-columns: 128px minmax(0, 1fr); padding: 28px 0; gap: 24px; border-bottom: 1px solid #e5e9ec; background: white; }
+.person-portrait { width: 128px; border-radius: 2px; background: #f2f4f5; }
+.person-info h3 { font-size: 21px; letter-spacing: -.02em; }
+.person-biography { margin-top: 12px; color: var(--body-text); font-size: 14px; line-height: 1.8; white-space: pre-line; }
+.person-links { align-items: center; gap: 6px; margin-top: 12px; }
 .person-email { flex-basis: 100%; font-size: 13px !important; }
-.person-links .person-social { display: inline-flex; justify-content: center; width: 36px; height: 36px; min-height: 36px; border: 1px solid #ccd8e2; border-radius: 50%; color: var(--people-accent); background: white; }
-.person-social svg { width: 19px; height: 19px; }
-.person-links .person-social:hover { background: #eaf1f7; border-color: var(--people-accent); }
-@media (max-width: 1100px) and (min-width: 761px) { .person-card { grid-template-columns: 104px minmax(0, 1fr); padding: 18px; gap: 16px; } .person-portrait { width: 104px; } }
-@media (max-width: 480px) { .person-card { grid-template-columns: 90px minmax(0, 1fr); gap: 15px; padding: 18px 14px; } .person-portrait { width: 90px; } .person-info h3 { font-size: 18px; } }
+.person-links .person-social { display: inline-flex; justify-content: center; width: 32px; height: 32px; min-height: 32px; border-radius: 3px; color: #536778; background: transparent; }
+.person-social svg { width: 18px; height: 18px; }
+.person-links .person-social:hover { color: var(--accent-blue); background: #eff4f7; }
+@media (max-width: 1100px) and (min-width: 761px) { .person-card { grid-template-columns: 104px minmax(0, 1fr); gap: 18px; } .person-portrait { width: 104px; } }
+@media (max-width: 480px) { .person-card { grid-template-columns: 90px minmax(0, 1fr); gap: 16px; padding: 24px 0; } .person-portrait { width: 90px; } .person-info h3 { font-size: 18px; } }

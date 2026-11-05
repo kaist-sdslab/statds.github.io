@@ -114,7 +114,7 @@
       return node('article', 'person-compact intern-row', field('name', 'h3', null, p.name),
         p.affiliation && field('affiliation', 'p', 'person-note', p.affiliation),
         period.start && node('span', 'person-compact-meta', field('internship.start_date', 'span', null, period.start), period.start === period.end ? '' : ' – ', period.start !== period.end && field('internship.end_date', 'span', null, period.end)),
-        p.internship?.program && field('internship.program', 'span', 'person-compact-detail', p.internship.program));
+        p.internship?.program && field('internship.program', 'span', 'person-compact-detail', p.internship.program), p.biography && field('biography', 'p', 'person-biography', p.biography));
     }
     if (p.group === 'alumni') {
       const a = p.alumni || {};
@@ -122,7 +122,7 @@
         (a.degree || a.graduation_year) && node('span', 'person-compact-meta alumnus-degree',
           a.degree && field('alumni.degree', 'span', null, a.degree), a.degree && a.graduation_year ? ', ' : '',
           a.graduation_year && field('alumni.graduation_year', 'span', null, a.graduation_year))),
-        (a.thesis || a.position) && node('p', 'alumnus-summary', a.thesis && field('alumni.thesis', 'span', 'alumnus-thesis', `“${a.thesis}”`), a.thesis && a.position && node('span', 'alumnus-separator', ' · '), a.position && field('alumni.position', 'span', 'alumnus-position', a.position)));
+        (a.thesis || a.position) && node('p', 'alumnus-summary', a.thesis && field('alumni.thesis', 'span', 'alumnus-thesis', `“${a.thesis}”`), a.thesis && a.position && node('span', 'alumnus-separator', ' · '), a.position && field('alumni.position', 'span', 'alumnus-position', a.position)), p.biography && field('biography', 'p', 'person-biography', p.biography));
     }
     return node('article', 'person-card', edit(ctx, p.photo ? 'photo_frame' : 'photo', node('div', 'person-portrait', p.photo ? image(p.photo, p.name, ctx.props, undefined, { style: portraitStyle(p.photo_frame) }) : node('div', 'person-initials', text(p.name).split(' ').slice(0, 2).map(word => word[0]).join('')))),
       node('div', 'person-info', field('name', 'h3', null, p.name), p.affiliation && field('affiliation', 'p', 'person-note', p.affiliation), p.member_note && field('member_note', 'p', 'person-note', p.member_note), list(p.research_interests).length > 0 && field('research_interests', 'p', 'person-interests', labelEdit(ctx, 'people.research_interests', node('span', null, ctx.labels.people.research_interests)), p.research_interests.join(', ')), p.biography && field('biography', 'p', 'person-biography', p.biography), email(p, ctx)));
@@ -138,9 +138,8 @@
         field('topics', 'div', 'publication-topics', ...topics(p.topics, ctx.colors, ctx)), p.url_code && node('div', 'publication-resources', edit(ctx, 'url_code', resource('github', p.url_code, ctx.labels.links))))));
   };
   const about = (data, ctx) => node('div', null,
-    node('section', 'shell about-intro', pageEdit(ctx, 'title', node('h1', null, data.title)), pageEdit(ctx, 'description', node('p', null, data.description))),
-    node('section', 'research-section shell', node('div', 'section-heading', labelEdit(ctx, 'about.research_heading', node('h2', null, ctx.labels.about.research_heading))), node('div', 'research-list', ...list(data.research).map((area, index) =>
-      h('article', { className: 'research-item', style: accent(area.color) }, edit(ctx, `research.${index}.title`, node('h3', 'research-heading', link(area.title, null, area.title))), edit(ctx, `research.${index}.image`, node('div', 'research-visual', image(area.image, area.image_alt, ctx.props))),
+    node('section', 'research-section shell about-research', node('div', 'section-heading', labelEdit(ctx, 'about.research_heading', node('h1', null, ctx.labels.about.research_heading))), node('div', 'research-list', ...list(data.research).map((area, index) =>
+      h('article', { className: 'research-item', style: accent(area.color) }, edit(ctx, `research.${index}.title`, node('h2', 'research-heading', link(area.title, null, area.title))), edit(ctx, `research.${index}.image`, node('div', 'research-visual', image(area.image, area.image_alt, ctx.props))),
         node('div', 'research-copy', edit(ctx, `research.${index}.description`, node('div', 'research-description', ...paragraphs(area.description))), availableTopics(area.publication_topics, ctx, 'filters').length > 0 && edit(ctx, `research.${index}.publication_topics`, labelEdit(ctx, 'about.related_publications', link(ctx.labels.about.related_publications, 'research-publications', `${ctx.labels.about.related_publications} →`)))))))));
   const publishedNews = () => list(seed.news).filter(post => !post.draft).slice().sort((a, b) => text(b.date).localeCompare(text(a.date)));
   const newsDate = value => {
@@ -172,18 +171,16 @@
     edit(ctx, 'body', node('div', 'news-body', ctx.props.widgetFor('body'))));
   const newsList = (data, ctx) => {
     const labels = data.labels || seed.labels.news;
-    const words = key(ctx.state.query).split(' ').filter(Boolean);
-    const posts = publishedNews().sort((a, b) => Number(!!b.pinned) - Number(!!a.pinned)).filter(post => words.every(word => key(`${post.title} ${post.description || ''} ${post.body || ''}`).includes(word)));
+    const posts = publishedNews().sort((a, b) => Number(!!b.pinned) - Number(!!a.pinned));
     const size = Math.max(1, Number(data.page_size) || 8), pages = Math.max(1, Math.ceil(posts.length / size));
     const page = Math.min(ctx.state.page || 1, pages);
     return node('section', 'shell news-page',
-      node('header', 'news-header', node('div', null, pageEdit(ctx, 'title', node('h1', null, data.title)), pageEdit(ctx, 'description', node('p', null, data.description))),
-        node('div', 'news-search', node('label', null, labels.search), h('input', { type: 'search', value: ctx.state.query, 'aria-label': labels.search, placeholder: labels.search_placeholder, onChange: event => ctx.update({ query: event.target.value, page: 1 }) }))),
+      node('header', 'news-header', node('div', null, pageEdit(ctx, 'title', node('h1', null, data.title)), pageEdit(ctx, 'description', node('p', null, data.description)))),
       node('p', 'news-results', `${posts.length} ${labels.results}`),
       node('div', 'news-list', ...posts.slice((page - 1) * size, page * size).map(post => node('article', 'news-card',
         node('div', `news-thumbnail${post.image ? '' : ' news-thumbnail-empty'}`, post.image ? image(post.image, post.image_alt, ctx.props) : node('span', null, 'SDS', node('span', null, 'LAB NEWS'))),
         node('div', 'news-card-copy', node('div', 'news-meta', node('time', null, newsDate(post.date)), post.pinned && node('span', 'news-pin', labels.pinned)), node('h2', null, post.title), node('p', null, post.description || text(post.body).slice(0, 180)), link(labels.read_more, 'text-link', `${labels.read_more} →`))))),
-      !posts.length && node('p', 'news-empty', ctx.state.query ? labels.no_results : labels.empty),
+      !posts.length && node('p', 'news-empty', labels.empty),
       pages > 1 && node('nav', 'news-pagination', h('button', { disabled: page === 1, onClick: () => ctx.update({ page: page - 1 }) }, labels.previous), node('span', null, `${labels.page} ${page} / ${pages}`), h('button', { disabled: page === pages, onClick: () => ctx.update({ page: page + 1 }) }, labels.next)));
   };
   const professor = (data, ctx) => {

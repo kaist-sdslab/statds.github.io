@@ -6,19 +6,18 @@
 {{ $sorted := $pinned | collections.Append $regular }}
 <section class="shell news-page" data-news data-page-size="{{ .Params.page_size | default 8 }}" data-page-label="{{ $labels.page }}" aria-labelledby="news-title">
   <header class="news-header"><div><h1 id="news-title">{{ .Title }}</h1><p>{{ .Description }}</p></div>
-    <div class="news-search" data-news-search hidden><label for="news-search">{{ $labels.search }}</label><input type="search" id="news-search" placeholder="{{ $labels.search_placeholder }}" autocomplete="off" data-news-query></div>
+
   </header>
   <p class="news-results" role="status" aria-live="polite" data-news-count hidden><span data-news-total>{{ len $posts }}</span> {{ $labels.results }}</p>
   <div class="news-list" data-news-list>
   {{ range $sorted }}
-    <article class="news-card" data-news-card data-search="{{ printf "%s %s %s" .Title .Description .Plain | plainify }}">
+    <article class="news-card" data-news-card>
       <a class="news-thumbnail{{ if not .Params.image }} news-thumbnail-empty{{ end }}" href="{{ .RelPermalink }}" aria-label="{{ .Title }}">{{ if .Params.image }}{{ partial "news/cover.html" (dict "post" . "width" 480) }}{{ else }}<span aria-hidden="true">SDS<span>LAB NEWS</span></span>{{ end }}</a>
       <div class="news-card-copy"><div class="news-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>{{ if .Params.pinned }}<span class="news-pin">{{ $labels.pinned }}</span>{{ end }}</div><h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2><p>{{ .Description | default (.Plain | truncate 180) }}</p><a class="text-link" href="{{ .RelPermalink }}">{{ $labels.read_more }} <span aria-hidden="true">→</span></a></div>
     </article>
   {{ end }}
   </div>
   {{ if not $posts }}<p class="news-empty">{{ $labels.empty }}</p>{{ end }}
-  <p class="news-empty" data-news-empty hidden>{{ $labels.no_results }}</p>
   <nav class="news-pagination" aria-label="News pagination" data-news-pagination hidden><button type="button" data-news-prev>{{ $labels.previous }}</button><div class="news-page-numbers" data-news-pages></div><button type="button" data-news-next>{{ $labels.next }}</button></nav>
 </section>
 {{ partial "site/end.html" . }}

@@ -6,4 +6,5 @@
     <span class="person-compact-meta"><time datetime="{{ .start_date }}">{{ $period.start_label }}</time>{{ if ne $period.start_label $period.end_label }} – {{ if .end_date }}<time datetime="{{ .end_date }}">{{ $period.end_label }}</time>{{ else }}<span>{{ $period.end_label }}</span>{{ end }}{{ end }}</span>
     {{ with .program }}<span class="person-compact-detail">{{ . }}</span>{{ end }}
   {{ end }}
+  {{ with .biography }}<p class="person-biography">{{ . }}</p>{{ end }}
 </article>

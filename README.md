@@ -7,11 +7,11 @@ KAIST SDS Lab website, built with Hugo and published by GitHub Actions.
 
 ## Editing in the CMS
 
-- **Pages → Home:** edit the left-hand introduction and research-button label, the right-hand photo slideshow, and the News list labels. The research button opens About → Research Areas. The list below the introduction shows only the top five News posts, including pinned posts first. The slideshow automatically uses the newest published posts with cover images (five slides, five seconds per slide by default). Posts without images are still listed in News.
-- **Pages → About / Research Areas:** edit the research descriptions, illustrations, colors, and related publication topics moved from Home.
-- **Students:** edit member profiles, portraits, biographies, and optional LinkedIn, GitHub, and Website URLs. Leave a URL empty to hide its icon. Members, Interns, and Alumni remain separate categories.
+- **Pages → Home:** edit the introduction and research-button label, the background photo slideshow, and the News list labels. Photos fill the hero behind a translucent introduction panel. The research button opens About → Research Areas. The list below the introduction shows only the top five News posts, including pinned posts first. The slideshow automatically uses the newest published posts with cover images (five slides, five seconds per slide by default). Posts without images are still listed in News.
+- **Pages → About / Research Areas:** edit the research descriptions, illustrations, colors, and related publication topics moved from Home. The visible page starts with Research Areas; the saved title and description are retained for browser/search metadata.
+- **Students:** edit member profiles, portraits, Self-introduction text (available below Name for every profile), and optional LinkedIn, GitHub, and Website URLs. Leave a URL empty to hide its icon. Members, Interns, and Alumni remain separate categories.
 - **News → New News post:** enter a title, date, optional summary and cover image, and the article body. The body editor supports Rich Text and Markdown, including headings, links, lists, and inline images. Use **Pin to top** for announcements and **Show in home slideshow** to control cover-image inclusion. Posts are ordered newest first within pinned and regular groups.
-- **Pages → News page settings:** edit the list title, labels, and number of stories per page. Readers can search titles, summaries, and article text across all pages.
+- **Pages → News page settings:** edit the list title, labels, and number of stories per page. The public list has pagination without a search field.
 - **Site Settings → General & Navigation:** edit the header, footer, and navigation labels. Courses is no longer included in the navigation or CMS.
 
 Save and publish an entry to commit it to this repository; GitHub Actions then updates the website. Drafts and future-dated posts are excluded from the published site. A future-dated post becomes visible on the next build after its date, so run the deployment workflow if no other edits trigger a build.

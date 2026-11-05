@@ -2,25 +2,20 @@
   const root = document.querySelector('[data-news]');
   if (!root) return;
   const cards = [...root.querySelectorAll('[data-news-card]')];
-  const query = root.querySelector('[data-news-query]');
   const pager = root.querySelector('[data-news-pagination]');
   const pages = root.querySelector('[data-news-pages]');
   const previous = root.querySelector('[data-news-prev]');
   const next = root.querySelector('[data-news-next]');
-  const normalize = value => value.normalize('NFKC').toLocaleLowerCase().replace(/\s+/g, ' ').trim();
   const size = Math.max(1, Number(root.dataset.pageSize) || 8);
   const params = new URLSearchParams(location.search);
   let page = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
-  query.value = params.get('q') || '';
   const render = (updateURL = false) => {
-    const words = normalize(query.value).split(' ').filter(Boolean);
-    const matches = cards.filter(card => words.every(word => normalize(card.dataset.search).includes(word)));
+    const matches = cards;
     const totalPages = Math.max(1, Math.ceil(matches.length / size));
     page = Math.min(Math.max(page, 1), totalPages);
     const visible = new Set(matches.slice((page - 1) * size, page * size));
     cards.forEach(card => { card.hidden = !visible.has(card); });
     root.querySelector('[data-news-total]').textContent = matches.length;
-    root.querySelector('[data-news-empty]').hidden = matches.length > 0 || cards.length === 0;
     pager.hidden = totalPages <= 1;
     previous.disabled = page === 1;
     next.disabled = page === totalPages;
@@ -37,7 +32,7 @@
     });
     if (updateURL) {
       const url = new URL(location.href);
-      if (query.value.trim()) url.searchParams.set('q', query.value.trim()); else url.searchParams.delete('q');
+      url.searchParams.delete('q');
       if (page > 1) url.searchParams.set('page', page); else url.searchParams.delete('page');
       history.replaceState(null, '', url);
     }
@@ -46,9 +41,7 @@
   previous.addEventListener('click', () => move(page - 1));
   next.addEventListener('click', () => move(page + 1));
   pages.addEventListener('click', event => { const button = event.target.closest('[data-page]'); if (button) move(Number(button.dataset.page)); });
-  query.addEventListener('input', () => { page = 1; render(true); });
-  window.addEventListener('popstate', () => { const p = new URLSearchParams(location.search); query.value = p.get('q') || ''; page = Number.parseInt(p.get('page'), 10) || 1; render(); });
+  window.addEventListener('popstate', () => { const p = new URLSearchParams(location.search); page = Number.parseInt(p.get('page'), 10) || 1; render(); });
   render();
-  root.querySelector('[data-news-search]').hidden = false;
   root.querySelector('[data-news-count]').hidden = false;
 })();

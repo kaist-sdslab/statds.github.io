@@ -6,4 +6,5 @@
   {{ with .alumni }}
     {{ if or .thesis .position }}<p class="alumnus-summary">{{ with .thesis }}<span class="alumnus-thesis">“{{ . }}”</span>{{ end }}{{ if and .thesis .position }}<span class="alumnus-separator"> · </span>{{ end }}{{ with .position }}<span class="alumnus-position">{{ . }}</span>{{ end }}</p>{{ end }}
   {{ end }}
+  {{ with .biography }}<p class="person-biography">{{ . }}</p>{{ end }}
 </article>

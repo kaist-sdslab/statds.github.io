@@ -98,9 +98,11 @@ collections:
     - label: Title
       name: title
       widget: string
+      hint: Used for browser/search metadata only; not displayed above Research Areas.
     - label: Description
       name: description
       widget: text
+      hint: Used for browser/search metadata only; not displayed above Research Areas.
     - name: layout
       widget: hidden
       default: about
@@ -494,20 +496,11 @@ collections:
       widget: object
       collapsed: true
       fields:
-      - label: Search
-        name: search
-        widget: string
-      - label: Search placeholder
-        name: search_placeholder
-        widget: string
       - label: Pinned
         name: pinned
         widget: string
       - label: Empty
         name: empty
-        widget: string
-      - label: No results
-        name: no_results
         widget: string
       - label: Previous
         name: previous
@@ -721,6 +714,11 @@ collections:
   - label: Name
     name: name
     widget: string
+  - label: Self-introduction
+    name: biography
+    widget: text
+    required: false
+    hint: Optional personal introduction. Shown on this student profile; line breaks are preserved.
   - label: Group
     name: group
     widget: people-group
@@ -800,15 +798,6 @@ collections:
     required: false
     default: []
     hint: Add interests as separate items. They are independent of publication tags.
-  - label: Biography
-    name: biography
-    widget: people-conditional
-    control_widget: text
-    groups:
-    - phd
-    - masters
-    required: false
-    hint: Optional introduction displayed on the member card.
   - label: Email
     name: email
     widget: people-conditional

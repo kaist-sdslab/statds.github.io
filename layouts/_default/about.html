@@ -1,11 +1,10 @@
 {{ partial "site/start.html" . }}
-<section class="shell about-intro"><h1>{{ .Title }}</h1><p>{{ .Description }}</p></section>
-    <section class="research-section shell" id="research" aria-labelledby="research-title">
-      <div class="section-heading" data-reveal><h2 id="research-title">{{ .Params.labels.research_heading }}</h2></div>
+    <section class="research-section shell about-research" id="research" aria-labelledby="research-title">
+      <div class="section-heading" data-reveal><h1 id="research-title">{{ .Params.labels.research_heading }}</h1></div>
       <div class="research-list">{{ range $index, $area := .Params.research }}
         {{ $publicationURL := "" }}{{ with .publication_topics }}{{ $publicationURL = partial "publications/topics-url.html" . }}{{ end }}
         <article class="research-item" style="{{ partial "color-style.html" .color }}" data-reveal aria-labelledby="research-{{ $index }}">
-          <h3 class="research-heading" id="research-{{ $index }}">{{ if $publicationURL }}<a href="{{ $publicationURL }}">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}</h3>
+          <h2 class="research-heading" id="research-{{ $index }}">{{ if $publicationURL }}<a href="{{ $publicationURL }}">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}</h2>
           <div class="research-visual">
             {{ $image := partial "media-resource.html" .image }}
             {{ $large := $image.Fit "1200x1200 webp" }}
