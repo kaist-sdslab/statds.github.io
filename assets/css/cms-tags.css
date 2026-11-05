@@ -29,3 +29,9 @@
 .cms-portrait-slider input { width: 100%; min-width: 0; accent-color: #285c9b; }
 .cms-portrait-slider output { text-align: right; font-variant-numeric: tabular-nums; }
 .cms-portrait-reset { padding: 5px 9px; border: 1px solid #afbec9; border-radius: 3px; background: white; color: #285c9b; cursor: pointer; }
+
+/* Decap 3.17.3 media toolbar: Copy, Download, Upload. Hide the copy action
+   in every selection state (Copy Name / Copy Path / Copy URL). */
+[class*="-LibraryTop"] > [class*="-RowContainer"]:first-child > [class*="-ButtonsContainer"] > button:first-child { display: none; }
+[class*="-LibraryTop"] > [class*="-RowContainer"] > [class*="-ButtonsContainer"] { flex-wrap: nowrap; gap: 8px; max-width: 100%; overflow-x: auto; }
+[class*="-LibraryTop"] > [class*="-RowContainer"] > [class*="-ButtonsContainer"] > * { flex-shrink: 0; white-space: nowrap; }
