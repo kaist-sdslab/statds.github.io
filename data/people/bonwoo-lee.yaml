@@ -1,5 +1,10 @@
 name: Bonwoo Lee
 group: phd
-affiliation: Department of Mathematical Science
 order: 50
 member_note: Co-advising
+affiliation: Department of Mathematical Science
+photo: /statds.github.io/media/people/bonwoo-lee.jpeg
+photo_frame:
+  position_x: 50
+  position_y: 100
+  zoom: 1
