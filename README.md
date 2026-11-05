@@ -1,1 +1,1 @@
-# statds.github.io
+# kaist-statds.github.io
