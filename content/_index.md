@@ -6,14 +6,18 @@ hero:
   description: In our lab, we develop statistical methodologies for high-dimensional, complex problems that
     arise in various scientific fields. We especially focus on enhanced interpretability of our statistical
     solutions.
+  button_label: Explore our research
 slideshow:
-  heading: Latest News
+  heading: Lab photos
   interval: 5
   limit: 5
-  view_all: View all news
   empty: Lab news and photos will appear here.
   previous: Previous slide
   next: Next slide
   pause: Pause slideshow
   play: Play slideshow
+news:
+  heading: News
+  view_all: View all news
+  empty: No news has been published yet.
 ---

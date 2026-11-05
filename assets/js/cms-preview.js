@@ -148,16 +148,22 @@
     return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
   };
   const home = (data, ctx) => {
-    const settings = data.slideshow || {};
-    const posts = publishedNews().filter(post => post.image && post.show_in_slideshow !== false).slice(0, settings.limit || 5);
+    const settings = data.slideshow || {}, labels = data.news || {};
+    const published = publishedNews();
+    const posts = published.filter(post => post.image && post.show_in_slideshow !== false).slice(0, settings.limit || 5);
+    const top = published.slice().sort((a, b) => Number(!!b.pinned) - Number(!!a.pinned)).slice(0, 5);
     const selected = Math.min(ctx.state.slide || 0, Math.max(0, posts.length - 1));
     const post = posts[selected];
     return node('div', null,
-      node('section', 'hero shell', node('div', 'lab-introduction', edit(ctx, 'hero.welcome', node('h1', null, data.hero?.welcome)), edit(ctx, 'hero.description', node('p', 'hero-description', data.hero?.description)))),
-      node('section', 'shell home-news', node('div', 'section-heading', edit(ctx, 'slideshow.heading', node('h2', null, settings.heading)), edit(ctx, 'slideshow.view_all', link(settings.view_all, 'text-link', `${settings.view_all} →`))),
-        post ? node('div', 'news-slideshow', node('article', 'news-slide', node('div', 'news-slide-image', image(post.image, post.image_alt, ctx.props)), node('div', 'news-slide-copy', node('time', null, newsDate(post.date)), node('h3', null, post.title), post.description && node('p', null, post.description))),
+      node('section', 'hero shell home-hero',
+        node('div', 'lab-introduction', edit(ctx, 'hero.welcome', node('h1', null, data.hero?.welcome)), edit(ctx, 'hero.description', node('p', 'hero-description', data.hero?.description)), edit(ctx, 'hero.button_label', link(data.hero?.button_label, 'home-research-button', [data.hero?.button_label, ' →']))),
+        node('div', 'home-hero-gallery', post ? node('div', 'news-slideshow',
+          node('article', 'news-slide', node('div', 'news-slide-image', image(post.image, post.image_alt, ctx.props)), node('div', 'home-slide-caption', node('time', null, newsDate(post.date)), node('h2', null, post.title))),
           posts.length > 1 && node('div', 'slideshow-controls', h('button', { type: 'button', onClick: () => ctx.update({ slide: (selected + posts.length - 1) % posts.length }) }, settings.previous), node('span', null, `${selected + 1} / ${posts.length}`), h('button', { type: 'button', onClick: () => ctx.update({ slide: (selected + 1) % posts.length }) }, settings.next)))
-          : edit(ctx, 'slideshow.empty', node('p', 'news-empty home-news-empty', settings.empty))));
+          : node('div', 'home-gallery-empty', node('span', 'home-gallery-mark', 'SDS', node('span', null, 'STATISTICAL DATA SCIENCE')), edit(ctx, 'slideshow.empty', node('p', null, settings.empty))))),
+      node('section', 'shell home-news', node('div', 'section-heading', edit(ctx, 'news.heading', node('h2', null, labels.heading)), edit(ctx, 'news.view_all', link(labels.view_all, 'text-link', `${labels.view_all} →`))),
+        top.length ? node('ul', 'home-news-list', ...top.map(post => node('li', null, link(post.title, null, [node('time', null, newsDate(post.date)), node('span', 'home-news-item-title', post.title), post.pinned && node('span', 'news-pin', ctx.labels.news.pinned), node('span', 'home-news-arrow', '↗')]))))
+          : edit(ctx, 'news.empty', node('p', 'news-empty', labels.empty))));
   };
   const newsArticle = (data, ctx) => node('article', 'shell news-article',
     node('span', 'text-link news-back', `← ${ctx.labels.news.back}`),

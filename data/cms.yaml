@@ -34,12 +34,17 @@ collections:
       - label: Description
         name: description
         widget: text
-    - label: News slideshow
+      - label: Research button label
+        name: button_label
+        widget: string
+        default: Explore our research
+        hint: Links to About → Research Areas.
+    - label: Right-side photo slideshow
       name: slideshow
       widget: object
       hint: Automatically shows the newest published News posts with a cover image.
       fields:
-      - label: Heading
+      - label: Slideshow accessibility label
         name: heading
         widget: string
       - label: Seconds between slides
@@ -56,9 +61,6 @@ collections:
         min: 1
         max: 10
         default: 5
-      - label: View all link
-        name: view_all
-        widget: string
       - label: Empty state
         name: empty
         widget: string
@@ -73,6 +75,21 @@ collections:
         widget: string
       - label: Play label
         name: play
+        widget: string
+    - label: News list below introduction
+      name: news
+      widget: object
+      hint: 'Shows the top five published entries in the same order as News: pinned posts first, then newest
+        first.'
+      fields:
+      - label: Heading
+        name: heading
+        widget: string
+      - label: View all link label
+        name: view_all
+        widget: string
+      - label: Empty state
+        name: empty
         widget: string
   - name: about
     label: About / Research Areas
@@ -1028,8 +1045,8 @@ collections:
       allow_create: false
       required: false
       default: []
-      hint: Choose from the union of saved publication topics. About research links can only select topics in
-        this list.
+      hint: Choose from the union of saved publication topics. About research links can only select topics
+        in this list.
   - name: topic_colors
     label: Topic Colors
     file: data/topic_colors.yaml

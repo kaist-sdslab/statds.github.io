@@ -7,7 +7,7 @@ KAIST SDS Lab website, built with Hugo and published by GitHub Actions.
 
 ## Editing in the CMS
 
-- **Pages → Home:** edit the introduction and News slideshow settings. The slideshow automatically uses the newest published posts with cover images (five slides, five seconds per slide by default). Posts without images are still listed in News.
+- **Pages → Home:** edit the left-hand introduction and research-button label, the right-hand photo slideshow, and the News list labels. The research button opens About → Research Areas. The list below the introduction shows only the top five News posts, including pinned posts first. The slideshow automatically uses the newest published posts with cover images (five slides, five seconds per slide by default). Posts without images are still listed in News.
 - **Pages → About / Research Areas:** edit the research descriptions, illustrations, colors, and related publication topics moved from Home.
 - **Students:** edit member profiles, portraits, biographies, and optional LinkedIn, GitHub, and Website URLs. Leave a URL empty to hide its icon. Members, Interns, and Alumni remain separate categories.
 - **News → New News post:** enter a title, date, optional summary and cover image, and the article body. The body editor supports Rich Text and Markdown, including headings, links, lists, and inline images. Use **Pin to top** for announcements and **Show in home slideshow** to control cover-image inclusion. Posts are ordered newest first within pinned and regular groups.
