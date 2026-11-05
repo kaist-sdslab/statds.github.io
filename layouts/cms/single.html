@@ -29,7 +29,7 @@
   {{ $catalog := partialCached "publications/topic-catalog.html" site }}
   <script id="publication-tag-catalog" type="application/json">{{ $catalog.topics | jsonify | safeJS }}</script>
   {{ $previewStyles := slice }}
-  {{ range slice "home" "professors" "people" "publications" "resources" "cms-preview" }}
+  {{ range slice "home" "professors" "people" "publications" "resources" "news" "cms-preview" }}
     {{ $style := resources.Get (printf "css/%s.css" .) | minify | fingerprint }}
     {{ $previewStyles = $previewStyles | append $style.RelPermalink }}
   {{ end }}

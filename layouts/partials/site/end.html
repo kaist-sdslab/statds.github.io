@@ -13,6 +13,14 @@
     {{ $script := resources.Get "js/people.js" | minify | fingerprint }}
     <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}" defer></script>
   {{ end }}
+  {{ if eq .Layout "news" }}
+    {{ $script := resources.Get "js/news.js" | minify | fingerprint }}
+    <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}" defer></script>
+  {{ end }}
+  {{ if .IsHome }}
+    {{ $script := resources.Get "js/slideshow.js" | minify | fingerprint }}
+    <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}" defer></script>
+  {{ end }}
   {{ $transitions := resources.Get "js/page-transitions.js" | minify | fingerprint }}
   <script src="{{ $transitions.RelPermalink }}" integrity="{{ $transitions.Data.Integrity }}" defer></script>
 </body>

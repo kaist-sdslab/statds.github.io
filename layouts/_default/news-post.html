@@ -1,0 +1,8 @@
+{{ partial "site/start.html" . }}
+<article class="shell news-article">
+  <a class="text-link news-back" href="{{ "news/" | relURL }}">← {{ (site.GetPage "news").Params.labels.back }}</a>
+  <header><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time><h1>{{ .Title }}</h1>{{ with .Description }}<p class="news-lead">{{ . }}</p>{{ end }}</header>
+  {{ if .Params.image }}<figure class="news-cover">{{ partial "news/cover.html" (dict "post" . "width" 1800 "eager" true) }}{{ with .Params.image_alt }}<figcaption>{{ . }}</figcaption>{{ end }}</figure>{{ end }}
+  <div class="news-body">{{ .Content }}</div>
+</article>
+{{ partial "site/end.html" . }}

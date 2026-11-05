@@ -135,3 +135,8 @@ address { font-style: normal; max-width: 440px; font-size: 11px; line-height: 1.
   .pending-page { padding-top: 40px; padding-bottom: 55px; }
   .pending-page h1 { font-size: 30px; }
 }
+
+.about-intro { padding-top: 42px; padding-bottom: 36px; }
+.about-intro h1 { font-size: 31px; font-weight: 600; }
+.about-intro p { margin-top: 12px; color: var(--muted); }
+@media (min-width: 1001px) { .header-inner { column-gap: 24px; } nav { gap: 20px; font-size: 15px; } }

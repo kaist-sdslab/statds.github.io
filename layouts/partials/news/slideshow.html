@@ -1,0 +1,28 @@
+{{ $settings := .Params.slideshow }}
+{{ $eligible := where (partial "news/posts.html" .) "Params.image" "!=" nil }}
+{{ $eligible = where $eligible "Params.image" "!=" "" }}
+{{ $eligible = where $eligible "Params.show_in_slideshow" "!=" false }}
+{{ $posts := first (int ($settings.limit | default 5)) $eligible }}
+<section class="shell home-news" aria-labelledby="home-news-title">
+  <div class="section-heading"><h2 id="home-news-title">{{ $settings.heading }}</h2><a class="text-link" href="{{ "news/" | relURL }}">{{ $settings.view_all }} <span aria-hidden="true">→</span></a></div>
+  {{ if $posts }}
+  <div class="news-slideshow" data-slideshow data-interval="{{ $settings.interval | default 5 }}" data-pause="{{ $settings.pause }}" data-play="{{ $settings.play }}" role="region" aria-roledescription="carousel" aria-label="{{ $settings.heading }}">
+    <div class="news-slides">
+    {{ range $index, $post := $posts }}
+      <article class="news-slide" data-slide {{ if gt $index 0 }}hidden{{ end }} role="group" aria-roledescription="slide" aria-label="{{ add $index 1 }} / {{ len $posts }}">
+        <a class="news-slide-image" href="{{ .RelPermalink }}" aria-label="{{ .Title }}">{{ partial "news/cover.html" (dict "post" . "width" 1600 "eager" (eq $index 0)) }}</a>
+        <div class="news-slide-copy"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>{{ with .Description }}<p>{{ . }}</p>{{ end }}<a class="text-link" href="{{ .RelPermalink }}">{{ (site.GetPage "news").Params.labels.read_more }} <span aria-hidden="true">→</span></a></div>
+      </article>
+    {{ end }}
+    </div>
+    {{ if gt (len $posts) 1 }}
+    <div class="slideshow-controls" data-slide-controls hidden>
+      <button type="button" data-slide-previous aria-label="{{ $settings.previous }}">←</button>
+      <div class="slide-dots">{{ range $index, $post := $posts }}<button type="button" data-slide-to="{{ $index }}" aria-label="{{ .Title }}" aria-pressed="{{ eq $index 0 }}"><span class="sr-only">{{ add $index 1 }}</span></button>{{ end }}</div>
+      <button type="button" data-slide-next aria-label="{{ $settings.next }}">→</button>
+      <button type="button" data-slide-toggle>{{ $settings.pause }}</button>
+    </div>
+    {{ end }}
+  </div>
+  {{ else }}<p class="news-empty home-news-empty">{{ $settings.empty }}</p>{{ end }}
+</section>

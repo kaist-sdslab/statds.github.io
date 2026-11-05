@@ -15,6 +15,7 @@
     {{ with .affiliation }}<p class="person-note">{{ . }}</p>{{ end }}
     {{ with .member_note }}<p class="person-note">{{ . }}</p>{{ end }}
     {{ with .research_interests }}<p class="person-interests"><span>{{ (site.GetPage "people").Params.labels.research_interests }}</span>{{ delimit . ", " }}</p>{{ end }}
-    {{ if .email }}{{ partial "people/links.html" . }}{{ end }}
+    {{ with .biography }}<p class="person-biography">{{ . }}</p>{{ end }}
+    {{ partial "people/links.html" . }}
   </div>
 </article>

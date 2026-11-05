@@ -7,6 +7,7 @@
       software: { order: { key: 'order', direction: 'Ascending', index: 0 } },
       courses: { order: { key: 'order', direction: 'Ascending', index: 0 } }
     }],
+    ['sds.cms.news.date-desc.v1', { news: { date: { key: 'date', direction: 'Descending', index: 0 } } }],
     ['sds.cms.papers.year-desc.v1', { papers: { year: { key: 'year', direction: 'Descending', index: 0 } } }]
   ];
   for (const [marker, defaults] of migrations) {

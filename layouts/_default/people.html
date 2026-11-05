@@ -10,7 +10,7 @@
     <h1 id="people-title">{{ .Title }}</h1>
   </header>
   {{ $panels := slice (dict "id" "members" "label" (site.GetPage "people").Params.labels.members_tab "groups" (first 2 $groups)) (dict "id" "interns" "label" (site.GetPage "people").Params.labels.interns_tab "groups" (slice (index $groups 2))) (dict "id" "alumni" "label" (site.GetPage "people").Params.labels.alumni_tab "groups" (slice (index $groups 3))) }}
-  <div class="people-tabs" role="tablist" aria-label="People categories" data-people-tablist hidden>
+  <div class="people-tabs" role="tablist" aria-label="Student categories" data-people-tablist hidden>
     {{ range $panels }}<button type="button" role="tab" id="people-tab-{{ .id }}" aria-controls="people-panel-{{ .id }}" aria-selected="false" tabindex="-1" data-people-tab="{{ .id }}">{{ .label }}</button>{{ end }}
   </div>
   {{ range $panels }}

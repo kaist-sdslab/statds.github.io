@@ -1,0 +1,6 @@
+{{- $src := .Destination -}}
+{{- if findRE `(?:^|/)media/` $src -}}
+  {{- $path := replaceRE `^.*?/media/` "media/" $src -}}
+  {{- with resources.Get $path -}}{{- $src = .RelPermalink -}}{{- end -}}
+{{- end -}}
+<img src="{{ $src }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">

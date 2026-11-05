@@ -1,0 +1,2 @@
+{{- $posts := (where site.RegularPages "Section" "news").ByDate.Reverse -}}
+{{- return $posts -}}

@@ -1,0 +1,10 @@
+{{- $post := .post -}}
+{{- with $post.Params.image -}}
+  {{- $image := partial "media-resource.html" . -}}
+  {{- if $image -}}
+    {{- $thumb := $image.Fit (printf "%dx%d webp" $.width $.width) -}}
+    <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $post.Params.image_alt | default "" }}" {{ if not $.eager }}loading="lazy"{{ end }} decoding="async">
+  {{- else -}}
+    <img src="{{ . | relURL }}" alt="{{ $post.Params.image_alt | default "" }}" {{ if not $.eager }}loading="lazy"{{ end }} decoding="async">
+  {{- end -}}
+{{- end -}}

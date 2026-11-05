@@ -44,6 +44,10 @@
   <meta property="og:url" content="{{ .Permalink }}">
   {{ $style := resources.Get "css/home.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+  {{ if or .IsHome (in (slice "news" "news-post") .Layout) }}
+    {{ $newsStyle := resources.Get "css/news.css" | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $newsStyle.RelPermalink }}" integrity="{{ $newsStyle.Data.Integrity }}">
+  {{ end }}
   {{ if eq .Layout "professors" }}
     {{ $professorStyle := resources.Get "css/professors.css" | minify | fingerprint }}
     <link rel="stylesheet" href="{{ $professorStyle.RelPermalink }}" integrity="{{ $professorStyle.Data.Integrity }}">
@@ -71,7 +75,7 @@
         {{ $current := . }}
         {{ range sort site.Data.site_settings.navigation "weight" }}
           {{ $url := (.url | default "") | relURL }}
-          {{ $active := eq $current.RelPermalink $url }}
+          {{ $active := or (eq $current.RelPermalink $url) (and (ne (.url | default "") "") (hasPrefix $current.RelPermalink $url)) }}
           <a href="{{ $url }}"{{ if $active }} class="active" aria-current="page"{{ end }}>{{ .name }}</a>
         {{ end }}
       </nav>

@@ -34,6 +34,59 @@ collections:
       - label: Description
         name: description
         widget: text
+    - label: News slideshow
+      name: slideshow
+      widget: object
+      hint: Automatically shows the newest published News posts with a cover image.
+      fields:
+      - label: Heading
+        name: heading
+        widget: string
+      - label: Seconds between slides
+        name: interval
+        widget: number
+        value_type: int
+        min: 3
+        max: 30
+        default: 5
+      - label: Maximum slides
+        name: limit
+        widget: number
+        value_type: int
+        min: 1
+        max: 10
+        default: 5
+      - label: View all link
+        name: view_all
+        widget: string
+      - label: Empty state
+        name: empty
+        widget: string
+      - label: Previous slide label
+        name: previous
+        widget: string
+      - label: Next slide label
+        name: next
+        widget: string
+      - label: Pause label
+        name: pause
+        widget: string
+      - label: Play label
+        name: play
+        widget: string
+  - name: about
+    label: About / Research Areas
+    file: content/about/index.md
+    fields:
+    - label: Title
+      name: title
+      widget: string
+    - label: Description
+      name: description
+      widget: text
+    - name: layout
+      widget: hidden
+      default: about
     - label: Research Areas
       name: research
       widget: list
@@ -58,7 +111,7 @@ collections:
         widget: publication-tags
         allow_create: false
         required: false
-        hint: Choose from Topics shown in Publications filters. Removed topics are excluded from Home automatically.
+        hint: Choose from Topics shown in Publications filters. Removed topics are excluded from About automatically.
         topic_scope: filters
       - label: Image
         name: image
@@ -315,7 +368,7 @@ collections:
         min: 1
         max: 100
   - name: people
-    label: People
+    label: Students
     file: content/people/index.md
     fields:
     - label: Title
@@ -380,35 +433,9 @@ collections:
       widget: object
       collapsed: true
       fields:
-      - &id001
-        label: Empty
+      - label: Empty
         name: empty
         widget: string
-  - name: courses
-    label: Courses
-    file: content/courses/index.md
-    fields:
-    - label: Title
-      name: title
-      widget: string
-    - label: Description
-      name: description
-      widget: text
-    - name: layout
-      widget: hidden
-      default: resources
-    - name: resource_type
-      widget: hidden
-      default: courses
-    - label: Page Labels
-      name: labels
-      widget: object
-      collapsed: true
-      fields:
-      - label: Offered
-        name: offered
-        widget: string
-      - *id001
   - name: not_found
     label: Not Found
     file: content/not-found/index.md
@@ -425,6 +452,132 @@ collections:
     - label: Back
       name: back
       widget: string
+  - name: news_page
+    label: News page settings
+    file: content/news/_index.md
+    fields:
+    - label: Title
+      name: title
+      widget: string
+    - label: Description
+      name: description
+      widget: text
+    - name: layout
+      widget: hidden
+      default: news
+    - label: Stories per page
+      name: page_size
+      widget: number
+      value_type: int
+      min: 1
+      max: 50
+      default: 8
+    - label: Labels
+      name: labels
+      widget: object
+      collapsed: true
+      fields:
+      - label: Search
+        name: search
+        widget: string
+      - label: Search placeholder
+        name: search_placeholder
+        widget: string
+      - label: Pinned
+        name: pinned
+        widget: string
+      - label: Empty
+        name: empty
+        widget: string
+      - label: No results
+        name: no_results
+        widget: string
+      - label: Previous
+        name: previous
+        widget: string
+      - label: Next
+        name: next
+        widget: string
+      - label: Back
+        name: back
+        widget: string
+      - label: Read more
+        name: read_more
+        widget: string
+      - label: Results
+        name: results
+        widget: string
+      - label: Page
+        name: page
+        widget: string
+- name: news
+  label: News
+  label_singular: News post
+  folder: content/news
+  create: true
+  slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+  summary: '{{title}} · {{date}}'
+  filter:
+    field: layout
+    value: news-post
+  sortable_fields:
+  - field: date
+    label: Date
+    default_sort: desc
+  - title
+  - pinned
+  media_folder: ../../assets/media/news
+  public_folder: media/news
+  editor:
+    preview: true
+  fields:
+  - label: Title
+    name: title
+    widget: string
+  - name: layout
+    widget: hidden
+    default: news-post
+  - label: Date
+    name: date
+    widget: datetime
+    date_format: YYYY-MM-DD
+    time_format: HH:mm
+    format: YYYY-MM-DDTHH:mm:ssZ
+  - label: Draft
+    name: draft
+    widget: boolean
+    default: false
+    hint: Drafts are saved in GitHub but excluded from the published website.
+  - label: Pin to top
+    name: pinned
+    widget: boolean
+    default: false
+    hint: Pinned posts appear above other posts. Each group is newest first.
+  - label: Summary
+    name: description
+    widget: text
+    required: false
+    hint: A short introduction for the news list and home slideshow.
+  - label: Cover image
+    name: image
+    widget: image
+    required: false
+    media_library:
+      allow_multiple: false
+    hint: Used as the list thumbnail and included automatically in the home slideshow.
+  - label: Cover image description
+    name: image_alt
+    widget: string
+    required: false
+  - label: Show in home slideshow
+    name: show_in_slideshow
+    widget: boolean
+    default: true
+    required: false
+  - label: Body
+    name: body
+    widget: markdown
+    hint: Write a full article with headings, links, lists, and inline images. Use Rich Text or Markdown mode.
 - name: papers
   label: Publications
   label_singular: Publication
@@ -482,7 +635,8 @@ collections:
     required: false
     min: 1
     max: 12
-    hint: Optional sorting information within the same year. Only the year is shown on the website. Leave empty if unknown.
+    hint: Optional sorting information within the same year. Only the year is shown on the website. Leave empty
+      if unknown.
   - label: Journal / Conference
     name: venue
     widget: string
@@ -494,7 +648,8 @@ collections:
     name: topics
     widget: publication-tags
     allow_create: true
-    hint: Search existing tags, or type a new tag and press Enter. New tags become reusable when this paper is saved.
+    hint: Search existing tags, or type a new tag and press Enter. New tags become reusable when this paper
+      is saved.
   - label: Paper URL
     name: url_paper
     widget: string
@@ -506,8 +661,8 @@ collections:
     required: false
     hint: Optional repository URL. The GitHub button is shown only when this URL is filled in.
 - name: people
-  label: People
-  label_singular: Person
+  label: Students
+  label_singular: Student profile
   folder: data/people
   extension: yaml
   format: yaml
@@ -561,8 +716,8 @@ collections:
       value: intern
     - label: Alumni
       value: alumni
-    hint: Change the group to move a profile between sections. The form shows the fields for the selected group. Existing
-      values are preserved when switching groups.
+    hint: Change the group to move a profile between sections. The form shows the fields for the selected group.
+      Existing values are preserved when switching groups.
   - label: Members display order
     name: order
     widget: people-conditional
@@ -628,6 +783,15 @@ collections:
     required: false
     default: []
     hint: Add interests as separate items. They are independent of publication tags.
+  - label: Biography
+    name: biography
+    widget: people-conditional
+    control_widget: text
+    groups:
+    - phd
+    - masters
+    required: false
+    hint: Optional introduction displayed on the member card.
   - label: Email
     name: email
     widget: people-conditional
@@ -644,8 +808,8 @@ collections:
     - intern
     required: false
     collapsed: false
-    hint: Newer start dates appear first. Choose Year only if the exact date is unknown. Leave an end date empty while the
-      internship is ongoing.
+    hint: Newer start dates appear first. Choose Year only if the exact date is unknown. Leave an end date
+      empty while the internship is ongoing.
     fields:
     - label: Program
       name: program
@@ -694,6 +858,42 @@ collections:
       name: position
       widget: string
       required: false
+  - label: LinkedIn URL
+    name: linkedin
+    widget: people-conditional
+    control_widget: string
+    groups:
+    - phd
+    - masters
+    required: false
+    pattern:
+    - ^https?://[^\s]+$
+    - Enter a complete https:// or http:// URL.
+    hint: Leave empty to hide this icon.
+  - label: GitHub URL
+    name: github
+    widget: people-conditional
+    control_widget: string
+    groups:
+    - phd
+    - masters
+    required: false
+    pattern:
+    - ^https?://[^\s]+$
+    - Enter a complete https:// or http:// URL.
+    hint: Leave empty to hide this icon.
+  - label: Website URL
+    name: website
+    widget: people-conditional
+    control_widget: string
+    groups:
+    - phd
+    - masters
+    required: false
+    pattern:
+    - ^https?://[^\s]+$
+    - Enter a complete https:// or http:// URL.
+    hint: Leave empty to hide this icon.
 - name: software
   label: Softwares
   label_singular: Software entry
@@ -723,49 +923,6 @@ collections:
     name: github
     widget: string
     required: false
-  - label: Display order
-    name: order
-    widget: number
-    value_type: int
-    min: 0
-    default: 10
-- name: courses
-  label: Courses
-  label_singular: Course
-  folder: data/courses
-  extension: yaml
-  format: yaml
-  create: true
-  slug: '{{slug}}'
-  summary: '{{code}} · {{title}}'
-  sortable_fields:
-  - field: order
-    label: Display Order
-    default_sort: asc
-  - title
-  - code
-  editor:
-    preview: true
-    visualEditing: true
-  fields:
-  - label: Course title
-    name: title
-    widget: string
-  - label: Course code
-    name: code
-    widget: string
-    required: false
-  - label: Teaching terms
-    name: terms
-    widget: list
-    required: false
-    default: []
-    field:
-      label: Term
-      name: term
-      widget: string
-    hint: Add each offering separately, for example Fall 2026 and Fall 2025. Displayed below the course title in the order
-      entered.
   - label: Display order
     name: order
     widget: number
@@ -863,15 +1020,16 @@ collections:
         value_type: int
         min: 1900
         max: 2100
-      hint: Only these years appear as filter buttons, newest first. Other publications remain searchable and visible under
-        All. Leave empty to hide the Year row.
+      hint: Only these years appear as filter buttons, newest first. Other publications remain searchable and
+        visible under All. Leave empty to hide the Year row.
     - label: Topics shown in filters
       name: topics
       widget: publication-tags
       allow_create: false
       required: false
       default: []
-      hint: Choose from the union of saved publication topics. Home research links can only select topics in this list.
+      hint: Choose from the union of saved publication topics. About research links can only select topics in
+        this list.
   - name: topic_colors
     label: Topic Colors
     file: data/topic_colors.yaml

@@ -16,18 +16,21 @@ navigation:
 - name: Home
   url: ''
   weight: 10
+- name: About
+  url: about/
+  weight: 20
 - name: Professor
   url: professors/
-  weight: 20
-- name: Publications
-  url: publications/
   weight: 30
-- name: People
+- name: Students
   url: people/
   weight: 40
+- name: Publications
+  url: publications/
+  weight: 50
+- name: News
+  url: news/
+  weight: 60
 - name: Softwares
   url: software/
-  weight: 50
-- name: Courses
-  url: courses/
-  weight: 60
+  weight: 70
