@@ -9,7 +9,7 @@
 {{- if eq .type "doc" -}}
   {{- range .content -}}{{- partial "news/rich-node.html" . -}}{{- end -}}
 {{- else if eq .type "imageRow" -}}
-  <div class="news-image-row" data-news-image-row>{{ range .content }}{{ partial "news/rich-image.html" (merge .attrs (dict "inRow" true)) }}{{ end }}</div>
+  {{- partial "news/image-layout.html" . -}}
 {{- else if eq .type "text" -}}
   {{- $text := .text | htmlEscape -}}
   {{- range .marks -}}

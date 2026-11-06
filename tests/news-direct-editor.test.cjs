@@ -158,7 +158,7 @@ test('dragging an image beside another creates a saved row; extraction, ratios, 
   let row = editor.getJSON().content.find(n => n.type === 'imageRow');
   assert.deepEqual(Array.from(row.content, n => n.attrs.src), ['/a.jpg', '/b.jpg']);
   assert.equal(api.getCover(api.parseDocument(saved)).image, '/a.jpg');
-  assert.equal(window.document.querySelectorAll('.news-image-row > figure').length, 2);
+  assert.equal(window.document.querySelectorAll('.news-image-row figure').length, 2);
   p = positions(); assert(api.dropImage(editor, p['/c.jpg'], p['/b.jpg'], 'row-after'));
   row = editor.getJSON().content.find(n => n.type === 'imageRow'); assert.equal(row.content.length, 3);
   api.setImageWidth(editor, 50); row = editor.getJSON().content.find(n => n.type === 'imageRow');
@@ -172,12 +172,12 @@ test('dragging an image beside another creates a saved row; extraction, ratios, 
   assert.equal(editor.getJSON().content.find(n => n.type === 'imageRow').content.length, 2);
   editor.commands.undo(); assert.equal(editor.getJSON().content.find(n => n.type === 'imageRow').content.length, 3);
   const second = api.createEditor({ element: window.document.getElementById('other'), value: api.serialize(editor.getJSON()), resolveAsset: x => x, onUpdate: () => {}, onSelection: () => {} });
-  assert.equal(window.document.querySelectorAll('#other .news-image-row > figure').length, 3);
+  assert.equal(window.document.querySelectorAll('#other .news-image-row figure').length, 3);
   assert(api.renderDocument(second.getJSON()).includes('news-image-row'));
   second.destroy(); editor.destroy(); dom.window.close();
 });
 
-test('actual pointer drag shows the row drop hint and groups on release; cancel is non-destructive', () => {
+test('actual pointer drag shows the row drop hint and arranges on release; cancel is non-destructive', () => {
   const { dom, window, api } = environment();
   const value = api.serialize({ type: 'doc', content: [{ type: 'image', attrs: { src: '/a.jpg' } }, { type: 'image', attrs: { src: '/b.jpg' } }, { type: 'paragraph' }] });
   const editor = api.createEditor({ element: window.document.getElementById('editor'), value, resolveAsset: x => x, onUpdate: () => {}, onSelection: () => {} });
@@ -187,7 +187,7 @@ test('actual pointer drag shows the row drop hint and groups on release; cancel 
   figures[0].getBoundingClientRect = () => rect(20, 40, 240, 120); figures[1].getBoundingClientRect = () => rect(20, 220, 240, 120);
   const fire = (target, type, x, y) => target.dispatchEvent(new window.MouseEvent(type, { bubbles: true, button: 0, clientX: x, clientY: y, cancelable: true }));
   fire(figures[0].querySelector('.sds-image-move'), 'pointerdown', 30, 50); fire(window.document, 'pointermove', 60, 280);
-  assert.equal(window.document.querySelector('.sds-image-drop-hint').textContent, 'Same image row');
+  assert.equal(window.document.querySelector('.sds-image-drop-hint').textContent, 'Images side by side');
   window.document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   assert.equal(window.document.querySelector('.sds-image-drop-indicator'), null); assert(!editor.getJSON().content.some(n => n.type === 'imageRow'));
   fire(figures[0].querySelector('img'), 'pointerdown', 30, 50); fire(window.document, 'pointermove', 240, 280); fire(window.document, 'pointerup', 240, 280);
@@ -209,7 +209,7 @@ test('deleting from a row unwraps a single remaining image without losing its co
   editor.destroy(); dom.window.close();
 });
 
-test('touch uses the image grip while allowing normal scrolling on pictures; keyboard moves and regroups', () => {
+test('touch uses the image grip while allowing normal scrolling on pictures; keyboard moves and arranges', () => {
   const { dom, window, api } = environment();
   const value = api.serialize({ type: 'doc', content: [{ type: 'image', attrs: { src: '/a.jpg', cover: true } }, { type: 'image', attrs: { src: '/b.jpg' } }, { type: 'paragraph', content: [{ type: 'text', text: 'After photos' }] }] });
   const editor = api.createEditor({ element: window.document.getElementById('editor'), value, resolveAsset: x => x, onUpdate: () => {}, onSelection: () => {} });
@@ -227,5 +227,66 @@ test('touch uses the image grip while allowing normal scrolling on pictures; key
   key('ArrowDown'); assert(!editor.getJSON().content.some(n => n.type === 'imageRow'));
   key('ArrowLeft'); assert.equal(editor.getJSON().content[0].type, 'imageRow');
   assert.equal(api.getCover(editor.getJSON()).image, '/a.jpg');
+  editor.destroy(); dom.window.close();
+});
+
+test('two pictures form a row or column beside article text; the whole layout moves and resizes', () => {
+  const { dom, window, api } = environment(); let saved;
+  const value = api.serialize({ type: 'doc', content: [{ type: 'image', attrs: { src: '/a.jpg', cover: true } }, { type: 'image', attrs: { src: '/b.jpg' } }, { type: 'paragraph', content: [{ type: 'text', text: 'Main text next to both pictures.' }] }] });
+  const editor = api.createEditor({ element: window.document.getElementById('editor'), value, resolveAsset: x => x, onUpdate: next => { saved = next; }, onSelection: () => {} });
+  const positions = () => { const p = {}; editor.state.doc.descendants((node, pos) => { if (node.type.name === 'image') p[node.attrs.src] = pos; if (node.type.name === 'imageRow') p.layout = pos; if (node.type.name === 'paragraph' && node.textContent.startsWith('Main text')) p.text = pos; }); return p; };
+  let p = positions(); assert(api.dropImage(editor, p['/a.jpg'], p.text, 'wrap-left'));
+  p = positions(); assert(api.dropImage(editor, p['/b.jpg'], p['/a.jpg'], 'row-after'));
+  let layout = editor.getJSON().content.find(n => n.type === 'imageRow');
+  assert.equal(layout.attrs.direction, 'row'); assert.equal(layout.attrs.alignment, 'left'); assert.equal(layout.attrs.wrap, true);
+  assert(window.document.querySelector('.news-image-row.news-image-layout-left.news-image-layout-wrap'));
+  api.setLayoutWidth(editor, positions().layout, 40);
+  assert.equal(window.document.querySelector('.sds-image-layout').style.width, '40%');
+  assert(api.renderDocument(api.parseDocument(saved)).includes('width:40%'));
+  p = positions(); assert(api.dropImage(editor, p.layout, p.text, 'wrap-right'));
+  layout = editor.getJSON().content.find(n => n.type === 'imageRow'); assert.equal(layout.attrs.alignment, 'right');
+  assert.equal(layout.attrs.widthPercent, 40); assert.equal(editor.state.selection.node.type.name, 'imageRow');
+  editor.commands.undo(); assert.equal(editor.getJSON().content.find(n => n.type === 'imageRow').attrs.alignment, 'left');
+  p = positions(); assert(api.dropImage(editor, p['/b.jpg'], p['/a.jpg'], 'column-before'));
+  layout = editor.getJSON().content.find(n => n.type === 'imageRow');
+  assert.equal(layout.attrs.direction, 'column'); assert.equal(layout.attrs.wrap, true); assert.equal(layout.attrs.widthPercent, 40);
+  assert.deepEqual(Array.from(layout.content, n => n.attrs.src), ['/b.jpg', '/a.jpg']);
+  assert.deepEqual(Array.from(layout.content, n => n.attrs.widthPercent), [100, 100]);
+  assert(window.document.querySelector('.news-image-column.news-image-layout-wrap'));
+  api.setImageWidth(editor, 70); layout = editor.getJSON().content.find(n => n.type === 'imageRow');
+  assert.deepEqual(Array.from(layout.content, n => n.attrs.widthPercent), [70, 100]);
+  p = positions(); assert(api.dropImage(editor, p.layout, p.text, 'wrap-right'));
+  const second = api.createEditor({ element: window.document.getElementById('other'), value: saved, resolveAsset: x => x, onUpdate: () => {}, onSelection: () => {} });
+  assert(window.document.querySelector('#other .news-image-column.news-image-layout-right.news-image-layout-wrap'));
+  assert.equal(window.document.querySelector('#other .sds-image-layout').style.width, '40%');
+  assert.equal(api.getCover(second.getJSON()).image, '/a.jpg');
+  assert(second.state.doc.textContent.includes('Main text next to both pictures.'));
+  p = positions(); editor.commands.setNodeSelection(p['/b.jpg']); editor.commands.deleteSelection();
+  const remaining = editor.getJSON().content.find(n => n.type === 'image');
+  assert.equal(remaining.attrs.src, '/a.jpg'); assert.equal(remaining.attrs.widthPercent, 40);
+  assert.equal(remaining.attrs.alignment, 'right'); assert.equal(remaining.attrs.wrap, true);
+  second.destroy(); editor.destroy(); dom.window.close();
+});
+
+test('pointer drop above a photo creates a column and the Images handle places both beside text', () => {
+  const { dom, window, api } = environment();
+  const value = api.serialize({ type: 'doc', content: [{ type: 'image', attrs: { src: '/a.jpg' } }, { type: 'image', attrs: { src: '/b.jpg' } }, { type: 'paragraph', content: [{ type: 'text', text: 'Body paragraph' }] }] });
+  const editor = api.createEditor({ element: window.document.getElementById('editor'), value, resolveAsset: x => x, onUpdate: () => {}, onSelection: () => {} });
+  const rect = (left, top, width, height) => ({ left, top, width, height, right: left + width, bottom: top + height });
+  editor.view.dom.getBoundingClientRect = () => rect(0, 0, 600, 800);
+  const figures = window.document.querySelectorAll('figure');
+  figures[0].getBoundingClientRect = () => rect(20, 40, 240, 120); figures[1].getBoundingClientRect = () => rect(20, 240, 240, 120);
+  const fire = (target, type, x, y) => target.dispatchEvent(new window.MouseEvent(type, { bubbles: true, button: 0, clientX: x, clientY: y, cancelable: true }));
+  fire(figures[0].querySelector('img'), 'pointerdown', 40, 70); fire(window.document, 'pointermove', 120, 250);
+  assert.equal(window.document.querySelector('.sds-image-drop-hint').textContent, 'Images stacked vertically');
+  fire(window.document, 'pointerup', 120, 250);
+  const layout = window.document.querySelector('.sds-image-layout'); layout.getBoundingClientRect = () => rect(0, 0, 600, 300);
+  window.document.querySelector('.sds-news-input p').getBoundingClientRect = () => rect(0, 320, 600, 100);
+  fire(layout.querySelector('.sds-layout-move'), 'pointerdown', 570, 10); fire(window.document, 'pointermove', 560, 360);
+  assert.equal(window.document.querySelector('.sds-image-drop-hint').textContent, 'Images right · text left');
+  fire(window.document, 'pointerup', 560, 360);
+  const attrs = editor.getJSON().content.find(n => n.type === 'imageRow').attrs;
+  assert.equal(attrs.direction, 'column'); assert.equal(attrs.alignment, 'right'); assert.equal(attrs.wrap, true);
+  assert.equal(attrs.widthPercent, 55);
   editor.destroy(); dom.window.close();
 });

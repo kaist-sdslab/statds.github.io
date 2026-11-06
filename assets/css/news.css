@@ -123,5 +123,20 @@
   .news-figure-wrap.news-figure-left { margin-right: 12px; }
   .news-figure-wrap.news-figure-right { margin-left: 12px; }
 }
-.news-image-row { display: flex; align-items: flex-start; gap: clamp(6px, 1.5vw, 14px); width: 100%; margin: 0 0 22px; clear: both; }
-.news-image-row > .news-figure { flex: var(--image-weight, 1) 1 0; width: 0 !important; min-width: 0; max-width: none !important; margin: 0 !important; float: none !important; }
+/* Row/column image layouts can float beside the article text as a whole. */
+.news-image-layout { display: flex; align-items: flex-start; gap: clamp(6px, 1.5vw, 14px); max-width: 100%; margin: 0 0 22px; clear: both; }
+.news-image-layout-left { margin-left: 0; margin-right: auto; }
+.news-image-layout-center { margin-left: auto; margin-right: auto; }
+.news-image-layout-right { margin-left: auto; margin-right: 0; }
+.news-image-layout-wrap { clear: none; }
+.news-image-layout-wrap.news-image-layout-left { float: left; margin-right: 24px; }
+.news-image-layout-wrap.news-image-layout-right { float: right; margin-left: 24px; }
+.news-image-row { flex-direction: row; }
+.news-image-column { flex-direction: column; }
+.news-image-layout > .news-figure { min-width: 0; max-width: 100%; margin: 0 auto !important; float: none !important; }
+.news-image-row > .news-figure { flex: var(--image-weight, 1) 1 0; width: 0 !important; }
+.news-image-column > .news-figure { flex: 0 0 auto; }
+@media (max-width: 760px) {
+  .news-image-layout-wrap.news-image-layout-left { margin-right: 12px; }
+  .news-image-layout-wrap.news-image-layout-right { margin-left: 12px; }
+}

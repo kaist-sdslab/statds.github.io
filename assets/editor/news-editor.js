@@ -4,8 +4,8 @@ import Image from '@tiptap/extension-image';
 import TextAlign from '@tiptap/extension-text-align';
 import { TableKit } from '@tiptap/extension-table';
 import MarkdownIt from 'markdown-it';
-import { ImageRow, NormalizeImageRows, share, setImageWidth, beginImageDrag, moveImageWithKey } from './image-layout.js';
-export { arrangeDocument, dropImage, locateDrop, setImageWidth } from './image-layout.js';
+import { ImageRow, NormalizeImageRows, share, setImageWidth, beginImageDrag, moveImageWithKey, layoutAttributes } from './image-layout.js';
+export { arrangeDocument, dropImage, locateDrop, setImageWidth, setLayoutWidth } from './image-layout.js';
 
 const markdown = new MarkdownIt({ html: false, breaks: false });
 export const align = value => ['left', 'center', 'right', 'justify'].includes(value) ? value : 'left';
@@ -97,7 +97,7 @@ export function renderDocument(doc, resolve = src => src) {
     const cls = (attrs.textAlign ? ` class="news-text-${align(attrs.textAlign)}"` : '') + (blockStyle ? ` style="${blockStyle}"` : '');
     switch (node.type) {
       case 'doc': return children();
-      case 'imageRow': return `<div class="news-image-row" data-news-image-row>${children()}</div>`;
+      case 'imageRow': { const layout = layoutAttributes(attrs); return `<div class="${layout.class}" style="${layout.style}" data-news-image-layout="${attrs.direction === 'column' ? 'column' : 'row'}">${children()}</div>`; }
       case 'text': {
         let result = escape(node.text);
         for (const mark of node.marks || []) {
@@ -150,11 +150,11 @@ const LayoutImage = Image.extend({
       dom.contentEditable = 'false'; dom.draggable = false;
       img.draggable = false;
       handle.type = 'button'; handle.className = 'sds-image-resize'; handle.setAttribute('aria-label', 'Resize image; use arrow keys to change width'); handle.textContent = '↘';
-      grip.type = 'button'; grip.className = 'sds-image-move'; grip.setAttribute('aria-label', 'Drag image to arrange. Arrow up/down moves; left/right groups with a neighboring picture.'); grip.textContent = '⠿';
+      grip.type = 'button'; grip.className = 'sds-image-move'; grip.setAttribute('aria-label', 'Drag image to arrange. Arrow up/down moves; left/right places beside a neighboring picture.'); grip.textContent = '⠿';
       dom.append(img, grip, handle);
-      const inRow = () => typeof getPos() === 'number' && editor.state.doc.resolve(getPos()).parent.type.name === 'imageRow';
+      const layout = () => { const parent = typeof getPos() === 'number' && editor.state.doc.resolve(getPos()).parent; return parent && parent.type.name === 'imageRow' ? parent : null; };
       const draw = () => {
-        const a = node.attrs, position = imageAlign(a.alignment), grouped = inRow(), wrap = !grouped && a.wrap && position !== 'center';
+        const a = node.attrs, position = imageAlign(a.alignment), insideLayout = !!layout(), wrap = !insideLayout && a.wrap && position !== 'center';
         const selected = dom.classList.contains('ProseMirror-selectednode');
         dom.className = `sds-inline-image news-figure news-figure-${position}${wrap ? ' news-figure-wrap' : ''}`;
         if (selected) dom.classList.add('ProseMirror-selectednode');
@@ -176,7 +176,7 @@ const LayoutImage = Image.extend({
       handle.addEventListener('keydown', event => { if (['ArrowLeft', 'ArrowRight'].includes(event.key)) { event.preventDefault(); select(); setImageWidth(editor, node.attrs.widthPercent + (event.key === 'ArrowRight' ? 5 : -5)); } });
       handle.addEventListener('pointerdown', event => {
         event.preventDefault(); event.stopPropagation(); select();
-        const start = event.clientX, initialWidth = dom.getBoundingClientRect().width, available = dom.parentElement.clientWidth, grouped = inRow();
+        const start = event.clientX, initialWidth = dom.getBoundingClientRect().width, available = dom.parentElement.clientWidth, grouped = !!layout() && layout().attrs.direction !== 'column';
         const direction = !grouped && node.attrs.alignment === 'right' ? -1 : !grouped && node.attrs.alignment === 'center' ? 2 : 1;
         const siblings = grouped ? [...dom.parentElement.children].map(element => ({ element, weight: Number(element.style.getPropertyValue('--image-weight')) || 1 })) : [];
         let next = width(node.attrs.widthPercent);

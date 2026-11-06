@@ -902,7 +902,7 @@ collections:
     name: body
     widget: news-body
     hint: Write and format directly in the article. Font size applies immediately. Select a picture for Cover and width;
-      drag beside another picture to group, beside a paragraph to wrap text, or above/below to separate.
+      drop beside a photo for a row or above/below it for a column. Drag the Images handle beside text to move the entire image layout.
 - name: software
   label: Softwares
   label_singular: Software entry

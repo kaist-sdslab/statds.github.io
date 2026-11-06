@@ -81,24 +81,27 @@
       this.props.onOpenMediaLibrary({ controlID: this.mediaID, forImage: true, allowMultiple: false, value: '', field: this.props.field, privateUpload: false });
     },
     render() {
-      const editor = this.editor || this.activeEditor, selectedImage = !!editor?.isActive('image'), attrs = selectedImage ? editor.getAttributes('image') : {};
-      const row = selectedImage && editor.state.selection.$from.parent.type.name === 'imageRow' ? editor.state.selection.$from.parent : null;
+      const editor = this.editor || this.activeEditor, selectedImage = !!editor?.isActive('image'), selectedLayout = editor?.state.selection.node?.type.name === 'imageRow';
+      const attrs = selectedImage ? editor.getAttributes('image') : {}, mediaSelected = selectedImage || selectedLayout;
+      const layout = selectedLayout ? editor.state.selection.node : selectedImage && editor.state.selection.$from.parent.type.name === 'imageRow' ? editor.state.selection.$from.parent : null;
+      const row = layout?.attrs.direction !== 'column' && layout;
+      const layoutPos = layout ? selectedLayout ? editor.state.selection.from : editor.state.selection.$from.before() : null;
       const minWidth = row ? 1 : 10, maxWidth = row ? Math.max(1, 101 - row.childCount) : 100;
-      const button = (label, action, active = false, title = label) => h('button', { key: title, type: 'button', title, 'aria-label': title, 'aria-pressed': active, disabled: !!this.props.isDisabled,
+      const button = (label, action, active = false, title = label) => h('button', { key: title, type: 'button', title, 'aria-label': title, 'aria-pressed': active, disabled: !!this.props.isDisabled || mediaSelected && ['Bold', 'Italic', 'Link', 'Bullet list', 'Numbered list'].includes(title),
         onMouseDown: event => event.preventDefault(), onClick: action }, label);
       const alignment = value => this.command('setTextAlign', value);
       return h('div', { className: 'sds-news-editor' },
         h('div', { className: 'sds-editor-toolbar', role: 'toolbar', 'aria-label': 'Article formatting' },
           button('B', () => this.command('toggleBold'), !!editor?.isActive('bold'), 'Bold'),
           button('I', () => this.command('toggleItalic'), !!editor?.isActive('italic'), 'Italic'),
-          h('select', { 'aria-label': 'Paragraph or heading', value: editor?.isActive('heading') ? editor.getAttributes('heading').level : 'paragraph', onChange: event => event.target.value === 'paragraph' ? this.command('setParagraph') : this.command('setHeading', { level: Number(event.target.value) }) },
+          h('select', { 'aria-label': 'Paragraph or heading', disabled: mediaSelected, value: editor?.isActive('heading') ? editor.getAttributes('heading').level : 'paragraph', onChange: event => event.target.value === 'paragraph' ? this.command('setParagraph') : this.command('setHeading', { level: Number(event.target.value) }) },
             h('option', { value: 'paragraph' }, 'Paragraph'), ...[1, 2, 3, 4, 5, 6].map(level => h('option', { key: level, value: level }, `Heading ${level}`))),
-          h('label', null, 'Size ', h('input', { type: 'number', min: 10, max: 72, disabled: selectedImage, value: this.state.fontDraft ?? editor?.getAttributes('textStyle').fontSize ?? '', placeholder: 'Auto', 'aria-label': 'Font size in pixels', onFocus: event => this.beginFontSize(event), onChange: event => this.updateFontSize(event), onBlur: event => this.finishFontSize(event) })),
-          h('input', { type: 'color', 'aria-label': 'Text color', value: editor?.getAttributes('textStyle').color || '#263442', onChange: event => this.typography('color', event.target.value) }),
-          h('select', { 'aria-label': 'Line spacing', value: editor?.getAttributes(editor.isActive('heading') ? 'heading' : 'paragraph').lineHeight || '', onChange: event => this.command('updateAttributes', editor.isActive('heading') ? 'heading' : 'paragraph', { lineHeight: event.target.value || null }) }, h('option', { value: '' }, 'Line spacing'), ...['1.2', '1.5', '1.8', '2'].map(value => h('option', { key: value, value }, value))),
+          h('label', null, 'Size ', h('input', { type: 'number', min: 10, max: 72, disabled: mediaSelected, value: this.state.fontDraft ?? editor?.getAttributes('textStyle').fontSize ?? '', placeholder: 'Auto', 'aria-label': 'Font size in pixels', onFocus: event => this.beginFontSize(event), onChange: event => this.updateFontSize(event), onBlur: event => this.finishFontSize(event) })),
+          h('input', { type: 'color', 'aria-label': 'Text color', disabled: mediaSelected, value: editor?.getAttributes('textStyle').color || '#263442', onChange: event => this.typography('color', event.target.value) }),
+          h('select', { 'aria-label': 'Line spacing', disabled: mediaSelected, value: editor?.getAttributes(editor.isActive('heading') ? 'heading' : 'paragraph').lineHeight || '', onChange: event => this.command('updateAttributes', editor.isActive('heading') ? 'heading' : 'paragraph', { lineHeight: event.target.value || null }) }, h('option', { value: '' }, 'Line spacing'), ...['1.2', '1.5', '1.8', '2'].map(value => h('option', { key: value, value }, value))),
           button('• List', () => this.command('toggleBulletList'), !!editor?.isActive('bulletList'), 'Bullet list'),
           button('1. List', () => this.command('toggleOrderedList'), !!editor?.isActive('orderedList'), 'Numbered list'),
-          ...(!selectedImage ? ['left', 'center', 'right', 'justify'] : []).map(value => button(value[0].toUpperCase() + value.slice(1), () => alignment(value), !!editor?.isActive({ textAlign: value }), `Align ${value}`)),
+          ...(!mediaSelected ? ['left', 'center', 'right', 'justify'] : []).map(value => button(value[0].toUpperCase() + value.slice(1), () => alignment(value), !!editor?.isActive({ textAlign: value }), `Align ${value}`)),
           button('Link', () => this.openLink(), !!editor?.isActive('link')),
           button('Image', () => this.openImage(), false, 'Insert image from Media Library'),
           button('Undo', () => this.command('undo')), button('Redo', () => this.command('redo'))),
@@ -106,12 +109,14 @@
           h('input', { type: 'url', placeholder: 'https://…', 'aria-label': 'Link URL', value: this.state.link.url, onChange: event => this.setState({ link: { ...this.state.link, url: event.target.value } }), onKeyDown: event => { if (event.key === 'Enter') { event.preventDefault(); this.saveLink(); } } }),
           h('input', { type: 'text', placeholder: 'Display text (optional)', 'aria-label': 'Link text', value: this.state.link.text, onChange: event => this.setState({ link: { ...this.state.link, text: event.target.value } }) }),
           button('Apply link', () => this.saveLink()), button('Cancel', () => this.setState({ link: null }))),
-        selectedImage && h('div', { className: 'sds-image-toolbar', role: 'group', 'aria-label': 'Selected image layout' },
-          h('label', null, h('input', { type: 'checkbox', checked: !!attrs.cover, 'aria-label': 'Use as cover image', onChange: event => api.selectCover(this.editor, event.target.checked) }), ' Cover'),
-          h('label', null, 'Width ', h('input', { type: 'range', min: minWidth, max: maxWidth, step: row ? .1 : 1, value: attrs.widthPercent || 100, 'aria-label': 'Image width percent', onChange: event => api.setImageWidth(this.editor, event.target.value) })),
-          h('label', null, h('input', { type: 'number', min: minWidth, max: maxWidth, step: row ? .1 : 1, key: `width-${attrs.widthPercent}`, defaultValue: Number(Number(attrs.widthPercent || 100).toFixed(1)), 'aria-label': 'Image width', onBlur: event => api.setImageWidth(this.editor, event.target.value) }), ' %'),
-          !row && h('label', null, 'Max px ', h('input', { type: 'number', min: 0, max: 2400, key: `max-${attrs.maxWidth}`, defaultValue: attrs.maxWidth || '', placeholder: 'Auto', 'aria-label': 'Image maximum width in pixels', onBlur: event => this.imageAttribute('maxWidth', Math.max(0, Math.min(2400, Number(event.target.value) || 0))) })),
-          h('span', { className: 'sds-image-help' }, 'Drag beside a picture to group, beside text to wrap, or above/below a block.')),
+        mediaSelected && h('div', { className: 'sds-image-toolbar', role: 'group', 'aria-label': 'Selected image layout' },
+          selectedImage && h('label', null, h('input', { type: 'checkbox', checked: !!attrs.cover, 'aria-label': 'Use as cover image', onChange: event => api.selectCover(this.editor, event.target.checked) }), ' Cover'),
+          selectedImage && h('label', null, row ? 'Image share ' : 'Image width ', h('input', { type: 'range', min: minWidth, max: maxWidth, step: row ? .1 : 1, value: attrs.widthPercent || 100, 'aria-label': 'Image width percent', onChange: event => api.setImageWidth(this.editor, event.target.value) })),
+          selectedImage && h('label', null, h('input', { type: 'number', min: minWidth, max: maxWidth, step: row ? .1 : 1, key: `width-${attrs.widthPercent}`, defaultValue: Number(Number(attrs.widthPercent || 100).toFixed(1)), 'aria-label': 'Image width', onBlur: event => api.setImageWidth(this.editor, event.target.value) }), ' %'),
+          selectedImage && !layout && h('label', null, 'Max px ', h('input', { type: 'number', min: 0, max: 2400, key: `max-${attrs.maxWidth}`, defaultValue: attrs.maxWidth || '', placeholder: 'Auto', 'aria-label': 'Image maximum width in pixels', onBlur: event => this.imageAttribute('maxWidth', Math.max(0, Math.min(2400, Number(event.target.value) || 0))) })),
+          layout && h('label', null, `${layout.attrs.direction === 'column' ? 'Column' : 'Row'} width `, h('input', { type: 'range', min: 10, max: 100, value: layout.attrs.widthPercent || 100, 'aria-label': 'Image layout width percent', onChange: event => api.setLayoutWidth(this.editor, layoutPos, event.target.value) })),
+          layout && h('label', null, h('input', { type: 'number', min: 10, max: 100, key: `layout-${layoutPos}-${layout.attrs.widthPercent}`, defaultValue: layout.attrs.widthPercent || 100, 'aria-label': 'Image layout width', onBlur: event => api.setLayoutWidth(this.editor, layoutPos, event.target.value) }), ' %'),
+          h('span', { className: 'sds-image-help' }, 'Drop beside a photo for a row, above/below it for a column. Drag the Images handle beside text to place all pictures with the article.')),
         h('div', { ref: element => { this.host = element; }, className: 'sds-editor-surface', hidden: !!this.state.error }),
         this.state.error && h('div', { className: 'sds-editor-error' }, h('p', { role: 'alert' }, this.state.error), h('textarea', { 'aria-label': 'Original article source', value: this.props.value || '', onChange: event => this.props.onChange(event.target.value) })));
     }
