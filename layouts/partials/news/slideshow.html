@@ -10,7 +10,6 @@
     {{ range $index, $post := $posts }}
       <article class="news-slide" data-slide {{ if gt $index 0 }}hidden{{ end }} role="group" aria-roledescription="slide" aria-label="{{ add $index 1 }} / {{ len $posts }}">
         <a class="news-slide-image" href="{{ .RelPermalink }}" aria-label="{{ .Title }}">{{ partial "news/cover.html" (dict "post" . "width" 1600 "eager" (eq $index 0)) }}</a>
-        <div class="home-slide-caption"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time><h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2></div>
       </article>
     {{ end }}
     </div>

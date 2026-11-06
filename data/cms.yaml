@@ -563,11 +563,6 @@ collections:
     widget: boolean
     default: false
     hint: Pinned posts appear above other posts. Each group is newest first.
-  - label: Summary
-    name: description
-    widget: text
-    required: false
-    hint: A short introduction for the news list and home slideshow.
   - label: Cover image
     name: image
     widget: image

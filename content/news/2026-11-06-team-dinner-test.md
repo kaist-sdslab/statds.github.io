@@ -4,7 +4,6 @@ layout: news-post
 date: 2026-11-06T17:09:00+09:00
 draft: false
 pinned: false
-description: Summary
 image: /statds.github.io/media/news/dinner.png.jpeg
 image_alt: ""
 show_in_slideshow: true

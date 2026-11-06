@@ -157,7 +157,7 @@
       node('section', 'hero shell home-hero',
         node('div', 'lab-introduction', edit(ctx, 'hero.welcome', node('h1', null, data.hero?.welcome)), edit(ctx, 'hero.description', node('p', 'hero-description', data.hero?.description)), edit(ctx, 'hero.button_label', link(data.hero?.button_label, 'home-research-button', [data.hero?.button_label, ' →']))),
         node('div', 'home-hero-gallery', post ? node('div', 'news-slideshow',
-          node('article', 'news-slide', node('div', 'news-slide-image', image(post.image, post.image_alt, ctx.props)), node('div', 'home-slide-caption', node('time', null, newsDate(post.date)), node('h2', null, post.title))),
+          node('article', 'news-slide', node('div', 'news-slide-image', image(post.image, post.image_alt, ctx.props))),
           posts.length > 1 && node('div', 'slideshow-controls', h('button', { type: 'button', onClick: () => ctx.update({ slide: (selected + posts.length - 1) % posts.length }) }, settings.previous), node('span', null, `${selected + 1} / ${posts.length}`), h('button', { type: 'button', onClick: () => ctx.update({ slide: (selected + 1) % posts.length }) }, settings.next)))
           : node('div', 'home-gallery-empty', node('span', 'home-gallery-mark', 'SDS', node('span', null, 'STATISTICAL DATA SCIENCE')), edit(ctx, 'slideshow.empty', node('p', null, settings.empty))))),
       node('section', 'shell home-news', node('div', 'section-heading', edit(ctx, 'news.heading', node('h2', null, labels.heading)), edit(ctx, 'news.view_all', link(labels.view_all, 'text-link', `${labels.view_all} →`))),
@@ -166,7 +166,7 @@
   };
   const newsArticle = (data, ctx) => node('article', 'shell news-article',
     node('span', 'text-link news-back', `← ${ctx.labels.news.back}`),
-    node('header', null, edit(ctx, 'date', node('time', null, newsDate(data.date))), edit(ctx, 'title', node('h1', null, data.title)), data.description && edit(ctx, 'description', node('p', 'news-lead', data.description))),
+    node('header', null, edit(ctx, 'date', node('time', null, newsDate(data.date))), edit(ctx, 'title', node('h1', null, data.title))),
     data.image && edit(ctx, 'image', node('figure', 'news-cover', image(data.image, data.image_alt, ctx.props), data.image_alt && node('figcaption', null, data.image_alt))),
     edit(ctx, 'body', node('div', 'news-body', ctx.props.widgetFor('body'))));
   const newsList = (data, ctx) => {
@@ -179,7 +179,7 @@
       node('p', 'news-results', `${posts.length} ${labels.results}`),
       node('div', 'news-list', ...posts.slice((page - 1) * size, page * size).map(post => node('article', 'news-card',
         node('div', `news-thumbnail${post.image ? '' : ' news-thumbnail-empty'}`, post.image ? image(post.image, post.image_alt, ctx.props) : node('span', null, 'SDS', node('span', null, 'LAB NEWS'))),
-        node('div', 'news-card-copy', node('div', 'news-meta', node('time', null, newsDate(post.date)), post.pinned && node('span', 'news-pin', labels.pinned)), node('h2', null, post.title), node('p', null, post.description || text(post.body).slice(0, 180)), link(labels.read_more, 'text-link', `${labels.read_more} →`))))),
+        node('div', 'news-card-copy', node('div', 'news-meta', node('time', null, newsDate(post.date)), post.pinned && node('span', 'news-pin', labels.pinned)), node('h2', null, post.title), link(labels.read_more, 'text-link', `${labels.read_more} →`))))),
       !posts.length && node('p', 'news-empty', labels.empty),
       pages > 1 && node('nav', 'news-pagination', h('button', { disabled: page === 1, onClick: () => ctx.update({ page: page - 1 }) }, labels.previous), node('span', null, `${labels.page} ${page} / ${pages}`), h('button', { disabled: page === pages, onClick: () => ctx.update({ page: page + 1 }) }, labels.next)));
   };
