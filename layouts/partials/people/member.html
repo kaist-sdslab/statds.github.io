@@ -4,7 +4,7 @@
       {{ if .photo }}
         {{ $photo := partial "media-resource.html" .photo }}
         {{ if $photo }}{{ $small := $photo.Fit "240x300 webp" }}{{ $large := $photo.Fit "480x600 webp" }}
-        <img src="{{ $small.RelPermalink }}" srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ $large.RelPermalink }} {{ $large.Width }}w" sizes="(max-width: 480px) 90px, 120px" width="{{ $small.Width }}" height="{{ $small.Height }}" style="{{ partial "people/portrait-style.html" .photo_frame }}" alt="{{ .name }}" loading="lazy" decoding="async">
+        <img src="{{ $small.RelPermalink }}" srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ $large.RelPermalink }} {{ $large.Width }}w" sizes="(max-width: 480px) 80px, 96px" width="{{ $small.Width }}" height="{{ $small.Height }}" style="{{ partial "people/portrait-style.html" .photo_frame }}" alt="{{ .name }}" loading="lazy" decoding="async">
         {{ else }}{{ errorf "Photo %q for %q was not found in assets" .photo .name }}{{ end }}
       {{ else }}
         {{ $initials := "" }}{{ range first 2 (split .name " ") }}{{ $initials = printf "%s%s" $initials (substr . 0 1) }}{{ end }}
@@ -15,12 +15,12 @@
       <h3>{{ .name }}</h3>
       {{ with .affiliation }}<p class="person-note">{{ . }}</p>{{ end }}
       {{ with .member_note }}<p class="person-member-note">{{ . }}</p>{{ end }}
+      {{ partial "people/interests.html" . }}
     </div>
   </div>
-  {{ if or .biography .research_interests }}
+  {{ if .biography }}
   <div class="person-body">
     {{ with .biography }}<p class="person-biography">{{ . }}</p>{{ end }}
-    {{ partial "people/interests.html" . }}
   </div>
   {{ end }}
   {{ partial "people/links.html" . }}

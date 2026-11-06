@@ -1,0 +1,20 @@
+{
+  "devDependencies": {
+    "@tiptap/core": "3.33.0",
+    "@tiptap/extension-image": "3.33.0",
+    "@tiptap/extension-table": "3.33.0",
+    "@tiptap/extension-text-align": "3.33.0",
+    "@tiptap/starter-kit": "3.33.0",
+    "esbuild": "0.25.12",
+    "jsdom": "27.4.0",
+    "markdown-it": "14.3.3"
+  },
+  "private": true,
+  "scripts": {
+    "build:news-editor": "esbuild assets/editor/news-editor.js --bundle --format=iife --global-name=SDSNewsEditor --outfile=assets/vendor/news-editor.js --minify --legal-comments=linked --target=es2020",
+    "test:news-editor": "node tests/news-direct-editor.test.cjs && node tests/news-editor.test.cjs"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

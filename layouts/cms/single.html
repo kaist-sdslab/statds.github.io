@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title>Content Manager · SDS Lab</title>
+  <link rel="cms-config-url" type="text/yaml" href="config.yml?v={{ site.Data.cms | jsonify | sha256 }}">
 
   {{ $tagsStyle := resources.Get "css/cms-tags.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $tagsStyle.RelPermalink }}" integrity="{{ $tagsStyle.Data.Integrity }}">
@@ -22,6 +23,10 @@
   <script id="cms-media-settings" type="application/json">{{ dict "basePath" site.Home.RelPermalink | jsonify | safeJS }}</script>
   {{ $mediaScript := resources.Get "js/cms-media.js" | minify | fingerprint }}
   <script src="{{ $mediaScript.RelPermalink }}" integrity="{{ $mediaScript.Data.Integrity }}"></script>
+  {{ $directVendor := resources.Get "vendor/news-editor.js" | fingerprint }}
+  <script src="{{ $directVendor.RelPermalink }}" integrity="{{ $directVendor.Data.Integrity }}"></script>
+  {{ $directWidget := resources.Get "js/cms-news-direct.js" | minify | fingerprint }}
+  <script src="{{ $directWidget.RelPermalink }}" integrity="{{ $directWidget.Data.Integrity }}"></script>
   {{ $newsEditor := resources.Get "js/cms-news-editor.js" | minify | fingerprint }}
   <script src="{{ $newsEditor.RelPermalink }}" integrity="{{ $newsEditor.Data.Integrity }}"></script>
   {{ $portraitScript := resources.Get "js/cms-portrait.js" | minify | fingerprint }}

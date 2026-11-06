@@ -1,0 +1,16 @@
+{{- $align := .alignment | default "center" -}}
+{{- if not (in (slice "left" "center" "right") $align) -}}{{- $align = "center" -}}{{- end -}}
+{{- $width := math.Max 10 (math.Min 100 (int (.widthPercent | default 100))) -}}
+{{- $max := math.Max 0 (math.Min 2400 (int (.maxWidth | default 0))) -}}
+{{- $wrap := and (.wrap | default false) (ne $align "center") -}}
+{{- $style := printf "width:%v%%;" $width -}}
+{{- if $max -}}{{- $style = printf "%smax-width:%vpx;" $style $max -}}{{- end -}}
+{{- $src := .src | default "" -}}
+{{- $image := partial "media-resource.html" $src -}}
+<figure class="news-figure news-figure-{{ $align }}{{ if $wrap }} news-figure-wrap{{ end }}" style="{{ $style | safeCSS }}">
+  {{- if $image -}}
+    {{- $large := $image.Fit "1800x1800 webp" -}}
+    <img src="{{ $large.RelPermalink }}" width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .alt | default "" }}" loading="lazy" decoding="async">
+  {{- else -}}<img src="{{ $src | relURL }}" alt="{{ .alt | default "" }}" loading="lazy" decoding="async">{{- end -}}
+  {{- with .caption -}}<figcaption>{{ . }}</figcaption>{{- end -}}
+</figure>

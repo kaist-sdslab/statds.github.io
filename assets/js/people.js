@@ -108,3 +108,15 @@
   restore();
   tablist.hidden = false;
 })();
+
+// Email panels float above the cards, without changing either card's height.
+(() => {
+  const panels = [...document.querySelectorAll('.person-email')];
+  document.addEventListener('click', event => panels.forEach(panel => { if (!panel.contains(event.target)) panel.open = false; }));
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    const open = panels.find(panel => panel.open);
+    panels.forEach(panel => { panel.open = false; });
+    open?.querySelector('summary')?.focus();
+  });
+})();

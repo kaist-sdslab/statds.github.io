@@ -100,7 +100,7 @@ collections:
         name: empty
         widget: string
   - name: about
-    label: About / Research Areas
+    label: About
     file: content/about/index.md
     fields:
     - label: Title
@@ -286,6 +286,51 @@ collections:
       - label: Editorial
         name: editorial
         widget: string
+  - name: people
+    label: Students
+    file: content/people/index.md
+    fields:
+    - label: Title
+      name: title
+      widget: string
+    - label: Description
+      name: description
+      widget: text
+    - name: layout
+      widget: hidden
+      default: people
+    - label: Page Labels
+      name: labels
+      widget: object
+      collapsed: true
+      fields:
+      - label: Members tab
+        name: members_tab
+        widget: string
+      - label: Interns tab
+        name: interns_tab
+        widget: string
+      - label: Alumni tab
+        name: alumni_tab
+        widget: string
+      - label: Phd heading
+        name: phd_heading
+        widget: string
+      - label: Masters heading
+        name: masters_heading
+        widget: string
+      - label: Interns heading
+        name: interns_heading
+        widget: string
+      - label: Alumni heading
+        name: alumni_heading
+        widget: string
+      - label: Research interests
+        name: research_interests
+        widget: string
+      - label: Empty
+        name: empty
+        widget: string
   - name: publications
     label: Publications
     file: content/publications/_index.md
@@ -394,91 +439,6 @@ collections:
         value_type: int
         min: 1
         max: 100
-  - name: people
-    label: Students
-    file: content/people/index.md
-    fields:
-    - label: Title
-      name: title
-      widget: string
-    - label: Description
-      name: description
-      widget: text
-    - name: layout
-      widget: hidden
-      default: people
-    - label: Page Labels
-      name: labels
-      widget: object
-      collapsed: true
-      fields:
-      - label: Members tab
-        name: members_tab
-        widget: string
-      - label: Interns tab
-        name: interns_tab
-        widget: string
-      - label: Alumni tab
-        name: alumni_tab
-        widget: string
-      - label: Phd heading
-        name: phd_heading
-        widget: string
-      - label: Masters heading
-        name: masters_heading
-        widget: string
-      - label: Interns heading
-        name: interns_heading
-        widget: string
-      - label: Alumni heading
-        name: alumni_heading
-        widget: string
-      - label: Research interests
-        name: research_interests
-        widget: string
-      - label: Empty
-        name: empty
-        widget: string
-  - name: software
-    label: Softwares
-    file: content/software/index.md
-    fields:
-    - label: Title
-      name: title
-      widget: string
-    - label: Description
-      name: description
-      widget: text
-    - name: layout
-      widget: hidden
-      default: resources
-    - name: resource_type
-      widget: hidden
-      default: software
-    - label: Page Labels
-      name: labels
-      widget: object
-      collapsed: true
-      fields:
-      - label: Empty
-        name: empty
-        widget: string
-  - name: not_found
-    label: Not Found
-    file: content/not-found/index.md
-    fields:
-    - name: headless
-      widget: hidden
-      default: true
-    - label: Title
-      name: title
-      widget: string
-    - label: Description
-      name: description
-      widget: string
-    - label: Back
-      name: back
-      widget: string
   - name: news_page
     label: News page settings
     file: content/news/_index.md
@@ -528,172 +488,46 @@ collections:
       - label: Page
         name: page
         widget: string
-- name: news
-  label: News
-  label_singular: News post
-  folder: content/news
-  create: true
-  slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
-  summary: '{{title}} · {{date}}'
-  filter:
-    field: layout
-    value: news-post
-  sortable_fields:
-  - field: date
-    label: Date
-    default_sort: desc
-  - title
-  - pinned
-  media_folder: ../../assets/media/news
-  public_folder: media/news
-  editor:
-    preview: true
-  fields:
-  - label: Title
-    name: title
-    widget: string
-  - name: layout
-    widget: hidden
-    default: news-post
-  - label: Date
-    name: date
-    widget: datetime
-    date_format: YYYY-MM-DD
-    time_format: HH:mm
-    format: YYYY-MM-DDTHH:mm:ssZ
-  - label: Draft
-    name: draft
-    widget: boolean
-    default: false
-    hint: Drafts are saved in GitHub but excluded from the published website.
-  - label: Pin to top
-    name: pinned
-    widget: boolean
-    default: false
-    hint: Pinned posts appear above other posts. Each group is newest first.
-  - label: Cover image
-    name: image
-    widget: image
-    required: false
-    media_library:
-      allow_multiple: false
-    hint: Used as the list thumbnail and included automatically in the home slideshow.
-  - label: Cover image description
-    name: image_alt
-    widget: string
-    required: false
-  - label: Show in home slideshow
-    name: show_in_slideshow
-    widget: boolean
-    default: true
-    required: false
-  - label: Body alignment
-    name: body_alignment
-    widget: select
-    required: false
-    default: left
-    options:
-    - label: Left
-      value: left
-    - label: Center
-      value: center
-    - label: Right
-      value: right
-    - label: Justified
-      value: justify
-    hint: Default alignment of the article text. Individual Aligned text blocks can override it.
-  - label: Body
-    name: body
-    widget: markdown
-    hint: Use + → Image with layout for image size/position and text wrapping. Use + → Aligned text to align
-      selected sections. Body alignment sets the default for the whole article.
-    editor_components:
-    - image
-    - news-image
-    - news-align
-    - code-block
-- name: papers
-  label: Publications
-  label_singular: Publication
-  folder: content/publications
-  create: true
-  slug: '{{slug}}'
-  summary: '{{title}} ({{fields.year}})'
-  filter:
-    field: layout
-    value: publication
-  sortable_fields:
-  - field: year
-    label: Year
-    default_sort: desc
-  - month
-  - title
-  editor:
-    preview: true
-    visualEditing: true
-  fields:
-  - label: Title
-    name: title
-    widget: string
-  - name: layout
-    widget: hidden
-    default: publication
-  - label: Authors (in order)
-    name: authors
-    widget: list
-    min: 1
-    field:
-      label: Author
-      name: author
+  - name: software
+    label: Softwares
+    file: content/software/index.md
+    fields:
+    - label: Title
+      name: title
       widget: string
-    hint: Add one author per item. Names may contain commas; drag items to preserve author order.
-    summary: '{{fields.author}}'
-  - label: Type
-    name: publication_type
-    widget: select
-    options:
-    - label: Journal article
-      value: journal
-    - label: Conference paper
-      value: conference
-  - label: Year
-    name: year
-    widget: number
-    value_type: int
-    min: 1900
-    hint: Year displayed in the publication list.
-  - label: Publication month
-    name: month
-    widget: number
-    value_type: int
-    required: false
-    min: 1
-    max: 12
-    hint: Optional sorting information within the same year. Only the year is shown on the website. Leave empty
-      if unknown.
-  - label: Journal / Conference
-    name: venue
-    widget: string
-  - label: Volume / Issue / Pages / Notes
-    name: venue_details
-    widget: string
-    required: false
-  - label: Topics
-    name: topics
-    widget: publication-tags
-    allow_create: true
-    hint: Search existing tags, or type a new tag and press Enter. New tags become reusable when this paper
-      is saved.
-  - label: Paper URL
-    name: url_paper
-    widget: string
-    required: false
-    hint: Optional. Clicking the publication title opens this URL. Without a URL, the title is plain text.
-  - label: GitHub URL
-    name: url_code
-    widget: string
-    required: false
-    hint: Optional repository URL. The GitHub button is shown only when this URL is filled in.
+    - label: Description
+      name: description
+      widget: text
+    - name: layout
+      widget: hidden
+      default: resources
+    - name: resource_type
+      widget: hidden
+      default: software
+    - label: Page Labels
+      name: labels
+      widget: object
+      collapsed: true
+      fields:
+      - label: Empty
+        name: empty
+        widget: string
+  - name: not_found
+    label: Not Found
+    file: content/not-found/index.md
+    fields:
+    - name: headless
+      widget: hidden
+      default: true
+    - label: Title
+      name: title
+      widget: string
+    - label: Description
+      name: description
+      widget: string
+    - label: Back
+      name: back
+      widget: string
 - name: people
   label: Students
   label_singular: Student profile
@@ -742,7 +576,7 @@ collections:
     name: biography
     widget: text
     required: false
-    hint: Shown below the photo/name header and above research tags. Line breaks are preserved; leave empty to hide.
+    hint: Shown below the compact profile header. Research tags appear beside the photo. Leave empty to hide.
   - label: Group
     name: group
     widget: people-group
@@ -821,7 +655,8 @@ collections:
     - masters
     required: false
     default: []
-    hint: Add or remove research tags. Suggestions include existing interests and paper topics; student tags remain independent of Publications.
+    hint: Add or remove research tags. Suggestions include existing interests and paper topics; student tags
+      remain independent of Publications.
   - label: Email
     name: email
     widget: people-conditional
@@ -925,6 +760,152 @@ collections:
     - ^https?://[^\s]+$
     - Enter a complete https:// or http:// URL.
     hint: Leave empty to hide this icon.
+- name: papers
+  label: Publications
+  label_singular: Publication
+  folder: content/publications
+  create: true
+  slug: '{{slug}}'
+  summary: '{{title}} ({{fields.year}})'
+  filter:
+    field: layout
+    value: publication
+  sortable_fields:
+  - field: year
+    label: Year
+    default_sort: desc
+  - month
+  - title
+  editor:
+    preview: true
+    visualEditing: true
+  fields:
+  - label: Title
+    name: title
+    widget: string
+  - name: layout
+    widget: hidden
+    default: publication
+  - label: Authors (in order)
+    name: authors
+    widget: list
+    min: 1
+    field:
+      label: Author
+      name: author
+      widget: string
+    hint: Add one author per item. Names may contain commas; drag items to preserve author order.
+    summary: '{{fields.author}}'
+  - label: Type
+    name: publication_type
+    widget: select
+    options:
+    - label: Journal article
+      value: journal
+    - label: Conference paper
+      value: conference
+  - label: Year
+    name: year
+    widget: number
+    value_type: int
+    min: 1900
+    hint: Year displayed in the publication list.
+  - label: Publication month
+    name: month
+    widget: number
+    value_type: int
+    required: false
+    min: 1
+    max: 12
+    hint: Optional sorting information within the same year. Only the year is shown on the website. Leave empty
+      if unknown.
+  - label: Journal / Conference
+    name: venue
+    widget: string
+  - label: Volume / Issue / Pages / Notes
+    name: venue_details
+    widget: string
+    required: false
+  - label: Topics
+    name: topics
+    widget: publication-tags
+    allow_create: true
+    hint: Search existing tags, or type a new tag and press Enter. New tags become reusable when this paper
+      is saved.
+  - label: Paper URL
+    name: url_paper
+    widget: string
+    required: false
+    hint: Optional. Clicking the publication title opens this URL. Without a URL, the title is plain text.
+  - label: GitHub URL
+    name: url_code
+    widget: string
+    required: false
+    hint: Optional repository URL. The GitHub button is shown only when this URL is filled in.
+- name: news
+  label: News
+  label_singular: News post
+  folder: content/news
+  create: true
+  slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+  summary: '{{title}} · {{date}}'
+  filter:
+    field: layout
+    value: news-post
+  sortable_fields:
+  - field: date
+    label: Date
+    default_sort: desc
+  - title
+  - pinned
+  media_folder: ../../assets/media/news
+  public_folder: media/news
+  editor:
+    preview: true
+  fields:
+  - label: Title
+    name: title
+    widget: string
+  - name: layout
+    widget: hidden
+    default: news-post
+  - label: Date
+    name: date
+    widget: datetime
+    date_format: YYYY-MM-DD
+    time_format: HH:mm
+    format: YYYY-MM-DDTHH:mm:ssZ
+  - label: Draft
+    name: draft
+    widget: boolean
+    default: false
+    hint: Drafts are saved in GitHub but excluded from the published website.
+  - label: Pin to top
+    name: pinned
+    widget: boolean
+    default: false
+    hint: Pinned posts appear above other posts. Each group is newest first.
+  - label: Cover image
+    name: image
+    widget: image
+    required: false
+    media_library:
+      allow_multiple: false
+    hint: Used as the list thumbnail and included automatically in the home slideshow.
+  - label: Cover image description
+    name: image_alt
+    widget: string
+    required: false
+  - label: Show in home slideshow
+    name: show_in_slideshow
+    widget: boolean
+    default: true
+    required: false
+  - label: Body
+    name: body
+    widget: news-body
+    hint: Write directly in the article. Use the toolbar to align text; select an image to set its width, position
+      or wrapping. Drag its corner handle to resize.
 - name: software
   label: Softwares
   label_singular: Software entry

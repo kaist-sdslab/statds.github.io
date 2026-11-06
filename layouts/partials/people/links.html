@@ -2,7 +2,7 @@
 <div class="person-links">
   {{ with .email }}
   <details class="person-email">
-    <summary aria-label="Email — {{ $.name }}">{{ partial "people/icon.html" "email" }}<span>Email</span></summary>
+    <summary aria-label="Email — {{ $.name }}">{{ partial "people/icon.html" "email" }}<span class="sr-only">Email</span></summary>
     <div class="person-email-address"><a href="mailto:{{ . }}">{{ . }}</a></div>
   </details>
   {{ end }}

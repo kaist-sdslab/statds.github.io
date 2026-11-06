@@ -1,0 +1,4 @@
+{{- $doc := trim .Inner " \t\r\n" | base64Decode | transform.Unmarshal -}}
+{{- if eq $doc.type "doc" -}}
+  {{- partial "news/rich-node.html" $doc -}}
+{{- end -}}

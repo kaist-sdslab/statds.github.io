@@ -4,7 +4,7 @@
 .text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .home-news { padding-top: 16px; padding-bottom: 56px; }
 .home-news .section-heading h2 { font-size: 30px; }
-.home-hero { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; align-items: start; min-height: 0; padding-top: 0; padding-bottom: 0; margin-top: 0; margin-bottom: 28px; background: white; }
+.home-hero { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; align-items: start; min-height: 0; padding-top: 0; padding-bottom: 0; margin-top: 28px; margin-bottom: 28px; background: white; }
 .home-hero .lab-introduction { grid-column: 2; grid-row: 1; min-width: 0; padding: 12px 0; background: white; color: var(--ink); }
 .home-hero .lab-introduction h1 { font-size: clamp(24px, 2vw, 28px); line-height: 1.35; text-wrap: initial; }
 .home-hero .hero-description { font-size: 16px; line-height: 1.8; margin-top: 16px; text-align: justify; text-align-last: left; text-wrap: wrap; hyphens: auto; }
@@ -73,7 +73,7 @@
 .news-body th, .news-body td { border: 1px solid var(--line); padding: 8px 14px; }
 @media (max-width: 1000px) { .home-hero .slide-dots { display: none; } }
 @media (max-width: 760px) {
-  .home-hero { grid-template-columns: minmax(0, 1fr); gap: 22px; margin-bottom: 24px; }
+  .home-hero { grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 24px; margin-bottom: 24px; }
   .home-hero-gallery { grid-column: 1; grid-row: 1; height: clamp(210px, 56vw, 330px); }
   .home-hero .lab-introduction { grid-column: 1; grid-row: 2; padding: 0; }
   .slideshow-controls { left: 12px; right: auto; top: auto; bottom: 12px; max-width: calc(100% - 24px); padding: 0 4px; }

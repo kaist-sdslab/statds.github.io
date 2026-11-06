@@ -1,0 +1,43 @@
+{{- $node := . -}}
+{{- $attrs := .attrs | default dict -}}
+{{- $alignment := $attrs.textAlign | default "" -}}
+{{- if not (in (slice "left" "center" "right" "justify") $alignment) -}}{{- $alignment = "" -}}{{- end -}}
+{{- $class := "" -}}{{- if $alignment -}}{{- $class = printf "news-text-%s" $alignment -}}{{- end -}}
+{{- if eq .type "doc" -}}
+  {{- range .content -}}{{- partial "news/rich-node.html" . -}}{{- end -}}
+{{- else if eq .type "text" -}}
+  {{- $text := .text | htmlEscape -}}
+  {{- range .marks -}}
+    {{- $tag := index (dict "bold" "strong" "italic" "em" "strike" "s" "code" "code" "underline" "u") .type -}}
+    {{- if $tag -}}
+      {{- $text = printf "<%s>%s</%s>" $tag $text $tag -}}
+    {{- else if eq .type "link" -}}
+      {{- $href := .attrs.href | default "" -}}
+      {{- if and $href (or (findRE `(?i)^(https?://|mailto:|tel:|/|#)` $href) (not (strings.Contains $href ":"))) -}}
+        {{- $text = printf `<a href="%s">%s</a>` ($href | htmlEscape) $text -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $text | safeHTML -}}
+{{- else if eq .type "paragraph" -}}
+  <p{{ with $class }} class="{{ . }}"{{ end }}>{{ range .content }}{{ partial "news/rich-node.html" . }}{{ end }}</p>
+{{- else if eq .type "heading" -}}
+  {{- $level := int ($attrs.level | default 2) -}}
+  {{- $level = int (math.Max 1 (math.Min 6 $level)) -}}
+  {{- $content := "" -}}{{- range .content -}}{{- $content = printf "%s%s" $content (partial "news/rich-node.html" .) -}}{{- end -}}
+  {{- printf `<h%d class="%s">%s</h%d>` $level $class $content $level | safeHTML -}}
+{{- else if eq .type "hardBreak" -}}<br>
+{{- else if eq .type "horizontalRule" -}}<hr>
+{{- else if eq .type "blockquote" -}}<blockquote>{{ range .content }}{{ partial "news/rich-node.html" . }}{{ end }}</blockquote>
+{{- else if eq .type "bulletList" -}}<ul>{{ range .content }}{{ partial "news/rich-node.html" . }}{{ end }}</ul>
+{{- else if eq .type "orderedList" -}}<ol start="{{ math.Max 1 (int ($attrs.start | default 1)) }}">{{ range .content }}{{ partial "news/rich-node.html" . }}{{ end }}</ol>
+{{- else if eq .type "listItem" -}}<li>{{ range .content }}{{ partial "news/rich-node.html" . }}{{ end }}</li>
+{{- else if eq .type "codeBlock" -}}<pre><code>{{ range .content }}{{ .text }}{{ end }}</code></pre>
+{{- else if eq .type "image" -}}{{- partial "news/rich-image.html" $attrs -}}
+{{- else if eq .type "table" -}}<table><tbody>{{ range .content }}{{ partial "news/rich-node.html" . }}{{ end }}</tbody></table>
+{{- else if eq .type "tableRow" -}}<tr>{{ range .content }}{{ partial "news/rich-node.html" . }}{{ end }}</tr>
+{{- else if eq .type "tableCell" -}}<td>{{ range .content }}{{ partial "news/rich-node.html" . }}{{ end }}</td>
+{{- else if eq .type "tableHeader" -}}<th>{{ range .content }}{{ partial "news/rich-node.html" . }}{{ end }}</th>
+{{- else -}}
+  {{- range .content -}}{{- partial "news/rich-node.html" . -}}{{- end -}}
+{{- end -}}

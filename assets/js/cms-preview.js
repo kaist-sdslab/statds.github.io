@@ -105,7 +105,7 @@
     : type === 'website' ? h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('circle', { cx: 12, cy: 12, r: 9 }), h('ellipse', { cx: 12, cy: 12, rx: 4, ry: 9 }), h('path', { d: 'M3 12h18' })) : icon('github');
   const email = (person, ctx) => !(person.email || person.linkedin || person.github || person.website) ? null : node('div', 'person-links',
     person.email && h('details', { className: 'person-email', key: person.name },
-      h('summary', { 'aria-label': `Email — ${person.name}` }, h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('rect', { x: 3, y: 5, width: 18, height: 14, rx: 2 }), h('path', { d: 'm3 6 9 7 9-7' })), node('span', null, 'Email')),
+      h('summary', { 'aria-label': `Email — ${person.name}` }, h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('rect', { x: 3, y: 5, width: 18, height: 14, rx: 2 }), h('path', { d: 'm3 6 9 7 9-7' })), node('span', 'sr-only', 'Email')),
       node('div', 'person-email-address', edit(ctx, 'email', h('a', { href: `mailto:${person.email}` }, person.email)))),
     ['linkedin', 'github', 'website'].some(type => person[type]) && node('div', 'person-socials',
       ...['linkedin', 'github', 'website'].filter(type => person[type]).map(type => edit(ctx, type, link(type === 'linkedin' ? 'LinkedIn' : type === 'github' ? 'GitHub' : 'Website', 'person-social', socialIcon(type))))));
@@ -130,11 +130,9 @@
     const interests = list(p.research_interests).filter(topic => text(topic).trim());
     return node('article', 'person-card',
       node('div', 'person-profile', edit(ctx, p.photo ? 'photo_frame' : 'photo', node('div', 'person-portrait', p.photo ? image(p.photo, p.name, ctx.props, undefined, { style: portraitStyle(p.photo_frame) }) : node('div', 'person-initials', text(p.name).split(' ').slice(0, 2).map(word => word[0]).join('')))),
-        node('div', 'person-info', field('name', 'h3', null, p.name), p.affiliation && field('affiliation', 'p', 'person-note', p.affiliation), p.member_note && field('member_note', 'p', 'person-member-note', p.member_note))),
-      (p.biography || interests.length || ctx.editable) && node('div', 'person-body',
-        p.biography ? field('biography', 'p', 'person-biography', p.biography) : ctx.editable && field('biography', 'p', 'person-biography-placeholder', 'Add a self-introduction in the form.'),
-        interests.length > 0 && node('div', 'person-interests', labelEdit(ctx, 'people.research_interests', node('span', 'person-interests-label', ctx.labels.people.research_interests)),
-          edit(ctx, 'research_interests', node('ul', 'person-interest-tags', ...interests.map(topic => h('li', { className: 'person-interest-tag', style: accent(colorFor(topic, ctx.colors)) }, topic)))))),
+        node('div', 'person-info', field('name', 'h3', null, p.name), p.affiliation && field('affiliation', 'p', 'person-note', p.affiliation), p.member_note && field('member_note', 'p', 'person-member-note', p.member_note),
+          interests.length > 0 && node('div', 'person-interests', edit(ctx, 'research_interests', node('ul', 'person-interest-tags', ...interests.map(topic => h('li', { className: 'person-interest-tag', style: accent(colorFor(topic, ctx.colors)) }, topic))))))),
+      (p.biography || ctx.editable) && node('div', 'person-body', p.biography ? field('biography', 'p', 'person-biography', p.biography) : field('biography', 'p', 'person-biography-placeholder', 'Add a self-introduction in the form.')),
       email(p, ctx));
   };
   const paper = (p, context, detail = false) => {
@@ -340,7 +338,7 @@
       } },
         name === 'site_settings' && node('div', 'cms-preview-toolbar', node('label', null, 'Preview page', h('select', {
           value: this.state.previewPage, 'aria-label': 'Preview page', onChange: event => this.setState({ previewPage: event.target.value, tab: null, page: 1 })
-        }, ...[['home', 'Home'], ['about', 'About'], ['news_page', 'News'], ['professors', 'Professor'], ['publications', 'Publications'], ['people', 'Students'], ['software', 'Softwares'], ['not_found', 'Not Found']].map(([value, label]) => h('option', { value }, label))))),
+        }, ...[['home', 'Home'], ['about', 'About'], ['professors', 'Professor'], ['people', 'Students'], ['publications', 'Publications'], ['news_page', 'News'], ['software', 'Softwares'], ['not_found', 'Not Found']].map(([value, label]) => h('option', { value }, label))))),
         node('header', 'site-header', node('div', 'shell header-inner', link(labels.site.name, 'wordmark', [labelEdit(ctx, 'site.logo', node('span', 'wordmark-logo', labels.site.logo)), node('span', 'wordmark-description', labelEdit(ctx, 'site.name', node('span', null, labels.site.name)), labelEdit(ctx, 'site.institution', node('span', 'wordmark-institution', labels.site.institution)))]),
           node('nav', null, ...menu.map(item => edit({ ...ctx, editable: name === 'site_settings' }, `navigation.${list(common.navigation).indexOf(item)}.name`, link(item.name, (item.url || '').replace(seed.basePath, '') === active ? 'active' : null, item.name)))))),
         node('main', null, content), node('footer', null, node('div', 'shell footer-inner', node('div', null, edit(footerContext, 'contact.title', node('p', 'footer-title', common.contact?.title)), edit(footerContext, 'contact.address', node('address', null, common.contact?.address))), labelEdit(ctx, 'site.copyright', node('span', 'copyright', `© ${seed.year} ${labels.site.copyright}`)))));

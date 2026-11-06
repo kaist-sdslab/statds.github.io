@@ -24,3 +24,6 @@ assets/jsconfig.json
 *.key
 *.p12
 *.pfx
+
+# Local CMS editor build dependencies
+node_modules/

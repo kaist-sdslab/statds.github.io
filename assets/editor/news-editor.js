@@ -1,0 +1,146 @@
+import { Editor } from '@tiptap/core';
+import StarterKit from '@tiptap/starter-kit';
+import Image from '@tiptap/extension-image';
+import TextAlign from '@tiptap/extension-text-align';
+import { TableKit } from '@tiptap/extension-table';
+import MarkdownIt from 'markdown-it';
+
+const markdown = new MarkdownIt({ html: false, breaks: false });
+export const align = value => ['left', 'center', 'right', 'justify'].includes(value) ? value : 'left';
+export const imageAlign = value => ['left', 'center', 'right'].includes(value) ? value : 'center';
+export const width = value => Math.round(Math.max(10, Math.min(100, Number(value) || 100)));
+const cap = value => Math.max(0, Math.min(2400, Math.round(Number(value) || 0)));
+const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const encode = value => btoa(Array.from(new TextEncoder().encode(value), c => String.fromCharCode(c)).join(''));
+const decode = value => new TextDecoder().decode(Uint8Array.from(atob(value), c => c.charCodeAt(0)));
+export const safeLink = value => /^(?:https?:\/\/|mailto:|tel:|\/|#)/i.test(value || '') || !!value && !String(value).includes(':') ? String(value) : '';
+export function serialize(doc) { return `{{< news-content >}}\n${encode(JSON.stringify(doc))}\n{{< /news-content >}}`; }
+export function parseDocument(value) {
+  const match = String(value || '').trim().match(/^\{\{< news-content >\}\}\s*([A-Za-z0-9+/=\s]+)\s*\{\{< \/news-content >\}\}$/);
+  if (!match) return null;
+  const doc = JSON.parse(decode(match[1].replace(/\s/g, '')));
+  if (doc.type !== 'doc' || !Array.isArray(doc.content)) throw new Error('This article has an invalid document structure.');
+  return doc;
+}
+function attributes(value) {
+  const result = {};
+  for (const m of value.matchAll(/(\w+)=("(?:\\.|[^"\\])*"|[^\s]+)/g)) result[m[1]] = m[2].startsWith('"') ? JSON.parse(m[2]) : m[2];
+  return result;
+}
+export function legacyHTML(value) {
+  const fragments = [];
+  let source = String(value || '').replace(/^\{\{< news-align align="(left|center|right|justify)" >\}\}\n([\s\S]*?)\n\{\{< \/news-align >\}\}$/gm, (_, alignment, body) => {
+    const token = `SDSBLOCK${fragments.length}END`;
+    fragments.push(`<div data-news-align="${alignment}">${legacyHTML(body)}</div>`);
+    return token;
+  }).replace(/^\{\{< news-image ([^\n]*?) >\}\}$/gm, (_, params) => {
+    const data = attributes(params), token = `SDSBLOCK${fragments.length}END`;
+    fragments.push(`<img src="${escape(data.src)}" alt="${escape(decode(data.alt64 || ''))}" data-news-width="${width(data.width)}" data-news-max-width="${cap(data.maxwidth)}" data-news-align="${imageAlign(data.align)}" data-news-wrap="${data.wrap === 'true'}" data-news-caption="${escape(decode(data.caption64 || ''))}">`);
+    return token;
+  });
+  if (/\{\{[<%]/.test(source)) throw new Error('This article contains an unsupported shortcode. Its original text has been preserved; use the source field below to edit it.');
+  let html = markdown.render(source);
+  fragments.forEach((fragment, i) => { html = html.replace(`<p>SDSBLOCK${i}END</p>`, fragment); });
+  return html;
+}
+export function renderDocument(doc, resolve = src => src) {
+  const render = node => {
+    const attrs = node.attrs || {}, children = () => (node.content || []).map(render).join('');
+    const cls = attrs.textAlign ? ` class="news-text-${align(attrs.textAlign)}"` : '';
+    switch (node.type) {
+      case 'doc': return children();
+      case 'text': {
+        let result = escape(node.text);
+        for (const mark of node.marks || []) {
+          const tag = { bold: 'strong', italic: 'em', strike: 's', code: 'code', underline: 'u' }[mark.type];
+          if (tag) result = `<${tag}>${result}</${tag}>`;
+          else if (mark.type === 'link' && safeLink(mark.attrs?.href)) result = `<a href="${escape(safeLink(mark.attrs.href))}">${result}</a>`;
+        }
+        return result;
+      }
+      case 'paragraph': return `<p${cls}>${children() || '<br>'}</p>`;
+      case 'heading': { const level = Math.max(1, Math.min(6, Number(attrs.level) || 2)); return `<h${level}${cls}>${children()}</h${level}>`; }
+      case 'hardBreak': return '<br>';
+      case 'horizontalRule': return '<hr>';
+      case 'blockquote': return `<blockquote>${children()}</blockquote>`;
+      case 'bulletList': return `<ul>${children()}</ul>`;
+      case 'orderedList': return `<ol start="${Math.max(1, Number(attrs.start) || 1)}">${children()}</ol>`;
+      case 'listItem': return `<li>${children()}</li>`;
+      case 'codeBlock': return `<pre><code>${escape((node.content || []).map(n => n.text || '').join(''))}</code></pre>`;
+      case 'table': return `<table><tbody>${children()}</tbody></table>`;
+      case 'tableRow': return `<tr>${children()}</tr>`;
+      case 'tableCell': case 'tableHeader': { const tag = node.type === 'tableHeader' ? 'th' : 'td'; return `<${tag}>${children()}</${tag}>`; }
+      case 'image': {
+        const position = imageAlign(attrs.alignment), wrap = attrs.wrap && position !== 'center';
+        return `<figure class="news-figure news-figure-${position}${wrap ? ' news-figure-wrap' : ''}" style="width:${width(attrs.widthPercent)}%;${cap(attrs.maxWidth) ? `max-width:${cap(attrs.maxWidth)}px;` : ''}"><img src="${escape(resolve(attrs.src || ''))}" alt="${escape(attrs.alt)}">${attrs.caption ? `<figcaption>${escape(attrs.caption)}</figcaption>` : ''}</figure>`;
+      }
+      default: return children();
+    }
+  };
+  return render(doc);
+}
+const LayoutImage = Image.extend({
+  addOptions() { return { ...this.parent?.(), resolveAsset: src => src }; },
+  addAttributes() {
+    return { ...this.parent?.(),
+      widthPercent: { default: 100, parseHTML: el => width(el.getAttribute('data-news-width')), renderHTML: a => ({ 'data-news-width': width(a.widthPercent) }) },
+      maxWidth: { default: 0, parseHTML: el => cap(el.getAttribute('data-news-max-width')), renderHTML: a => ({ 'data-news-max-width': cap(a.maxWidth) }) },
+      alignment: { default: 'center', parseHTML: el => imageAlign(el.getAttribute('data-news-align')), renderHTML: a => ({ 'data-news-align': imageAlign(a.alignment) }) },
+      wrap: { default: false, parseHTML: el => el.getAttribute('data-news-wrap') === 'true', renderHTML: a => ({ 'data-news-wrap': !!a.wrap }) },
+      caption: { default: '', parseHTML: el => el.getAttribute('data-news-caption') || '', renderHTML: a => ({ 'data-news-caption': a.caption || '' }) }
+    };
+  },
+  addNodeView() {
+    const resolve = this.options.resolveAsset;
+    return ({ node: initial, editor, getPos }) => {
+      let node = initial, cleanup;
+      const dom = document.createElement('figure'), img = document.createElement('img'), caption = document.createElement('figcaption'), handle = document.createElement('button');
+      dom.contentEditable = 'false'; dom.draggable = true;
+      img.draggable = false;
+      handle.type = 'button'; handle.className = 'sds-image-resize'; handle.setAttribute('aria-label', 'Resize image; use arrow keys to change width');
+      handle.textContent = '↘'; dom.append(img, caption, handle);
+      const draw = () => {
+        const a = node.attrs, position = imageAlign(a.alignment), wrap = a.wrap && position !== 'center';
+        const selected = dom.classList.contains('ProseMirror-selectednode');
+        dom.className = `sds-inline-image news-figure news-figure-${position}${wrap ? ' news-figure-wrap' : ''}`;
+        if (selected) dom.classList.add('ProseMirror-selectednode');
+        dom.style.width = `${width(a.widthPercent)}%`; dom.style.maxWidth = cap(a.maxWidth) ? `${cap(a.maxWidth)}px` : '100%';
+        dom.style.marginLeft = position === 'left' ? '0' : 'auto'; dom.style.marginRight = position === 'right' ? '0' : 'auto';
+        img.src = resolve(a.src || ''); img.alt = a.alt || ''; caption.textContent = a.caption || ''; caption.hidden = !a.caption;
+      };
+      const select = () => { const pos = getPos(); if (typeof pos === 'number') editor.commands.setNodeSelection(pos); };
+      dom.addEventListener('click', event => { if (event.target !== handle) select(); });
+      handle.addEventListener('keydown', event => { if (['ArrowLeft', 'ArrowRight'].includes(event.key)) { event.preventDefault(); select(); editor.commands.updateAttributes('image', { widthPercent: width(node.attrs.widthPercent + (event.key === 'ArrowRight' ? 5 : -5)) }); } });
+      handle.addEventListener('pointerdown', event => {
+        event.preventDefault(); event.stopPropagation(); select();
+        const start = event.clientX, initialWidth = dom.getBoundingClientRect().width, available = dom.parentElement.clientWidth;
+        let next = width(node.attrs.widthPercent);
+        const move = e => { next = width((initialWidth + e.clientX - start) / available * 100); dom.style.width = `${next}%`; };
+        const finish = () => { cleanup(); editor.commands.updateAttributes('image', { widthPercent: next }); };
+        const cancel = () => { cleanup(); draw(); };
+        cleanup = () => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', finish); document.removeEventListener('pointercancel', cancel); };
+        document.addEventListener('pointermove', move); document.addEventListener('pointerup', finish); document.addEventListener('pointercancel', cancel);
+      });
+      draw();
+      return { dom, update(next) { if (next.type !== node.type) return false; node = next; draw(); return true; },
+        selectNode() { dom.classList.add('ProseMirror-selectednode'); }, deselectNode() { dom.classList.remove('ProseMirror-selectednode'); },
+        stopEvent: event => event.target === handle, ignoreMutation: () => true, destroy() { cleanup?.(); } };
+    };
+  }
+});
+export function createEditor({ element, value, defaultAlignment = 'left', resolveAsset, onUpdate, onSelection }) {
+  const doc = parseDocument(value);
+  let content = doc;
+  if (!doc) {
+    const container = document.createElement('div'); container.innerHTML = legacyHTML(value);
+    container.querySelectorAll('p,h1,h2,h3,h4,h5,h6').forEach(block => {
+      const wrapper = block.closest('[data-news-align]');
+      if (wrapper) block.style.textAlign = align(wrapper.dataset.newsAlign);
+      else if (defaultAlignment !== 'left') block.style.textAlign = align(defaultAlignment);
+    });
+    content = container.innerHTML;
+  }
+  return new Editor({ element, extensions: [StarterKit.configure({ link: { openOnClick: false }, underline: false }), LayoutImage.configure({ resolveAsset }), TextAlign.configure({ types: ['heading', 'paragraph'], defaultAlignment: 'left' }), TableKit.configure({ table: { resizable: false } })],
+    content, editorProps: { attributes: { class: 'sds-news-input', role: 'textbox', 'aria-multiline': 'true', 'aria-label': 'News article body' } },
+    onUpdate: ({ editor }) => onUpdate(serialize(editor.getJSON())), onSelectionUpdate: ({ editor }) => onSelection(editor), onTransaction: ({ editor }) => onSelection(editor) });
+}
