@@ -1,7 +1,8 @@
 {{ $posts := partial "news/posts.html" . }}
 {{ $pinned := where $posts "Params.pinned" true }}
 {{ $regular := where $posts "Params.pinned" "!=" true }}
-{{ $top := first 5 ($pinned | collections.Append $regular) }}
+{{ $limit := int (math.Max 1 (math.Min 30 (.Params.news.limit | default 10))) }}
+{{ $top := first $limit ($pinned | collections.Append $regular) }}
 {{ $labels := .Params.news }}
 <section class="shell home-news" aria-labelledby="home-news-title">
   <div class="section-heading"><h2 id="home-news-title">{{ $labels.heading }}</h2><a class="text-link" href="{{ "news/" | relURL }}">{{ $labels.view_all }} <span aria-hidden="true">→</span></a></div>

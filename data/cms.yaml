@@ -39,7 +39,7 @@ collections:
         widget: string
         default: Explore our research
         hint: Links to About → Research Areas.
-    - label: Right-side photo slideshow
+    - label: Photo slideshow
       name: slideshow
       widget: object
       hint: Automatically shows the newest published News posts with a cover image.
@@ -79,12 +79,20 @@ collections:
     - label: News list below introduction
       name: news
       widget: object
-      hint: 'Shows the top five published entries in the same order as News: pinned posts first, then newest
-        first.'
+      hint: Published posts appear pinned first, then newest first. The list grows naturally with no internal
+        scroll area.
       fields:
       - label: Heading
         name: heading
         widget: string
+      - label: Number of News posts on Home
+        name: limit
+        widget: number
+        value_type: int
+        min: 1
+        max: 30
+        default: 10
+        hint: 'Maximum number of published posts to show. Default: 10.'
       - label: View all link label
         name: view_all
         widget: string

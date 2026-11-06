@@ -20,4 +20,5 @@ news:
   heading: News
   view_all: View all news
   empty: No news has been published yet.
+  limit: 10
 ---
