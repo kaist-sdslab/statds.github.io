@@ -1,0 +1,5 @@
+{{- $align := .Get "align" | default "left" -}}
+{{- if not (in (slice "left" "center" "right" "justify") $align) -}}{{- $align = "left" -}}{{- end -}}
+<div class="news-aligned news-text-{{ $align }}">
+  {{ .Page.RenderString (dict "display" "block") .Inner }}
+</div>

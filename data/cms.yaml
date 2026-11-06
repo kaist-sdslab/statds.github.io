@@ -579,10 +579,31 @@ collections:
     widget: boolean
     default: true
     required: false
+  - label: Body alignment
+    name: body_alignment
+    widget: select
+    required: false
+    default: left
+    options:
+    - label: Left
+      value: left
+    - label: Center
+      value: center
+    - label: Right
+      value: right
+    - label: Justified
+      value: justify
+    hint: Default alignment of the article text. Individual Aligned text blocks can override it.
   - label: Body
     name: body
     widget: markdown
-    hint: Write a full article with headings, links, lists, and inline images. Use Rich Text or Markdown mode.
+    hint: Use + → Image with layout for image size/position and text wrapping. Use + → Aligned text to align
+      selected sections. Body alignment sets the default for the whole article.
+    editor_components:
+    - image
+    - news-image
+    - news-align
+    - code-block
 - name: papers
   label: Publications
   label_singular: Publication

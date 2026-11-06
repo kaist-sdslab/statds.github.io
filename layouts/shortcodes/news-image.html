@@ -1,0 +1,22 @@
+{{- $align := .Get "align" | default "center" -}}
+{{- if not (in (slice "left" "center" "right") $align) -}}{{- $align = "center" -}}{{- end -}}
+{{- $width := 100 -}}
+{{- $input := printf "%v" (.Get "width" | default "100") -}}
+{{- if findRE `^\d{1,4}$` $input -}}{{- $width = math.Max 10 (math.Min 100 (int $input)) -}}{{- end -}}
+{{- $maxWidth := 0 -}}
+{{- $input = printf "%v" (.Get "maxwidth" | default "0") -}}
+{{- if and (findRE `^\d{1,5}$` $input) (gt (int $input) 0) -}}{{- $maxWidth = math.Max 40 (math.Min 2400 (int $input)) -}}{{- end -}}
+{{- $wrap := and (eq (.Get "wrap") "true") (ne $align "center") -}}
+{{- $style := printf "width:%v%%;" $width -}}
+{{- if $maxWidth -}}{{- $style = printf "%smax-width:%vpx;" $style $maxWidth -}}{{- end -}}
+{{- $src := .Get "src" -}}
+{{- $image := partial "media-resource.html" $src -}}
+<figure class="news-figure news-figure-{{ $align }}{{ if $wrap }} news-figure-wrap{{ end }}" style="{{ $style | safeCSS }}">
+  {{- if $image -}}
+    {{- $large := $image.Fit "1800x1800 webp" -}}
+    <img src="{{ $large.RelPermalink }}" width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .Get "alt64" | default "" | base64Decode }}" loading="lazy" decoding="async">
+  {{- else -}}
+    <img src="{{ $src | relURL }}" alt="{{ .Get "alt64" | default "" | base64Decode }}" loading="lazy" decoding="async">
+  {{- end -}}
+  {{- with (.Get "caption64" | default "" | base64Decode) -}}<figcaption>{{ . }}</figcaption>{{- end -}}
+</figure>

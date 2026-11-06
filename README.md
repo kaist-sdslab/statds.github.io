@@ -16,6 +16,15 @@ KAIST SDS Lab website, built with Hugo and published by GitHub Actions.
 
 Save and publish an entry to commit it to this repository; GitHub Actions then updates the website. Drafts and future-dated posts are excluded from the published site. A future-dated post becomes visible on the next build after its date, so run the deployment workflow if no other edits trigger a build.
 
+## News article formatting
+
+- Set **Body alignment** to Left, Center, Right, or Justified for the whole article.
+- In the Body editor's **+** menu, choose **Image with layout** to insert an image with width (10–100%), optional maximum pixel width, left/center/right position, and caption. Enable text wrapping to place article text beside left/right images on desktop; mobile places the text below the image.
+- Choose **Aligned text** from the same menu to format individual text sections independently. The block supports normal Markdown formatting and standard images. Insert images needing their own layout as separate **Image with layout** blocks.
+- Click an inserted component in Rich Text mode to edit its settings again. Existing plain Markdown text and images remain supported. These controls format inline article images; the News cover image remains a separate field.
+
+Run the editor serialization checks with `node tests/news-editor.test.cjs`.
+
 ## Local build
 
 Use Hugo Extended 0.135.0 (matching `.github/workflows/publish.yaml`):

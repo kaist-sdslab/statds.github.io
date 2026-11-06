@@ -168,7 +168,7 @@
     node('span', 'text-link news-back', `← ${ctx.labels.news.back}`),
     node('header', null, edit(ctx, 'date', node('time', null, newsDate(data.date))), edit(ctx, 'title', node('h1', null, data.title))),
     data.image && edit(ctx, 'image', node('figure', 'news-cover', image(data.image, data.image_alt, ctx.props), data.image_alt && node('figcaption', null, data.image_alt))),
-    edit(ctx, 'body', node('div', 'news-body', ctx.props.widgetFor('body'))));
+    edit(ctx, 'body', node('div', `news-body news-text-${['left', 'center', 'right', 'justify'].includes(data.body_alignment) ? data.body_alignment : 'left'}`, ctx.props.widgetFor('body'))));
   const newsList = (data, ctx) => {
     const labels = data.labels || seed.labels.news;
     const posts = publishedNews().sort((a, b) => Number(!!b.pinned) - Number(!!a.pinned));

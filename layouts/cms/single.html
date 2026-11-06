@@ -22,6 +22,8 @@
   <script id="cms-media-settings" type="application/json">{{ dict "basePath" site.Home.RelPermalink | jsonify | safeJS }}</script>
   {{ $mediaScript := resources.Get "js/cms-media.js" | minify | fingerprint }}
   <script src="{{ $mediaScript.RelPermalink }}" integrity="{{ $mediaScript.Data.Integrity }}"></script>
+  {{ $newsEditor := resources.Get "js/cms-news-editor.js" | minify | fingerprint }}
+  <script src="{{ $newsEditor.RelPermalink }}" integrity="{{ $newsEditor.Data.Integrity }}"></script>
   {{ $portraitScript := resources.Get "js/cms-portrait.js" | minify | fingerprint }}
   <script src="{{ $portraitScript.RelPermalink }}" integrity="{{ $portraitScript.Data.Integrity }}"></script>
   {{ $peopleScript := resources.Get "js/cms-people.js" | minify | fingerprint }}
