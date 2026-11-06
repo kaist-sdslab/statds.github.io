@@ -1,0 +1,19 @@
+{{ with .research_interests }}
+<div class="person-interests">
+  <span class="person-interests-label">{{ (site.GetPage "people").Params.labels.research_interests }}</span>
+  <ul class="person-interest-tags" aria-label="{{ (site.GetPage "people").Params.labels.research_interests }}">
+    {{ range . }}
+      {{ $topic := trim . " \t\r\n" }}
+      {{ if $topic }}
+        {{ $key := partial "publications/topic-key.html" $topic }}
+        {{ $color := "#285c9b" }}
+        {{ range site.Data.topic_colors.assignments }}
+          {{ $rule := . }}
+          {{ range .topics }}{{ if eq (partial "publications/topic-key.html" .) $key }}{{ $color = $rule.color | default "#285c9b" }}{{ end }}{{ end }}
+        {{ end }}
+        <li class="person-interest-tag" style="{{ partial "color-style.html" $color }}">{{ $topic }}</li>
+      {{ end }}
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

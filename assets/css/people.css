@@ -11,30 +11,52 @@
 .people-accent-purple { --people-accent: var(--accent-purple); }
 .people-accent-neutral { --people-accent: var(--muted); }
 .people-section + .people-section { margin-top: 44px; }
-.people-section-heading { display: flex; align-items: baseline; }
-.people-section-heading h2 { border-left: 3px solid var(--people-accent); padding-left: 12px; font-size: 22px; font-weight: 600; line-height: 1.4; letter-spacing: -.02em; }
-.people-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; }
-.person-card { display: grid; grid-template-columns: 140px minmax(0, 1fr); align-items: start; gap: 24px; padding: 22px 0; }
-.person-portrait { width: 140px; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: transparent; }
+.people-section-heading h2 { font-size: 21px; font-weight: 600; line-height: 1.4; letter-spacing: -.02em; }
+.people-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 22px; }
+.person-card { display: flex; flex-direction: column; min-width: 0; padding: 24px; background: white; border: 1px solid #dce5eb; border-radius: 10px; box-shadow: 0 3px 14px rgba(20,46,73,.035); }
+.person-profile { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: center; gap: 22px; margin: -24px -24px 0; padding: 24px; background: #f7f9fb; border-radius: 9px 9px 0 0; }
+.person-portrait { width: 120px; aspect-ratio: 4 / 5; border-radius: 6px; overflow: hidden; background: #eaf0f4; }
 .person-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.person-initials { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 36px; font-weight: 500; letter-spacing: -.03em; color: var(--people-accent); }
+.person-initials { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 34px; font-weight: 500; letter-spacing: -.03em; color: #71879a; }
 .person-info { min-width: 0; }
-.person-info h3 { font-size: 22px; line-height: 1.4; font-weight: 600; text-wrap: initial; }
-.person-note { margin-top: 5px; font-size: 14px; line-height: 1.6; color: var(--muted); overflow-wrap: anywhere; }
-.person-interests { margin-top: 12px; font-size: 15px; line-height: 1.7; color: var(--body-text); }
-.person-interests > span { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 2px; }
-.person-links { display: flex; flex-wrap: wrap; gap: 3px 14px; margin-top: 9px; }
-.person-links a { display: inline-flex; align-items: center; gap: 4px; min-height: 30px; font-size: 14px; color: var(--accent-blue); overflow-wrap: anywhere; max-width: 100%; }
-.person-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.person-info h3 { font-size: 23px; line-height: 1.35; font-weight: 600; letter-spacing: -.025em; text-wrap: initial; }
+.person-note { margin-top: 8px; font-size: 13px; line-height: 1.7; color: var(--muted); overflow-wrap: anywhere; }
+.person-member-note { display: inline-block; margin-top: 10px; padding: 2px 7px; font-size: 11px; line-height: 1.6; color: #536778; border: 1px solid #dce4ea; border-radius: 4px; }
+.person-body { flex: 1; padding-top: 20px; }
+.person-biography { color: var(--body-text); font-size: 14px; line-height: 1.85; white-space: pre-line; }
+.person-biography-placeholder { color: #73828f; font-size: 13px; font-style: italic; }
+.person-interests { margin-top: 18px; }
+.person-body > .person-interests:first-child { margin-top: 0; }
+.person-interests-label { display: block; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .025em; margin-bottom: 8px; }
+.person-interest-tags { display: flex; flex-wrap: wrap; gap: 7px; list-style: none; margin: 0; padding: 0; }
+.person-interest-tag { max-width: 100%; padding: 3px 9px; border: 1px solid var(--topic-line, #d3e1ef); border-radius: 5px; color: var(--topic-color, #285c9b); background: var(--topic-soft, #edf4fc); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.person-links { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 10px; margin-top: auto; padding-top: 16px; }
+.person-body + .person-links { margin-top: 20px; border-top: 1px solid #e7edf1; }
+.person-profile + .person-links { padding-top: 20px; }
+.person-email { min-width: 0; }
+.person-email summary { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 6px 11px; border: 1px solid #ccdce8; border-radius: 5px; background: #f2f7fb; color: #285c83; font-size: 12px; font-weight: 500; cursor: pointer; list-style: none; }
+.person-email summary::-webkit-details-marker { display: none; }
+.person-email summary::after { content: '+'; font-size: 15px; margin-left: 4px; }
+.person-email[open] summary::after { content: '−'; }
+.person-email summary:hover { background: #e7f1f9; }
+.person-email summary:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 3px; }
+.person-email summary svg { width: 16px; height: 16px; }
+.person-email-address { margin-top: 10px; padding: 8px 10px; border: 1px solid #dce5ed; border-radius: 4px; background: #fafcfd; }
+.person-email-address a { color: var(--accent-blue); font-size: 13px; overflow-wrap: anywhere; }
+.person-email-address a:hover { text-decoration: underline; }
+.person-socials { grid-column: 2; display: flex; flex-wrap: wrap; justify-content: end; gap: 5px; }
+.person-social { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid #dde5eb; border-radius: 5px; color: #536778; }
+.person-social svg { width: 18px; height: 18px; }
+.person-social:hover { color: var(--accent-blue); border-color: #b7cfdf; background: #f2f7fb; }
 .people-empty { padding: 22px 0; font-size: 14px; color: var(--muted); }
 .person-compact h3 { flex-shrink: 0; font-size: 16px; line-height: 1.7; font-weight: 600; text-wrap: initial; }
 .person-compact-meta { font-size: 14px; line-height: 1.7; color: var(--muted); }
+.person-compact .person-biography { margin-top: 10px; }
 .people-compact-list { padding-top: 14px; }
 .people-scroll-list { max-height: min(56vh, 480px); overflow-y: auto; scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: #b2bdc7 transparent; padding-right: 14px; }
 .people-scroll-list:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 4px; }
 .intern-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 30px; align-content: start; }
 .intern-row { display: block; min-width: 0; padding: 12px 0; }
-.intern-row h3 { font-size: 16px; }
 .intern-row .person-compact-meta { white-space: nowrap; }
 .intern-row .person-compact-detail { margin-left: 9px; font-size: 12px; line-height: 1.7; color: var(--muted); }
 .alumnus-row { display: block; padding: 12px 0 16px; }
@@ -43,43 +65,28 @@
 .alumnus-position { color: var(--muted); }
 .alumnus-separator { color: #a5afb9; }
 .alumnus-degree { white-space: nowrap; }
-@media (max-width: 1000px) {
-  .people-grid { column-gap: 26px; }
-  .intern-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .person-card { gap: 16px; }
+@media (max-width: 1100px) and (min-width: 761px) {
+  .person-profile { grid-template-columns: 96px minmax(0, 1fr); gap: 16px; }
+  .person-portrait { width: 96px; }
+  .person-info h3 { font-size: 20px; }
 }
+@media (max-width: 1000px) { .intern-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 760px) {
   .people-page { padding-top: 30px; padding-bottom: 36px; }
   .people-intro h1 { font-size: 27px; }
   .people-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-bottom: 24px; }
   .people-tabs button { font-size: 14px; padding-left: 8px; padding-right: 8px; }
-  .people-grid { grid-template-columns: minmax(0, 1fr); }
+  .people-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .people-section-heading h2 { font-size: 20px; }
   .people-section + .people-section { margin-top: 32px; }
-  .person-card { padding: 22px 0; }
-  .person-links a { min-height: 40px; }
   .people-scroll-list { max-height: 55vh; padding-right: 9px; }
   .intern-list { column-gap: 20px; }
-  .alumnus-row { padding: 12px 0 16px; }
 }
 @media (max-width: 480px) {
-  .person-card { grid-template-columns: 104px minmax(0, 1fr); gap: 16px; }
-  .person-portrait { width: 104px; }
-  .person-initials { font-size: 30px; }
+  .person-card { padding: 18px; }
+  .person-profile { grid-template-columns: 90px minmax(0, 1fr); gap: 16px; margin: -18px -18px 0; padding: 18px; }
+  .person-portrait { width: 90px; }
+  .person-initials { font-size: 29px; }
   .person-info h3 { font-size: 20px; }
+  .person-social { width: 34px; height: 34px; }
 }
-
-/* Quiet profile rows keep the photograph and introduction in focus. */
-.people-grid { gap: 0 36px; margin-top: 20px; }
-.people-section-heading h2 { padding-left: 0; border-left: 0; font-size: 21px; }
-.person-card { grid-template-columns: 128px minmax(0, 1fr); padding: 28px 0; gap: 24px; border-bottom: 1px solid #e5e9ec; background: white; }
-.person-portrait { width: 128px; border-radius: 2px; background: #f2f4f5; }
-.person-info h3 { font-size: 21px; letter-spacing: -.02em; }
-.person-biography { margin-top: 12px; color: var(--body-text); font-size: 14px; line-height: 1.8; white-space: pre-line; }
-.person-links { align-items: center; gap: 6px; margin-top: 12px; }
-.person-email { flex-basis: 100%; font-size: 13px !important; }
-.person-links .person-social { display: inline-flex; justify-content: center; width: 32px; height: 32px; min-height: 32px; border-radius: 3px; color: #536778; background: transparent; }
-.person-social svg { width: 18px; height: 18px; }
-.person-links .person-social:hover { color: var(--accent-blue); background: #eff4f7; }
-@media (max-width: 1100px) and (min-width: 761px) { .person-card { grid-template-columns: 104px minmax(0, 1fr); gap: 18px; } .person-portrait { width: 104px; } }
-@media (max-width: 480px) { .person-card { grid-template-columns: 90px minmax(0, 1fr); gap: 16px; padding: 24px 0; } .person-portrait { width: 90px; } .person-info h3 { font-size: 18px; } }

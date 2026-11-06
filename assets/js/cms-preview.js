@@ -103,9 +103,12 @@
   const socialIcon = type => type === 'linkedin'
     ? h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('rect', { x: 3, y: 3, width: 18, height: 18, rx: 2 }), h('path', { d: 'M7 10v7m0-10v.01M11 17v-7m0 3a3 3 0 0 1 6 0v4' }))
     : type === 'website' ? h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('circle', { cx: 12, cy: 12, r: 9 }), h('ellipse', { cx: 12, cy: 12, rx: 4, ry: 9 }), h('path', { d: 'M3 12h18' })) : icon('github');
-  const email = (person, ctx) => node('div', 'person-links',
-    person.email && edit(ctx, 'email', h('a', { href: `mailto:${person.email}`, className: 'person-email' }, person.email)),
-    ...['linkedin', 'github', 'website'].filter(type => person[type]).map(type => edit(ctx, type, link(type === 'linkedin' ? 'LinkedIn' : type === 'github' ? 'GitHub' : 'Website', 'person-social', socialIcon(type)))));
+  const email = (person, ctx) => !(person.email || person.linkedin || person.github || person.website) ? null : node('div', 'person-links',
+    person.email && h('details', { className: 'person-email', key: person.name },
+      h('summary', { 'aria-label': `Email — ${person.name}` }, h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('rect', { x: 3, y: 5, width: 18, height: 14, rx: 2 }), h('path', { d: 'm3 6 9 7 9-7' })), node('span', null, 'Email')),
+      node('div', 'person-email-address', edit(ctx, 'email', h('a', { href: `mailto:${person.email}` }, person.email)))),
+    ['linkedin', 'github', 'website'].some(type => person[type]) && node('div', 'person-socials',
+      ...['linkedin', 'github', 'website'].filter(type => person[type]).map(type => edit(ctx, type, link(type === 'linkedin' ? 'LinkedIn' : type === 'github' ? 'GitHub' : 'Website', 'person-social', socialIcon(type))))));
   const person = (p, context) => {
     const ctx = recordContext(context, p);
     const field = (path, tag, cls, ...children) => edit(ctx, path, node(tag, cls, ...children));
@@ -124,8 +127,15 @@
           a.graduation_year && field('alumni.graduation_year', 'span', null, a.graduation_year))),
         (a.thesis || a.position) && node('p', 'alumnus-summary', a.thesis && field('alumni.thesis', 'span', 'alumnus-thesis', `“${a.thesis}”`), a.thesis && a.position && node('span', 'alumnus-separator', ' · '), a.position && field('alumni.position', 'span', 'alumnus-position', a.position)), p.biography && field('biography', 'p', 'person-biography', p.biography));
     }
-    return node('article', 'person-card', edit(ctx, p.photo ? 'photo_frame' : 'photo', node('div', 'person-portrait', p.photo ? image(p.photo, p.name, ctx.props, undefined, { style: portraitStyle(p.photo_frame) }) : node('div', 'person-initials', text(p.name).split(' ').slice(0, 2).map(word => word[0]).join('')))),
-      node('div', 'person-info', field('name', 'h3', null, p.name), p.affiliation && field('affiliation', 'p', 'person-note', p.affiliation), p.member_note && field('member_note', 'p', 'person-note', p.member_note), list(p.research_interests).length > 0 && field('research_interests', 'p', 'person-interests', labelEdit(ctx, 'people.research_interests', node('span', null, ctx.labels.people.research_interests)), p.research_interests.join(', ')), p.biography && field('biography', 'p', 'person-biography', p.biography), email(p, ctx)));
+    const interests = list(p.research_interests).filter(topic => text(topic).trim());
+    return node('article', 'person-card',
+      node('div', 'person-profile', edit(ctx, p.photo ? 'photo_frame' : 'photo', node('div', 'person-portrait', p.photo ? image(p.photo, p.name, ctx.props, undefined, { style: portraitStyle(p.photo_frame) }) : node('div', 'person-initials', text(p.name).split(' ').slice(0, 2).map(word => word[0]).join('')))),
+        node('div', 'person-info', field('name', 'h3', null, p.name), p.affiliation && field('affiliation', 'p', 'person-note', p.affiliation), p.member_note && field('member_note', 'p', 'person-member-note', p.member_note))),
+      (p.biography || interests.length || ctx.editable) && node('div', 'person-body',
+        p.biography ? field('biography', 'p', 'person-biography', p.biography) : ctx.editable && field('biography', 'p', 'person-biography-placeholder', 'Add a self-introduction in the form.'),
+        interests.length > 0 && node('div', 'person-interests', labelEdit(ctx, 'people.research_interests', node('span', 'person-interests-label', ctx.labels.people.research_interests)),
+          edit(ctx, 'research_interests', node('ul', 'person-interest-tags', ...interests.map(topic => h('li', { className: 'person-interest-tag', style: accent(colorFor(topic, ctx.colors)) }, topic)))))),
+      email(p, ctx));
   };
   const paper = (p, context, detail = false) => {
     const ctx = recordContext(context, p);

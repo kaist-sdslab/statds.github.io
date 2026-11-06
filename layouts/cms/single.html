@@ -36,6 +36,8 @@
     {{ $previewStyles = $previewStyles | append $style.RelPermalink }}
   {{ end }}
   <script id="cms-preview-settings" type="application/json">{{ dict "data" (partial "cms/preview-data.html" .) "styles" $previewStyles | jsonify | safeJS }}</script>
+  {{ $studentTags := resources.Get "js/cms-student-tags.js" | minify | fingerprint }}
+  <script src="{{ $studentTags.RelPermalink }}" integrity="{{ $studentTags.Data.Integrity }}"></script>
   {{ $focusScript := resources.Get "js/cms-focus.js" | minify | fingerprint }}
   <script src="{{ $focusScript.RelPermalink }}" integrity="{{ $focusScript.Data.Integrity }}"></script>
   {{ $previewScript := resources.Get "js/cms-preview.js" | minify | fingerprint }}

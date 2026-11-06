@@ -137,5 +137,6 @@ address { font-style: normal; max-width: 440px; font-size: 11px; line-height: 1.
 }
 
 .about-research { padding-top: 42px; }
+.about-research > .section-heading { border-bottom: 0; padding-bottom: 0; }
 @media (max-width: 760px) { .about-research { padding-top: 30px; } }
 @media (min-width: 1001px) { .header-inner { column-gap: 24px; } nav { gap: 20px; font-size: 15px; } }

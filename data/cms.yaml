@@ -742,7 +742,7 @@ collections:
     name: biography
     widget: text
     required: false
-    hint: Optional personal introduction. Shown on this student profile; line breaks are preserved.
+    hint: Shown below the photo/name header and above research tags. Line breaks are preserved; leave empty to hide.
   - label: Group
     name: group
     widget: people-group
@@ -812,16 +812,16 @@ collections:
       position_y: 50
       zoom: 1
     hint: Drag and zoom to choose the visible area. The original photo is preserved.
-  - label: Research interests
+  - label: Research areas / Interests
     name: research_interests
     widget: people-conditional
-    control_widget: list
+    control_widget: student-interests
     groups:
     - phd
     - masters
     required: false
     default: []
-    hint: Add interests as separate items. They are independent of publication tags.
+    hint: Add or remove research tags. Suggestions include existing interests and paper topics; student tags remain independent of Publications.
   - label: Email
     name: email
     widget: people-conditional
@@ -830,6 +830,7 @@ collections:
     - phd
     - masters
     required: false
+    hint: Visitors press Email to reveal this address. Leave empty to hide the Email button.
   - label: Internship details
     name: internship
     widget: people-conditional
