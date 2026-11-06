@@ -58,7 +58,7 @@ test('CMS body widget inserts Media Library selections and retains the cursor on
   window.createClass = x => x; window.h = (type, props, ...children) => ({ type, props, children });
   window.SDSCMSMedia = { resolveAsset: (_, src) => src };
   window.eval(fs.readFileSync(path.join(__dirname, '../assets/js/cms-news-direct.js'), 'utf8'));
-  const props = { value: 'Existing text.', entry: { get: () => 'test.md', getIn: () => 'left' }, field: {}, getAsset: x => x, mediaPaths: new Map(),
+  const props = { value: 'Existing text.', entry: { get: () => 'test.md', getIn: keys => keys[1] === 'body_alignment' ? 'left' : '' }, field: {}, getAsset: x => x, mediaPaths: new Map(),
     onChange: value => { saved = value; }, onOpenMediaLibrary: options => { opened = options; }, onClearMediaControl: id => { cleared = id; }, onRemoveMediaControl: () => {} };
   const instance = { props, host: window.document.getElementById('editor'), state: definition.getInitialState(), setState(patch) { Object.assign(this.state, typeof patch === 'function' ? patch(this.state) : patch); } };
   for (const [name, value] of Object.entries(definition)) if (typeof value === 'function') instance[name] = value.bind(instance);
@@ -70,5 +70,53 @@ test('CMS body widget inserts Media Library selections and retains the cursor on
   instance.props = { ...instance.props, value: saved }; instance.componentDidUpdate(previous);
   assert.equal(instance.editor, editorBefore);
   assert.equal(window.document.querySelector('.sds-inline-image img').getAttribute('src'), '/media/new.jpg');
+  instance.componentWillUnmount(); dom.window.close();
+});
+
+test('only one body image is the cover; deletion clears the cover and legacy covers import once', () => {
+  const { dom, window, api } = environment(); let saved;
+  const editor = api.createEditor({ element: window.document.getElementById('editor'), value: 'Existing article.', coverImage: '/legacy.jpg', coverAlt: 'Legacy', resolveAsset: x => x, onUpdate: value => { saved = value; }, onSelection: () => {} });
+  const photos = () => { const result = []; editor.state.doc.descendants((node, pos) => { if (node.type.name === 'image') result.push({ node, pos }); }); return result; };
+  assert.equal(photos().length, 1); assert.equal(api.getCover(editor.getJSON()).image, '/legacy.jpg');
+  editor.commands.focus('end'); editor.commands.setImage({ src: '/second.jpg', widthPercent: 40, alignment: 'left', wrap: true });
+  editor.commands.setNodeSelection(photos()[1].pos); api.selectCover(editor, true);
+  assert.equal(photos().filter(p => p.node.attrs.cover).length, 1);
+  assert.equal(api.getCover(api.parseDocument(saved)).image, '/second.jpg');
+  editor.commands.deleteSelection(); assert.equal(api.getCover(editor.getJSON()).image, '');
+  editor.destroy(); dom.window.close();
+});
+
+test('font settings, all heading levels and image text wrapping survive editing and reopening', () => {
+  const { dom, window, api } = environment(); let saved;
+  const editor = api.createEditor({ element: window.document.getElementById('editor'), value: 'Formatted text', resolveAsset: x => x, onUpdate: value => { saved = value; }, onSelection: () => {} });
+  editor.commands.selectAll(); editor.commands.setMark('textStyle', { fontFamily: 'serif', fontSize: 24, color: '#123456' });
+  editor.commands.setHeading({ level: 4 }); editor.commands.updateAttributes('heading', { lineHeight: '1.5', clear: 'both' });
+  assert.equal(window.document.querySelector('h4 span').style.fontSize, '24px');
+  assert.equal(window.document.querySelector('h4').style.lineHeight, '1.5');
+  const html = api.renderDocument(api.parseDocument(saved));
+  assert(html.includes('font-family:Georgia, serif')); assert(html.includes('color:#123456')); assert(html.includes('clear:both'));
+  const second = api.createEditor({ element: window.document.getElementById('other'), value: saved, resolveAsset: x => x, onUpdate: () => {}, onSelection: () => {} });
+  assert.equal(window.document.querySelector('#other h4 span').style.fontSize, '24px');
+  second.destroy(); editor.destroy(); dom.window.close();
+});
+
+test('CMS wrapper receives media-only updates; links appear immediately without selected text', () => {
+  const { dom, window } = environment(); let definition;
+  window.CMS = { registerWidget: (_, control) => { definition = control; } };
+  window.createClass = x => x; window.h = (type, props, ...children) => ({ type, props, children });
+  window.SDSCMSMedia = { resolveAsset: (getAsset, src) => getAsset(src) };
+  window.eval(fs.readFileSync(path.join(__dirname, '../assets/js/cms-news-direct.js'), 'utf8'));
+  const props = { value: 'Existing text.', entry: { get: () => 'test.md', getIn: () => '' }, field: {}, getAsset: x => x, mediaPaths: new Map(), onChange: () => {}, onClearMediaControl: () => {}, onRemoveMediaControl: () => {} };
+  const instance = { props, host: window.document.getElementById('editor'), state: definition.getInitialState(), setState(patch) { Object.assign(this.state, typeof patch === 'function' ? patch(this.state) : patch); } };
+  for (const [name, value] of Object.entries(definition)) if (typeof value === 'function') instance[name] = value.bind(instance);
+  instance.componentDidMount();
+  assert(instance.shouldComponentUpdate({ ...props, mediaPaths: new Map([['media', '/new.jpg']]) }));
+  assert(instance.shouldComponentUpdate(props, { ...instance.state, revision: 3 }));
+  instance.editor.commands.setTextSelection(1); instance.openLink(); instance.state.link = { url: 'example.com', text: '' }; instance.saveLink();
+  const anchor = window.document.querySelector('.sds-news-input a');
+  assert.equal(anchor.textContent, 'https://example.com'); assert.equal(anchor.getAttribute('href'), 'https://example.com');
+  instance.editor.commands.focus('end'); instance.editor.commands.setImage({ src: '/photo.jpg' });
+  const previous = instance.props; instance.props = { ...props, getAsset: () => 'blob:https://example.com/new-photo' }; instance.componentDidUpdate(previous);
+  assert.equal(window.document.querySelector('.sds-inline-image img').getAttribute('src'), 'blob:https://example.com/new-photo');
   instance.componentWillUnmount(); dom.window.close();
 });

@@ -1,0 +1,23 @@
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const { JSDOM } = require('jsdom');
+test('carousel crossfades without blank slides and honors reduced motion', () => {
+  const dom = new JSDOM(`<div data-slideshow data-play="Play" data-pause="Pause"><div data-slide><img></div><div data-slide hidden><img></div><div data-slide-controls hidden><button data-slide-previous></button><button data-slide-next></button><button data-slide-toggle></button><button data-slide-to="0"></button><button data-slide-to="1"></button></div></div>`, { runScripts: 'outside-only', pretendToBeVisual: true });
+  const { window } = dom, motion = { matches: false, addEventListener() {} }, animations = [];
+  window.matchMedia = () => motion;
+  window.HTMLElement.prototype.animate = function () { const animation = { cancel() { this.cancelled = true; } }; animations.push(animation); return animation; };
+  window.eval(fs.readFileSync('assets/js/slideshow.js', 'utf8'));
+  const slides = window.document.querySelectorAll('[data-slide]');
+  window.document.querySelector('[data-slide-next]').click();
+  assert(!slides[0].hidden && !slides[1].hidden); assert.equal(animations.length, 2);
+  animations[0].onfinish(); assert(slides[0].hidden && !slides[1].hidden);
+  window.document.querySelector('[data-slide-previous]').click();
+  window.document.querySelector('[data-slide-next]').click();
+  assert(animations[2].cancelled); assert(!slides[1].hidden);
+  animations[4].onfinish(); assert(slides[0].hidden);
+  motion.matches = true;
+  window.document.querySelector('[data-slide-previous]').click();
+  assert(!slides[0].hidden && slides[1].hidden); assert.equal(animations.length, 6);
+  dom.window.close();
+});

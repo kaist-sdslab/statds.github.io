@@ -1,0 +1,9 @@
+{{- $cover := dict "image" "" "image_alt" "" -}}
+{{- if and (eq .type "image") (.attrs.cover | default false) -}}
+  {{- $cover = dict "image" (.attrs.src | default "") "image_alt" (.attrs.alt | default "") -}}
+{{- else -}}
+  {{- range .content -}}
+    {{- if not $cover.image -}}{{- $cover = partial "news/find-cover.html" . -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $cover -}}

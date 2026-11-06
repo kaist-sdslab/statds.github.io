@@ -103,7 +103,7 @@
   const socialIcon = type => type === 'linkedin'
     ? h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('rect', { x: 3, y: 3, width: 18, height: 18, rx: 2 }), h('path', { d: 'M7 10v7m0-10v.01M11 17v-7m0 3a3 3 0 0 1 6 0v4' }))
     : type === 'website' ? h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('circle', { cx: 12, cy: 12, r: 9 }), h('ellipse', { cx: 12, cy: 12, rx: 4, ry: 9 }), h('path', { d: 'M3 12h18' })) : icon('github');
-  const email = (person, ctx) => !(person.email || person.linkedin || person.github || person.website) ? null : node('div', 'person-links',
+  const email = (person, ctx) => node('div', 'person-links',
     person.email && h('details', { className: 'person-email', key: person.name },
       h('summary', { 'aria-label': `Email — ${person.name}` }, h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('rect', { x: 3, y: 5, width: 18, height: 14, rx: 2 }), h('path', { d: 'm3 6 9 7 9-7' })), node('span', 'sr-only', 'Email')),
       node('div', 'person-email-address', edit(ctx, 'email', h('a', { href: `mailto:${person.email}` }, person.email)))),
@@ -175,7 +175,7 @@
   const newsArticle = (data, ctx) => node('article', 'shell news-article',
     node('span', 'text-link news-back', `← ${ctx.labels.news.back}`),
     node('header', null, edit(ctx, 'date', node('time', null, newsDate(data.date))), edit(ctx, 'title', node('h1', null, data.title))),
-    data.image && edit(ctx, 'image', node('figure', 'news-cover', image(data.image, data.image_alt, ctx.props), data.image_alt && node('figcaption', null, data.image_alt))),
+    data.image && !window.SDSNewsEditor.parseDocument(data.body) && edit(ctx, 'image', node('figure', 'news-cover', image(data.image, data.image_alt, ctx.props), data.image_alt && node('figcaption', null, data.image_alt))),
     edit(ctx, 'body', node('div', `news-body news-text-${['left', 'center', 'right', 'justify'].includes(data.body_alignment) ? data.body_alignment : 'left'}`, ctx.props.widgetFor('body'))));
   const newsList = (data, ctx) => {
     const labels = data.labels || seed.labels.news;

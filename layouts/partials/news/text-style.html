@@ -1,0 +1,6 @@
+{{- $style := "" -}}
+{{- $fonts := dict "sans" "Arial, sans-serif" "serif" "Georgia, serif" "mono" "monospace" -}}
+{{- with index $fonts (.fontFamily | default "") -}}{{- $style = printf "%sfont-family:%s;" $style . -}}{{- end -}}
+{{- with .fontSize -}}{{- $style = printf "%sfont-size:%vpx;" $style (int (math.Max 10 (math.Min 72 (int .)))) -}}{{- end -}}
+{{- if findRE `(?i)^#[0-9a-f]{6}$` (.color | default "") -}}{{- $style = printf "%scolor:%s;" $style .color -}}{{- end -}}
+{{- return $style -}}

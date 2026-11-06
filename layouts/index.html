@@ -1,9 +1,9 @@
 {{ partial "site/start.html" . }}
 <section class="hero shell home-hero" aria-labelledby="welcome-title">
   {{ partial "news/slideshow.html" . }}
-  <div class="lab-introduction">
-    <h1 id="welcome-title" data-reveal>{{ .Params.hero.welcome }}</h1>
-    <p class="hero-description" data-reveal>{{ .Params.hero.description }}</p>
+  <div class="lab-introduction" data-reveal data-reveal-direction="down">
+    <h1 id="welcome-title">{{ .Params.hero.welcome }}</h1>
+    <p class="hero-description">{{ .Params.hero.description }}</p>
     <a class="home-research-button" href="{{ "about/" | relURL }}#research">{{ .Params.hero.button_label }} <span aria-hidden="true">→</span></a>
   </div>
 </section>

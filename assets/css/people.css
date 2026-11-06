@@ -28,11 +28,11 @@
 .person-interests { margin-top: 10px; }
 .person-interest-tags { display: flex; flex-wrap: wrap; gap: 5px; list-style: none; margin: 0; padding: 0; }
 .person-interest-tag { max-width: 100%; padding: 2px 7px; border: 1px solid var(--topic-line, #d3e1ef); border-radius: 5px; color: var(--topic-color, #285c9b); background: var(--topic-soft, #edf4fc); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
-.person-links { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 8px; margin-top: auto; padding-top: 12px; }
+.person-links { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 8px; margin-top: auto; padding-top: 12px; height: 48px; min-height: 48px; flex-shrink: 0; }
 .person-body + .person-links { margin-top: 14px; border-top: 1px solid #e7edf1; }
 .person-profile + .person-links { padding-top: 12px; }
 .person-email { position: relative; justify-self: start; min-width: 0; }
-.person-email summary { display: inline-flex; align-items: center; gap: 7px; justify-content: center; width: 34px; height: 34px; padding: 0; border: 1px solid #ccdce8; border-radius: 5px; background: #f2f7fb; color: #285c83; font-size: 12px; font-weight: 500; cursor: pointer; list-style: none; }
+.person-email summary { display: flex; align-items: center; gap: 7px; justify-content: center; width: 34px; height: 34px; padding: 0; border: 1px solid #ccdce8; border-radius: 5px; background: #f2f7fb; color: #285c83; font-size: 12px; font-weight: 500; cursor: pointer; list-style: none; }
 .person-email summary::-webkit-details-marker { display: none; }
 .person-email summary:hover { background: #e7f1f9; }
 .person-email summary:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 3px; }
@@ -42,8 +42,8 @@
 .person-card:has(.person-email[open]) { position: relative; z-index: 3; }
 .person-email-address a { color: var(--accent-blue); font-size: 13px; overflow-wrap: anywhere; }
 .person-email-address a:hover { text-decoration: underline; }
-.person-socials { grid-column: 2; display: flex; flex-wrap: wrap; justify-content: end; gap: 5px; }
-.person-social { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid #dde5eb; border-radius: 5px; color: #536778; }
+.person-socials { grid-column: 2; display: flex; flex-wrap: nowrap; justify-content: end; gap: 5px; }
+.person-social { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid #dde5eb; border-radius: 5px; color: #536778; }
 .person-social svg { width: 18px; height: 18px; }
 .person-social:hover { color: var(--accent-blue); border-color: #b7cfdf; background: #f2f7fb; }
 .people-empty { padding: 22px 0; font-size: 14px; color: var(--muted); }

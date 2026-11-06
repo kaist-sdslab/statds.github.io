@@ -12,7 +12,8 @@
   "private": true,
   "scripts": {
     "build:news-editor": "esbuild assets/editor/news-editor.js --bundle --format=iife --global-name=SDSNewsEditor --outfile=assets/vendor/news-editor.js --minify --legal-comments=linked --target=es2020",
-    "test:news-editor": "node tests/news-direct-editor.test.cjs && node tests/news-editor.test.cjs"
+    "test:news-editor": "node tests/news-direct-editor.test.cjs && node tests/news-editor.test.cjs",
+    "test": "node tests/news-direct-editor.test.cjs && node tests/news-editor.test.cjs && node tests/home-motion.test.cjs"
   },
   "engines": {
     "node": ">=22.12.0"

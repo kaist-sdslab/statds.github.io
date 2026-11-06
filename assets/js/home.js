@@ -19,7 +19,7 @@
       let visibleIndex = 0;
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        entry.target.style.setProperty('--reveal-delay', `${Math.min(visibleIndex++, 3) * 90}ms`);
+        entry.target.style.setProperty('--reveal-delay', `${Math.min(visibleIndex++, 3) * 55}ms`);
         entry.target.setAttribute('data-reveal', 'visible');
         observer.unobserve(entry.target);
       });

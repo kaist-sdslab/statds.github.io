@@ -10,7 +10,9 @@
 <figure class="news-figure news-figure-{{ $align }}{{ if $wrap }} news-figure-wrap{{ end }}" style="{{ $style | safeCSS }}">
   {{- if $image -}}
     {{- $large := $image.Fit "1800x1800 webp" -}}
-    <img src="{{ $large.RelPermalink }}" width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .alt | default "" }}" loading="lazy" decoding="async">
+    {{- $small := $image.Fit "480x480 webp" -}}{{- $medium := $image.Fit "960x960 webp" -}}
+    {{- $display := mul 7.6 $width -}}{{- if $max -}}{{- $display = math.Min $display $max -}}{{- end -}}
+    <img src="{{ $large.RelPermalink }}"{{ if gt $large.Width $small.Width }} srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ if and (gt $medium.Width $small.Width) (lt $medium.Width $large.Width) }}{{ $medium.RelPermalink }} {{ $medium.Width }}w, {{ end }}{{ $large.RelPermalink }} {{ $large.Width }}w" sizes="(max-width: 760px) {{ $width }}vw, {{ int $display }}px"{{ end }} width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .alt | default "" }}" loading="lazy" decoding="async">
   {{- else -}}<img src="{{ $src | relURL }}" alt="{{ .alt | default "" }}" loading="lazy" decoding="async">{{- end -}}
   {{- with .caption -}}<figcaption>{{ . }}</figcaption>{{- end -}}
 </figure>

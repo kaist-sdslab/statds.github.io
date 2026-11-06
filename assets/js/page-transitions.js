@@ -16,8 +16,8 @@
     const next = new URL(link.href, window.location.href);
     const current = new URL(window.location.href);
     if (next.origin !== current.origin || !next.pathname.startsWith(home.pathname)) return;
-    // Home retains its own reveal effect; anchors and filters stay immediate.
-    if (next.pathname === home.pathname || next.pathname === current.pathname) return;
+    // Anchors and filters stay immediate.
+    if (next.pathname === current.pathname) return;
     if (!next.pathname.endsWith('/') && !next.pathname.endsWith('.html')) return;
     if (next.pathname.startsWith(`${home.pathname}admin/`)) return;
 

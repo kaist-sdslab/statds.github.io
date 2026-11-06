@@ -1,0 +1,8 @@
+{{- $cover := dict "image" (.Params.image | default "") "image_alt" (.Params.image_alt | default "") -}}
+{{- $match := findRE `(?s)^\s*\{\{< news-content >\}\}\s*([A-Za-z0-9+/=\s]+)\s*\{\{< /news-content >\}\}\s*$` .RawContent -}}
+{{- if $match -}}
+  {{- $encoded := replaceRE `(?s)^\s*\{\{< news-content >\}\}\s*|\s*\{\{< /news-content >\}\}\s*$` "" .RawContent -}}
+  {{- $doc := $encoded | base64Decode | transform.Unmarshal -}}
+  {{- $cover = partial "news/find-cover.html" $doc -}}
+{{- end -}}
+{{- return $cover -}}

@@ -1,9 +1,11 @@
 {{ $settings := .Params.slideshow }}
-{{ $eligible := where (partial "news/posts.html" .) "Params.image" "!=" nil }}
-{{ $eligible = where $eligible "Params.image" "!=" "" }}
-{{ $eligible = where $eligible "Params.show_in_slideshow" "!=" false }}
+{{ $eligible := slice }}
+{{ range partial "news/posts.html" . }}
+  {{ $cover := partial "news/cover-data.html" . }}
+  {{ if and $cover.image (ne .Params.show_in_slideshow false) }}{{ $eligible = $eligible | append . }}{{ end }}
+{{ end }}
 {{ $posts := first (int ($settings.limit | default 5)) $eligible }}
-<div class="home-hero-gallery">
+<div class="home-hero-gallery" data-reveal data-reveal-direction="fade">
   {{ if $posts }}
   <div class="news-slideshow" data-slideshow data-interval="{{ $settings.interval | default 5 }}" data-pause="{{ $settings.pause }}" data-play="{{ $settings.play }}" role="region" aria-roledescription="carousel" aria-label="{{ $settings.heading }}">
     <div class="news-slides">

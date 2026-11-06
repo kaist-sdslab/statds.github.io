@@ -5,11 +5,11 @@
 {{ $top := first $limit ($pinned | collections.Append $regular) }}
 {{ $labels := .Params.news }}
 <section class="shell home-news" aria-labelledby="home-news-title">
-  <div class="section-heading"><h2 id="home-news-title">{{ $labels.heading }}</h2><a class="text-link" href="{{ "news/" | relURL }}">{{ $labels.view_all }} <span aria-hidden="true">→</span></a></div>
+  <div class="section-heading" data-reveal data-reveal-direction="down"><h2 id="home-news-title">{{ $labels.heading }}</h2><a class="text-link" href="{{ "news/" | relURL }}">{{ $labels.view_all }} <span aria-hidden="true">→</span></a></div>
   {{ if $top }}
   <ul class="home-news-list">
     {{ range $top }}
-    <li><a href="{{ .RelPermalink }}"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time><span class="home-news-item-title">{{ .Title }}</span>{{ if .Params.pinned }}<span class="news-pin">{{ (site.GetPage "news").Params.labels.pinned }}</span>{{ end }}<span class="home-news-arrow" aria-hidden="true">↗</span></a></li>
+    <li data-reveal data-reveal-direction="down"><a href="{{ .RelPermalink }}"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time><span class="home-news-item-title">{{ .Title }}</span>{{ if .Params.pinned }}<span class="news-pin">{{ (site.GetPage "news").Params.labels.pinned }}</span>{{ end }}<span class="home-news-arrow" aria-hidden="true">↗</span></a></li>
     {{ end }}
   </ul>
   {{ else }}<p class="news-empty">{{ $labels.empty }}</p>{{ end }}

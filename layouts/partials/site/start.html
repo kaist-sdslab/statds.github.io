@@ -42,29 +42,13 @@
   <meta property="og:description" content="{{ $description }}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ .Permalink }}">
-  {{ $style := resources.Get "css/home.css" | minify | fingerprint }}
+  {{ $styles := slice (resources.Get "css/home.css") }}
+  {{ if or .IsHome (in (slice "news" "news-post") .Layout) }}{{ $styles = $styles | append (resources.Get "css/news.css") }}{{ end }}
+  {{ $extra := index (dict "professors" "professors" "people" "people" "resources" "resources" "publications" "publications" "publication" "publications") (.Layout | default "") }}
+  {{ with $extra }}{{ $styles = $styles | append (resources.Get (printf "css/%s.css" .)) }}{{ end }}
+  {{ $key := cond .IsHome "home" (.Layout | default .Kind) }}
+  {{ $style := $styles | resources.Concat (printf "css/site-%s.css" $key) | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
-  {{ if or .IsHome (in (slice "news" "news-post") .Layout) }}
-    {{ $newsStyle := resources.Get "css/news.css" | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $newsStyle.RelPermalink }}" integrity="{{ $newsStyle.Data.Integrity }}">
-  {{ end }}
-  {{ if eq .Layout "professors" }}
-    {{ $professorStyle := resources.Get "css/professors.css" | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $professorStyle.RelPermalink }}" integrity="{{ $professorStyle.Data.Integrity }}">
-  {{ end }}
-  {{ if eq .Layout "people" }}
-    {{ $peopleStyle := resources.Get "css/people.css" | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $peopleStyle.RelPermalink }}" integrity="{{ $peopleStyle.Data.Integrity }}">
-  {{ end }}
-  {{ if eq .Layout "resources" }}
-    {{ $resourceStyle := resources.Get "css/resources.css" | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $resourceStyle.RelPermalink }}" integrity="{{ $resourceStyle.Data.Integrity }}">
-  {{ end }}
-  {{ if or (eq .Layout "publications") (eq .Layout "publication") }}
-
-    {{ $publicationStyle := resources.Get "css/publications.css" | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $publicationStyle.RelPermalink }}" integrity="{{ $publicationStyle.Data.Integrity }}">
-  {{ end }}
 </head>
 <body data-home-url="{{ site.Home.RelPermalink }}" data-is-home="{{ .IsHome }}">
   <a class="skip-link" href="#main">{{ site.Data.site_settings.site.skip_link }}</a>

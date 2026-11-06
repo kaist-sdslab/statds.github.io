@@ -440,7 +440,7 @@ collections:
         min: 1
         max: 100
   - name: news_page
-    label: News page settings
+    label: News
     file: content/news/_index.md
     fields:
     - label: Title
@@ -885,16 +885,13 @@ collections:
     widget: boolean
     default: false
     hint: Pinned posts appear above other posts. Each group is newest first.
-  - label: Cover image
+  - label: Legacy cover image
     name: image
-    widget: image
+    widget: hidden
     required: false
-    media_library:
-      allow_multiple: false
-    hint: Used as the list thumbnail and included automatically in the home slideshow.
-  - label: Cover image description
+  - label: Legacy cover description
     name: image_alt
-    widget: string
+    widget: hidden
     required: false
   - label: Show in home slideshow
     name: show_in_slideshow
@@ -904,8 +901,8 @@ collections:
   - label: Body
     name: body
     widget: news-body
-    hint: Write directly in the article. Use the toolbar to align text; select an image to set its width, position
-      or wrapping. Drag its corner handle to resize.
+    hint: Write and format directly in the article. Select an image to choose Cover, resize it, or place text beside it.
+      Use Write below image to continue beneath a picture.
 - name: software
   label: Softwares
   label_singular: Software entry

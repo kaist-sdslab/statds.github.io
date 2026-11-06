@@ -7,10 +7,21 @@
   const toggle = root.querySelector('[data-slide-toggle]');
   const dots = [...root.querySelectorAll('[data-slide-to]')];
   let index = 0, paused = motion.matches, hovering = false, timer;
+  let animations = [];
+  const warmNext = () => { const img = slides[(index + 1) % slides.length].querySelector('img'); if (img) img.loading = 'eager'; };
   const show = next => {
+    const previous = index;
+    animations.forEach(animation => animation.cancel()); animations = [];
     index = (next + slides.length) % slides.length;
-    slides.forEach((slide, i) => { slide.hidden = i !== index; });
+    slides.forEach((slide, i) => { slide.hidden = i !== index; slide.style.zIndex = i === index ? '1' : '0'; slide.setAttribute('aria-hidden', String(i !== index)); });
+    if (previous !== index && !motion.matches && slides[index].animate) {
+      const leaving = slides[previous]; leaving.hidden = false;
+      const fade = leaving.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 360, easing: 'ease-out' });
+      fade.onfinish = () => { if (previous !== index) leaving.hidden = true; };
+      animations = [fade, slides[index].animate([{ opacity: 0 }, { opacity: 1 }], { duration: 360, easing: 'ease-out' })];
+    }
     dots.forEach((dot, i) => dot.setAttribute('aria-pressed', String(i === index)));
+    warmNext();
   };
   const schedule = () => {
     clearInterval(timer);
@@ -30,5 +41,7 @@
   window.addEventListener('pagehide', () => clearInterval(timer));
   window.addEventListener('pageshow', schedule);
   root.querySelector('[data-slide-controls]').hidden = false;
+  const first = slides[0].querySelector('img');
+  if (!first || first.complete) warmNext(); else first.addEventListener('load', warmNext, { once: true });
   schedule();
 })();

@@ -1,10 +1,16 @@
 {{- $post := .post -}}
-{{- with $post.Params.image -}}
+{{- $cover := partial "news/cover-data.html" $post -}}
+{{- with $cover.image -}}
   {{- $image := partial "media-resource.html" . -}}
   {{- if $image -}}
     {{- $thumb := $image.Fit (printf "%dx%d webp" $.width $.width) -}}
-    <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $post.Params.image_alt | default "" }}" {{ if not $.eager }}loading="lazy"{{ end }} decoding="async">
+    {{- $small := $image.Fit "480x480 webp" -}}
+    {{- $medium := $image.Fit "960x960 webp" -}}
+    {{- $sizes := "(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 60vw, 680px" -}}
+    {{- if le $.width 480 -}}{{- $sizes = "(max-width: 760px) 104px, 220px" -}}{{- end -}}
+    {{- if ge $.width 1800 -}}{{- $sizes = "(max-width: 760px) calc(100vw - 48px), 1000px" -}}{{- end -}}
+    <img src="{{ $thumb.RelPermalink }}"{{ if gt $thumb.Width $small.Width }} srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ if and (gt $medium.Width $small.Width) (lt $medium.Width $thumb.Width) }}{{ $medium.RelPermalink }} {{ $medium.Width }}w, {{ end }}{{ $thumb.RelPermalink }} {{ $thumb.Width }}w" sizes="{{ $sizes }}"{{ end }} width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $cover.image_alt }}" {{ if $.eager }}fetchpriority="high"{{ else }}loading="lazy"{{ end }} decoding="async">
   {{- else -}}
-    <img src="{{ . | relURL }}" alt="{{ $post.Params.image_alt | default "" }}" {{ if not $.eager }}loading="lazy"{{ end }} decoding="async">
+    <img src="{{ . | relURL }}" alt="{{ $cover.image_alt }}" {{ if $.eager }}fetchpriority="high"{{ else }}loading="lazy"{{ end }} decoding="async">
   {{- end -}}
 {{- end -}}
