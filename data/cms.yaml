@@ -901,8 +901,8 @@ collections:
   - label: Body
     name: body
     widget: news-body
-    hint: Write and format directly in the article. Select an image to choose Cover, resize it, or place text beside it.
-      Use Write below image to continue beneath a picture.
+    hint: Write and format directly in the article. Font size applies immediately. Select a picture for Cover and width;
+      drag beside another picture to group, beside a paragraph to wrap text, or above/below to separate.
 - name: software
   label: Softwares
   label_singular: Software entry

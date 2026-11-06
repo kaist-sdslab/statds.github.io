@@ -2,8 +2,10 @@
 {{- if not (in (slice "left" "center" "right") $align) -}}{{- $align = "center" -}}{{- end -}}
 {{- $width := math.Max 10 (math.Min 100 (int (.widthPercent | default 100))) -}}
 {{- $max := math.Max 0 (math.Min 2400 (int (.maxWidth | default 0))) -}}
-{{- $wrap := and (.wrap | default false) (ne $align "center") -}}
-{{- $style := printf "width:%v%%;" $width -}}
+{{- $grouped := .inRow | default false -}}
+{{- if $grouped -}}{{- $width = math.Max 0.001 (math.Min 100 (.widthPercent | default 50)) -}}{{- end -}}
+{{- $wrap := and (not $grouped) (.wrap | default false) (ne $align "center") -}}
+{{- $style := printf "--image-weight:%v;width:%v%%;" $width $width -}}
 {{- if $max -}}{{- $style = printf "%smax-width:%vpx;" $style $max -}}{{- end -}}
 {{- $src := .src | default "" -}}
 {{- $image := partial "media-resource.html" $src -}}
@@ -14,5 +16,4 @@
     {{- $display := mul 7.6 $width -}}{{- if $max -}}{{- $display = math.Min $display $max -}}{{- end -}}
     <img src="{{ $large.RelPermalink }}"{{ if gt $large.Width $small.Width }} srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ if and (gt $medium.Width $small.Width) (lt $medium.Width $large.Width) }}{{ $medium.RelPermalink }} {{ $medium.Width }}w, {{ end }}{{ $large.RelPermalink }} {{ $large.Width }}w" sizes="(max-width: 760px) {{ $width }}vw, {{ int $display }}px"{{ end }} width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .alt | default "" }}" loading="lazy" decoding="async">
   {{- else -}}<img src="{{ $src | relURL }}" alt="{{ .alt | default "" }}" loading="lazy" decoding="async">{{- end -}}
-  {{- with .caption -}}<figcaption>{{ . }}</figcaption>{{- end -}}
 </figure>

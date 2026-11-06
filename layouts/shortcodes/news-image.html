@@ -18,5 +18,4 @@
   {{- else -}}
     <img src="{{ $src | relURL }}" alt="{{ .Get "alt64" | default "" | base64Decode }}" loading="lazy" decoding="async">
   {{- end -}}
-  {{- with (.Get "caption64" | default "" | base64Decode) -}}<figcaption>{{ . }}</figcaption>{{- end -}}
 </figure>

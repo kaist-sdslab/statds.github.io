@@ -4,6 +4,8 @@ import Image from '@tiptap/extension-image';
 import TextAlign from '@tiptap/extension-text-align';
 import { TableKit } from '@tiptap/extension-table';
 import MarkdownIt from 'markdown-it';
+import { ImageRow, NormalizeImageRows, share, setImageWidth, beginImageDrag, moveImageWithKey } from './image-layout.js';
+export { arrangeDocument, dropImage, locateDrop, setImageWidth } from './image-layout.js';
 
 const markdown = new MarkdownIt({ html: false, breaks: false });
 export const align = value => ['left', 'center', 'right', 'justify'].includes(value) ? value : 'left';
@@ -30,6 +32,17 @@ const ParagraphLayout = Extension.create({
     lineHeight: { default: null, parseHTML: el => ['1.2', '1.5', '1.8', '2'].includes(el.style.lineHeight) ? el.style.lineHeight : null, renderHTML: attrs => ['1.2', '1.5', '1.8', '2'].includes(attrs.lineHeight) ? { style: `line-height:${attrs.lineHeight}` } : {} }
   } }]; }
 });
+export function applyFontSize(editor, value, selected = editor.state.selection) {
+  let { from, to } = selected;
+  if (from === to) {
+    const position = editor.state.doc.resolve(from);
+    if (!position.parent.isTextblock) return;
+    from = position.start(); to = position.end();
+    if (from === to) { editor.commands.setMark('textStyle', { fontSize: value == null ? null : fontSize(value) }); return; }
+  }
+  const current = { from: editor.state.selection.from, to: editor.state.selection.to };
+  editor.chain().setTextSelection({ from, to }).setMark('textStyle', { fontSize: value == null ? null : fontSize(value) }).setTextSelection(current).run();
+}
 export function selectCover(editor, selected) {
   const position = editor.state.selection.from, transaction = editor.state.tr;
   editor.state.doc.descendants((node, pos) => { if (node.type.name === 'image') transaction.setNodeMarkup(pos, undefined, { ...node.attrs, cover: selected && pos === position }); });
@@ -42,7 +55,7 @@ export function getCover(doc) {
   return cover || { image: '', image_alt: '' };
 }
 export function refreshImages(editor, resolve) {
-  editor.state.doc.descendants((node, pos) => { if (node.type.name === 'image') { const img = editor.view.nodeDOM(pos)?.querySelector('img'); if (img) img.src = resolve(node.attrs.src); } });
+  editor.state.doc.descendants((node, pos) => { if (node.type.name === 'image') { const img = editor.view.nodeDOM(pos)?.querySelector('img'), src = resolve(node.attrs.src); if (img && img.getAttribute('src') !== src) img.src = src; } });
 }
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const encode = value => btoa(Array.from(new TextEncoder().encode(value), c => String.fromCharCode(c)).join(''));
@@ -78,12 +91,13 @@ export function legacyHTML(value) {
   return html;
 }
 export function renderDocument(doc, resolve = src => src) {
-  const render = node => {
-    const attrs = node.attrs || {}, children = () => (node.content || []).map(render).join('');
+  const render = (node, inRow = false) => {
+    const attrs = node.attrs || {}, children = () => (node.content || []).map(child => render(child, node.type === 'imageRow')).join('');
     const blockStyle = [attrs.clear === 'both' ? 'clear:both' : '', ['1.2', '1.5', '1.8', '2'].includes(attrs.lineHeight) ? `line-height:${attrs.lineHeight}` : ''].filter(Boolean).join(';');
     const cls = (attrs.textAlign ? ` class="news-text-${align(attrs.textAlign)}"` : '') + (blockStyle ? ` style="${blockStyle}"` : '');
     switch (node.type) {
       case 'doc': return children();
+      case 'imageRow': return `<div class="news-image-row" data-news-image-row>${children()}</div>`;
       case 'text': {
         let result = escape(node.text);
         for (const mark of node.marks || []) {
@@ -107,8 +121,9 @@ export function renderDocument(doc, resolve = src => src) {
       case 'tableRow': return `<tr>${children()}</tr>`;
       case 'tableCell': case 'tableHeader': { const tag = node.type === 'tableHeader' ? 'th' : 'td'; return `<${tag}>${children()}</${tag}>`; }
       case 'image': {
-        const position = imageAlign(attrs.alignment), wrap = attrs.wrap && position !== 'center';
-        return `<figure class="news-figure news-figure-${position}${wrap ? ' news-figure-wrap' : ''}" style="width:${width(attrs.widthPercent)}%;${cap(attrs.maxWidth) ? `max-width:${cap(attrs.maxWidth)}px;` : ''}"><img src="${escape(resolve(attrs.src || ''))}" alt="${escape(attrs.alt)}">${attrs.caption ? `<figcaption>${escape(attrs.caption)}</figcaption>` : ''}</figure>`;
+        const position = imageAlign(attrs.alignment), wrap = !inRow && attrs.wrap && position !== 'center';
+        const percent = inRow ? share(attrs.widthPercent) : width(attrs.widthPercent);
+        return `<figure class="news-figure news-figure-${position}${wrap ? ' news-figure-wrap' : ''}" style="--image-weight:${percent};width:${percent}%;${cap(attrs.maxWidth) ? `max-width:${cap(attrs.maxWidth)}px;` : ''}"><img src="${escape(resolve(attrs.src || ''))}" alt="${escape(attrs.alt)}"></figure>`;
       }
       default: return children();
     }
@@ -130,38 +145,57 @@ const LayoutImage = Image.extend({
   addNodeView() {
     const resolve = this.options.resolveAsset;
     return ({ node: initial, editor, getPos }) => {
-      let node = initial, cleanup;
-      const dom = document.createElement('figure'), img = document.createElement('img'), caption = document.createElement('figcaption'), handle = document.createElement('button');
-      dom.contentEditable = 'false'; dom.draggable = true; dom.dataset.dragHandle = '';
+      let node = initial, cleanup, dragCleanup;
+      const dom = document.createElement('figure'), img = document.createElement('img'), handle = document.createElement('button'), grip = document.createElement('button');
+      dom.contentEditable = 'false'; dom.draggable = false;
       img.draggable = false;
-      handle.type = 'button'; handle.className = 'sds-image-resize'; handle.setAttribute('aria-label', 'Resize image; use arrow keys to change width');
-      handle.textContent = '↘'; dom.append(img, caption, handle);
+      handle.type = 'button'; handle.className = 'sds-image-resize'; handle.setAttribute('aria-label', 'Resize image; use arrow keys to change width'); handle.textContent = '↘';
+      grip.type = 'button'; grip.className = 'sds-image-move'; grip.setAttribute('aria-label', 'Drag image to arrange. Arrow up/down moves; left/right groups with a neighboring picture.'); grip.textContent = '⠿';
+      dom.append(img, grip, handle);
+      const inRow = () => typeof getPos() === 'number' && editor.state.doc.resolve(getPos()).parent.type.name === 'imageRow';
       const draw = () => {
-        const a = node.attrs, position = imageAlign(a.alignment), wrap = a.wrap && position !== 'center';
+        const a = node.attrs, position = imageAlign(a.alignment), grouped = inRow(), wrap = !grouped && a.wrap && position !== 'center';
         const selected = dom.classList.contains('ProseMirror-selectednode');
         dom.className = `sds-inline-image news-figure news-figure-${position}${wrap ? ' news-figure-wrap' : ''}`;
         if (selected) dom.classList.add('ProseMirror-selectednode');
-        dom.style.width = `${width(a.widthPercent)}%`; dom.style.maxWidth = cap(a.maxWidth) ? `${cap(a.maxWidth)}px` : '100%';
+        dom.style.width = `${width(a.widthPercent)}%`; dom.style.setProperty('--image-weight', share(a.widthPercent)); dom.style.maxWidth = cap(a.maxWidth) ? `${cap(a.maxWidth)}px` : '100%';
         dom.style.marginLeft = position === 'left' ? '0' : 'auto'; dom.style.marginRight = position === 'right' ? '0' : 'auto';
-        img.src = resolve(a.src || ''); img.alt = a.alt || ''; caption.textContent = a.caption || ''; caption.hidden = !a.caption;
+        const src = resolve(a.src || ''); if (img.getAttribute('src') !== src) img.src = src; img.alt = a.alt || '';
       };
       const select = () => { const pos = getPos(); if (typeof pos === 'number') editor.commands.setNodeSelection(pos); };
+      grip.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+        event.preventDefault(); event.stopPropagation();
+        if (moveImageWithKey(editor, getPos(), event.key)) editor.view.nodeDOM(editor.state.selection.from)?.querySelector('.sds-image-move')?.focus();
+      });
       dom.addEventListener('click', event => { if (event.target !== handle) select(); });
-      handle.addEventListener('keydown', event => { if (['ArrowLeft', 'ArrowRight'].includes(event.key)) { event.preventDefault(); select(); editor.commands.updateAttributes('image', { widthPercent: width(node.attrs.widthPercent + (event.key === 'ArrowRight' ? 5 : -5)) }); } });
+      dom.addEventListener('pointerdown', event => {
+        if (event.button !== 0 || event.target === handle || (event.pointerType === 'touch' && event.target !== grip)) return;
+        event.preventDefault(); event.stopPropagation(); select(); dragCleanup?.(); dragCleanup = beginImageDrag(editor, getPos, event);
+      });
+      handle.addEventListener('keydown', event => { if (['ArrowLeft', 'ArrowRight'].includes(event.key)) { event.preventDefault(); select(); setImageWidth(editor, node.attrs.widthPercent + (event.key === 'ArrowRight' ? 5 : -5)); } });
       handle.addEventListener('pointerdown', event => {
         event.preventDefault(); event.stopPropagation(); select();
-        const start = event.clientX, initialWidth = dom.getBoundingClientRect().width, available = dom.parentElement.clientWidth;
+        const start = event.clientX, initialWidth = dom.getBoundingClientRect().width, available = dom.parentElement.clientWidth, grouped = inRow();
+        const direction = !grouped && node.attrs.alignment === 'right' ? -1 : !grouped && node.attrs.alignment === 'center' ? 2 : 1;
+        const siblings = grouped ? [...dom.parentElement.children].map(element => ({ element, weight: Number(element.style.getPropertyValue('--image-weight')) || 1 })) : [];
         let next = width(node.attrs.widthPercent);
-        const move = e => { next = width((initialWidth + e.clientX - start) / available * 100); dom.style.width = `${next}%`; };
-        const finish = () => { cleanup(); editor.commands.updateAttributes('image', { widthPercent: next }); };
-        const cancel = () => { cleanup(); draw(); };
+        const move = e => {
+          next = Math.max(grouped ? 1 : 10, Math.min(grouped ? 100 - siblings.length + 1 : 100, (initialWidth + (e.clientX - start) * direction) / available * 100));
+          if (grouped) {
+            const sum = siblings.filter(item => item.element !== dom).reduce((total, item) => total + item.weight, 0);
+            siblings.forEach(item => item.element.style.setProperty('--image-weight', item.element === dom ? next : (100 - next) * item.weight / sum));
+          } else dom.style.width = `${next}%`;
+        };
+        const finish = () => { cleanup(); setImageWidth(editor, next); };
+        const cancel = () => { cleanup(); siblings.forEach(item => item.element.style.setProperty('--image-weight', item.weight)); draw(); };
         cleanup = () => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', finish); document.removeEventListener('pointercancel', cancel); };
         document.addEventListener('pointermove', move); document.addEventListener('pointerup', finish); document.addEventListener('pointercancel', cancel);
       });
       draw();
       return { dom, update(next) { if (next.type !== node.type) return false; node = next; draw(); return true; },
         selectNode() { dom.classList.add('ProseMirror-selectednode'); }, deselectNode() { dom.classList.remove('ProseMirror-selectednode'); },
-        stopEvent: event => event.target === handle, ignoreMutation: () => true, destroy() { cleanup?.(); } };
+        stopEvent: event => event.target === handle || event.target === grip || event.type.startsWith('pointer'), ignoreMutation: () => true, destroy() { cleanup?.(); dragCleanup?.(); } };
     };
   }
 });
@@ -183,7 +217,7 @@ export function createEditor({ element, value, defaultAlignment = 'left', coverI
       content = container.innerHTML;
     }
   }
-  return new Editor({ element, extensions: [StarterKit.configure({ link: { openOnClick: false }, underline: false }), Typography, ParagraphLayout, LayoutImage.configure({ resolveAsset }), TextAlign.configure({ types: ['heading', 'paragraph'], defaultAlignment: 'left' }), TableKit.configure({ table: { resizable: false } })],
+  return new Editor({ element, extensions: [StarterKit.configure({ link: { openOnClick: false }, underline: false }), Typography, ParagraphLayout, ImageRow, NormalizeImageRows, LayoutImage.configure({ resolveAsset }), TextAlign.configure({ types: ['heading', 'paragraph'], defaultAlignment: 'left' }), TableKit.configure({ table: { resizable: false } })],
     content, editorProps: { attributes: { class: 'sds-news-input', role: 'textbox', 'aria-multiline': 'true', 'aria-label': 'News article body' } },
     onUpdate: ({ editor }) => onUpdate(serialize(editor.getJSON())), onSelectionUpdate: ({ editor }) => onSelection(editor), onTransaction: ({ editor }) => onSelection(editor) });
 }

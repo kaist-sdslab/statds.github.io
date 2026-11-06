@@ -4,6 +4,7 @@
     "@tiptap/extension-image": "3.33.0",
     "@tiptap/extension-table": "3.33.0",
     "@tiptap/extension-text-align": "3.33.0",
+    "@tiptap/pm": "3.33.0",
     "@tiptap/starter-kit": "3.33.0",
     "esbuild": "0.25.12",
     "jsdom": "27.4.0",

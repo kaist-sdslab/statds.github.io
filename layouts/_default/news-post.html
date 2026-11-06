@@ -2,7 +2,7 @@
 <article class="shell news-article">
   <a class="text-link news-back" href="{{ "news/" | relURL }}">← {{ (site.GetPage "news").Params.labels.back }}</a>
   <header><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time><h1>{{ .Title }}</h1></header>
-  {{ if and .Params.image (not (hasPrefix (trim .RawContent " \t\r\n") "{{< news-content >}}")) }}<figure class="news-cover">{{ partial "news/cover.html" (dict "post" . "width" 1800 "eager" true) }}{{ with .Params.image_alt }}<figcaption>{{ . }}</figcaption>{{ end }}</figure>{{ end }}
+  {{ if and .Params.image (not (hasPrefix (trim .RawContent " \t\r\n") "{{< news-content >}}")) }}<figure class="news-cover">{{ partial "news/cover.html" (dict "post" . "width" 1800 "eager" true) }}</figure>{{ end }}
   {{ $align := .Params.body_alignment | default "left" }}
   {{ if not (in (slice "left" "center" "right" "justify") $align) }}{{ $align = "left" }}{{ end }}
   <div class="news-body news-text-{{ $align }}">{{ .Content }}</div>

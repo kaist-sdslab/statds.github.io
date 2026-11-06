@@ -8,6 +8,8 @@
 {{- if in (slice "1.2" "1.5" "1.8" "2") $attrs.lineHeight -}}{{- $style = printf "%sline-height:%s;" $style $attrs.lineHeight -}}{{- end -}}
 {{- if eq .type "doc" -}}
   {{- range .content -}}{{- partial "news/rich-node.html" . -}}{{- end -}}
+{{- else if eq .type "imageRow" -}}
+  <div class="news-image-row" data-news-image-row>{{ range .content }}{{ partial "news/rich-image.html" (merge .attrs (dict "inRow" true)) }}{{ end }}</div>
 {{- else if eq .type "text" -}}
   {{- $text := .text | htmlEscape -}}
   {{- range .marks -}}

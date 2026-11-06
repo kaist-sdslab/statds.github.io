@@ -22,9 +22,10 @@ The News **Body** is a direct visual editor. Type and select text in the documen
 
 - Use **Image** to choose or upload a picture through the CMS Media Library.
 - Select an image and check **Cover** to use it in News thumbnails and the Home slideshow. Only one body image can be the cover. Earlier separate cover images are imported into the body when opening older posts.
-- Click an image to show its width slider, percentage/pixel limit, position and text-wrapping controls. Drag its corner handle to resize directly in the input area, or drag the image to another paragraph.
-- **Text right** places the image on the left with paragraphs flowing beside it; **Text left** mirrors that layout. **Separate block** stops wrapping; **Write below image** starts a paragraph below the image. Narrow screens stack wrapped images and text.
-- Select text to set its font family, size (10–72 px), color, heading level (1–6), alignment, or line spacing. Numeric font/image inputs apply when leaving the field.
+- Click an image to show Cover and width controls. Drag its corner handle to resize directly in the input area. Caption and Alt fields are not shown; existing alternative text is retained in stored images.
+- Drag a picture (or its top-left grip on a touch screen). A blue drop guide shows the result: beside another picture creates/reorders an image row; the left/right edge of a paragraph wraps text beside the image; above/below a block creates a standalone image. Drag a picture out of a row to split it off. Escape cancels a drag.
+- Row groups and text wrapping remain in place on mobile. Row images share the available width; resizing one redistributes the remaining space. Undo/Redo restores each drop. On the move grip, arrow up/down moves a picture and left/right groups it with a neighboring picture.
+- Select text to set its size (10–72 px), color, heading level (1–6), alignment, or line spacing. Font size applies to the input and Preview as soon as a valid value is entered; with no text selected it formats the current paragraph. Font-family selection is omitted. Image percentage/pixel fields apply on blur; the slider and resize handle apply directly.
 - **Link** opens URL and display-text fields. Applying with no selected text inserts a visible link immediately.
 - Existing Markdown and the earlier image/alignment blocks are imported into the visual editor. The saved body uses a structured `news-content` shortcode so Hugo can render formatting without enabling arbitrary HTML.
 - Existing unsupported shortcodes are preserved in a source fallback rather than silently discarded.
@@ -45,3 +46,5 @@ The production CMS uses the lab's Cloudflare Worker for GitHub OAuth. Its public
 The locally bundled editor uses Tiptap, ProseMirror and markdown-it under their open-source licenses; see `static/vendor/news-editor-LICENSE.txt`.
 
 Public pages load one minified CSS bundle and one minified JavaScript bundle per page. Editor dependencies load only in `/admin/`. News photos use WebP and responsive source sizes; the first Home photo gets high fetch priority. Home entry and carousel transitions use opacity/transform only and respect reduced-motion preferences.
+
+`node_modules/` contains local build/test dependencies (Tiptap, esbuild, jsdom, etc.). It is ignored by Git and excluded from the Hugo output. It can be regenerated with `npm ci`; normal Pages builds and site visitors use only the committed minified editor bundle, not this folder.
