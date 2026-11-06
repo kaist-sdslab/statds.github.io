@@ -14,7 +14,8 @@
     {{- $large := $image.Fit "1800x1800 webp" -}}
     {{- $small := $image.Fit "480x480 webp" -}}{{- $medium := $image.Fit "960x960 webp" -}}
     {{- $viewportWidth := div (mul $width (.layoutWidth | default 100)) 100.0 -}}
+    {{- $mobileWidth := div (mul $width (.mobileLayoutWidth | default (.layoutWidth | default 100))) 100.0 -}}
     {{- $display := mul 7.6 $viewportWidth -}}{{- if $max -}}{{- $display = math.Min $display $max -}}{{- end -}}
-    <img src="{{ $large.RelPermalink }}"{{ if gt $large.Width $small.Width }} srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ if and (gt $medium.Width $small.Width) (lt $medium.Width $large.Width) }}{{ $medium.RelPermalink }} {{ $medium.Width }}w, {{ end }}{{ $large.RelPermalink }} {{ $large.Width }}w" sizes="(max-width: 760px) {{ $viewportWidth }}vw, {{ int $display }}px"{{ end }} width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .alt | default "" }}" loading="lazy" decoding="async">
+    <img src="{{ $large.RelPermalink }}"{{ if gt $large.Width $small.Width }} srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ if and (gt $medium.Width $small.Width) (lt $medium.Width $large.Width) }}{{ $medium.RelPermalink }} {{ $medium.Width }}w, {{ end }}{{ $large.RelPermalink }} {{ $large.Width }}w" sizes="(max-width: 760px) {{ $mobileWidth }}vw, {{ int $display }}px"{{ end }} width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .alt | default "" }}" loading="lazy" decoding="async">
   {{- else -}}<img src="{{ $src | relURL }}" alt="{{ .alt | default "" }}" loading="lazy" decoding="async">{{- end -}}
 </figure>

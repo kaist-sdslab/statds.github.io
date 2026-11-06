@@ -1,0 +1,24 @@
+/* Shared by published articles, CMS previews and the editor. */
+.news-image-layout { display: flex; align-items: flex-start; gap: clamp(6px, 1.5vw, 14px); max-width: 100%; margin: 0 0 22px; clear: both; }
+.news-image-layout-left { margin-left: 0; margin-right: auto; }
+.news-image-layout-center { margin-left: auto; margin-right: auto; }
+.news-image-layout-right { margin-left: auto; margin-right: 0; }
+.news-image-layout-wrap { clear: none; }
+.news-image-layout-wrap.news-image-layout-left { float: left; margin-right: 24px; }
+.news-image-layout-wrap.news-image-layout-right { float: right; margin-left: 24px; }
+.news-image-row { flex-direction: row; }
+.news-image-column { flex-direction: column; }
+/* The editor has one content wrapper; the saved article does not. */
+.sds-image-layout-content { display: flex; flex: 1 1 auto; min-width: 0; width: 100%; align-items: inherit; flex-direction: inherit; gap: inherit; }
+.news-image-layout > .news-figure, .sds-image-layout-content > .news-figure { min-width: 0; max-width: 100%; margin: 0 auto !important; float: none !important; }
+.news-image-row > .news-figure, .news-image-row > .sds-image-layout-content > .news-figure { flex: var(--image-weight, 1) 1 0; width: 0 !important; }
+.news-image-column > .news-figure, .news-image-column > .sds-image-layout-content > .news-figure { flex: 0 0 auto; }
+@media (max-width: 760px) {
+  .news-image-layout.news-image-layout-wrap {
+    float: none !important;
+    clear: both !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}

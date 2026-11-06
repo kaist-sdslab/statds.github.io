@@ -3,6 +3,7 @@
 {{- $alignment := $attrs.alignment | default "center" -}}{{- if not (in (slice "left" "center" "right") $alignment) -}}{{- $alignment = "center" -}}{{- end -}}
 {{- $wrap := and ($attrs.wrap | default false) (ne $alignment "center") -}}
 {{- $width := int (math.Max 10 (math.Min 100 (int ($attrs.widthPercent | default 100)))) -}}
+{{- $mobileWidth := $width -}}{{- if $wrap -}}{{- $mobileWidth = 100 -}}{{- end -}}
 <div class="news-image-layout news-image-{{ $direction }} news-image-layout-{{ $alignment }}{{ if $wrap }} news-image-layout-wrap{{ end }}" data-news-image-layout="{{ $direction }}" style="{{ printf "width:%v%%;" $width | safeCSS }}">
-  {{- range .content -}}{{- partial "news/rich-image.html" (merge (.attrs | default dict) (dict "inRow" true "layoutWidth" $width)) -}}{{- end -}}
+  {{- range .content -}}{{- partial "news/rich-image.html" (merge (.attrs | default dict) (dict "inRow" true "layoutWidth" $width "mobileLayoutWidth" $mobileWidth)) -}}{{- end -}}
 </div>

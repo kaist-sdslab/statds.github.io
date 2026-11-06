@@ -43,7 +43,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ .Permalink }}">
   {{ $styles := slice (resources.Get "css/home.css") }}
-  {{ if or .IsHome (in (slice "news" "news-post") .Layout) }}{{ $styles = $styles | append (resources.Get "css/news.css") }}{{ end }}
+  {{ if or .IsHome (in (slice "news" "news-post") .Layout) }}{{ $styles = $styles | append (resources.Get "css/news.css") (resources.Get "css/news-image-layout.css") }}{{ end }}
   {{ $extra := index (dict "professors" "professors" "people" "people" "resources" "resources" "publications" "publications" "publication" "publications") (.Layout | default "") }}
   {{ with $extra }}{{ $styles = $styles | append (resources.Get (printf "css/%s.css" .)) }}{{ end }}
   {{ $key := cond .IsHome "home" (.Layout | default .Kind) }}

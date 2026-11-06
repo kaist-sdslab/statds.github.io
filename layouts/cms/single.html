@@ -7,7 +7,7 @@
   <title>Content Manager · SDS Lab</title>
   <link rel="cms-config-url" type="text/yaml" href="config.yml?v={{ site.Data.cms | jsonify | sha256 }}">
 
-  {{ $tagsStyle := resources.Get "css/cms-tags.css" | minify | fingerprint }}
+  {{ $tagsStyle := slice (resources.Get "css/cms-tags.css") (resources.Get "css/news-image-layout.css") | resources.Concat "css/cms-controls.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $tagsStyle.RelPermalink }}" integrity="{{ $tagsStyle.Data.Integrity }}">
 </head>
 <body>
@@ -36,11 +36,11 @@
   {{ $catalog := partialCached "publications/topic-catalog.html" site }}
   <script id="publication-tag-catalog" type="application/json">{{ $catalog.topics | jsonify | safeJS }}</script>
   {{ $previewStyles := slice }}
-  {{ range slice "home" "professors" "people" "publications" "resources" "news" "cms-preview" }}
-    {{ $style := resources.Get (printf "css/%s.css" .) | minify | fingerprint }}
-    {{ $previewStyles = $previewStyles | append $style.RelPermalink }}
+  {{ range slice "home" "professors" "people" "publications" "resources" "news" "news-image-layout" "cms-preview" }}
+    {{ $previewStyles = $previewStyles | append (resources.Get (printf "css/%s.css" .)) }}
   {{ end }}
-  <script id="cms-preview-settings" type="application/json">{{ dict "data" (partial "cms/preview-data.html" .) "styles" $previewStyles | jsonify | safeJS }}</script>
+  {{ $previewStyle := $previewStyles | resources.Concat "css/cms-site-preview.css" | minify | fingerprint }}
+  <script id="cms-preview-settings" type="application/json">{{ dict "data" (partial "cms/preview-data.html" .) "styles" (slice $previewStyle.RelPermalink) | jsonify | safeJS }}</script>
   {{ $studentTags := resources.Get "js/cms-student-tags.js" | minify | fingerprint }}
   <script src="{{ $studentTags.RelPermalink }}" integrity="{{ $studentTags.Data.Integrity }}"></script>
   {{ $focusScript := resources.Get "js/cms-focus.js" | minify | fingerprint }}
