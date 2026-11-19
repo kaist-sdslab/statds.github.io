@@ -13,5 +13,5 @@ topics:
   - Curve alignment
   - Functional
   - Non-Euclidean data
-url_paper: https://onlinelibrary.wiley.com/doi/full/10.1111/biom.12546
+url_paper: https://doi.org/10.1111/biom.12546
 ---
