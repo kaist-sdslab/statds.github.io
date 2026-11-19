@@ -1,9 +1,10 @@
 name: Seongbin An
 group: phd
-affiliation: Department of Industrial and Systems Engineering
 order: 70
-research_interests:
-- Transfer Learning
-- Distribution Shift
-email: as_bean@kaist.ac.kr
+affiliation: Department of Industrial and Systems Engineering
 photo: media/people/seongbin-an.jpg
+research_interests:
+  - Transfer Learning
+  - Distribution Shift
+email: as_bean@kaist.ac.kr
+linkedin: https://www.linkedin.com/in/%EC%84%B1%EB%B9%88-%EC%95%88-b352b8217/
