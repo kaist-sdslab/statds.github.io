@@ -1,5 +1,5 @@
 ---
-title: Optimal restrictions on regression parameters for linear mixture model
+title: Optimal Restrictions on Regression Parameters For Linear Mixture Model
 layout: publication
 authors:
   - Ahn, J.
