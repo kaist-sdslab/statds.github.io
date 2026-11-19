@@ -14,4 +14,5 @@ topics:
   - Compositional data
   - Dimension reduction
   - Variable selection
+url_paper: https://proceedings.mlr.press/v202/park23a.html
 ---
