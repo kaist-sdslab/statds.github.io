@@ -1,5 +1,5 @@
 ---
-title: Trace regularization for high-dimensional multi-class discrimination
+title: Trace Ratio Optimization for High-Dimensional Multi-Class Discrimination
 layout: publication
 authors:
   - Ahn, J.
