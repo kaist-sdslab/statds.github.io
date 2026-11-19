@@ -10,6 +10,9 @@ month: ""
 venue: Journal of the Korean Statistical Society
 venue_details: 28:325–336
 topics:
-  - Compositional data
+  - Collinearity
+  - Integrated mean squared error
+  - Mixture experiment
+  - Restriction amtrix
 url_paper: https://scienceon.kisti.re.kr/commons/util/originalView.do?cn=JAKO199911920519798&oCn=JAKO199911920519798&dbt=JAKO&journal=34291
 ---
