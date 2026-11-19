@@ -1,14 +1,18 @@
 ---
-title: HDLSS discrimination with adaptive data piling
+title: HDLSS Discrimination With Adaptive Data Piling
 layout: publication
 authors:
-- Lee, M. H.
-- Ahn, J.
-- Jeon, Y.
-year: 2013
+  - Lee, M. H.
+  - Ahn, J.
+  - Jeon, Y.
 publication_type: journal
+year: 2013
 venue: Journal of Computational and Graphical Statistics
-topics:
-- High-dimension
 venue_details: 22:433-451
+topics:
+  - High-dimension
+  - Linear discrimination
+  - low-sample-size
+  - Maximal data piling
+url_paper: https://www.tandfonline.com/doi/full/10.1080/10618600.2012.681235
 ---
