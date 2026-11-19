@@ -1,14 +1,17 @@
 ---
-title: Grouped variable screening for ultrahigh dimensional data under linear model
+title: Grouped variable screening for ultra-high dimensional data for linear model
 layout: publication
 authors:
-- Qiu, D.*
-- Ahn, J.
-year: 2020
+  - Qiu, D.*
+  - Ahn, J.
 publication_type: journal
+year: 2020
 venue: Computational Statistics and Data Analysis
-topics:
-- High-dimension
-- Variable selection
 venue_details: 144, 106894
+topics:
+  - High-dimension
+  - Multicollinearity
+  - Sparse regression
+  - Variable selection
+url_paper: https://doi.org/10.1016/j.csda.2019.106894
 ---
