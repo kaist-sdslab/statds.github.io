@@ -15,5 +15,5 @@ topics:
   - Linear programming
   - low-sample-size
   - Sparse discrimination
-url_paper: https://www.sciencedirect.com/science/article/pii/S0167947315001036?via%3Dihub
+url_paper: https://doi.org/10.1016/j.csda.2015.04.006
 ---
