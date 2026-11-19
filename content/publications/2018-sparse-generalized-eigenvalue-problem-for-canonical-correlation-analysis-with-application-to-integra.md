@@ -1,17 +1,22 @@
 ---
-title: Sparse generalized eigenvalue problem for canonical correlation analysis with application to integrative
-  analysis of methylation and gene expression data
+title: Sparse Generalized Eigenvalue Problem with Application to Canonical
+  Correlation Analysis for Integrative Analysis of Methylation and Gene
+  Expression Data
 layout: publication
 authors:
-- Safo, S.*
-- Ahn, J.
-- Jeon, Y.
-- Jung, S.
-year: 2018
+  - Safo, S.*
+  - Ahn, J.
+  - Jeon, Y.
+  - Jung, S.
 publication_type: journal
+year: 2018
 venue: Biometrics
-topics:
-- Dimension reduction
-- High-dimension
 venue_details: 74(4):1362–1371
+topics:
+  - Canonical Correlation Analysis
+  - Data Integration
+  - Generalized Eigenvalue Problem
+  - High-dimension
+  - low-sample-size
+url_paper: https://doi.org/10.1111/biom.12886
 ---
