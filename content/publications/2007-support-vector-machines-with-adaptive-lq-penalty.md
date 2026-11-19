@@ -2,14 +2,20 @@
 title: Support vector machines with adaptive Lq penalty
 layout: publication
 authors:
-- Liu, Y.
-- Zhang, H. H.
-- Park, C.
-- Ahn, J.
-year: 2007
+  - Liu, Y.
+  - Zhang, H. H.
+  - Park, C.
+  - Ahn, J.
 publication_type: journal
+year: 2007
 venue: Computational Statistics and Data Analysis
-topics:
-- High-dimension
 venue_details: 51:6380–6394
+topics:
+  - Adaptive penalty
+  - Classification
+  - High-dimension
+  - Shrinkage
+  - Support vector machine
+  - Variable selection
+url_paper: https://pdf.sciencedirectassets.com/271708/1-s2.0-S0167947307X02214/1-s2.0-S0167947307000618/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEEUaCXVzLWVhc3QtMSJIMEYCIQDQY7yy4mteIQo0%2FFsV0ycLHQhBF0sFTV41M1cCy7UCygIhAJ5cN9me0WruwFedULu7jrqlV0E5wHVvQv5u24LZsihoKrMFCA4QBRoMMDU5MDAzNTQ2ODY1IgwTnp2BqE7lH1ORBLAqkAWptVwAVjHo48ll1Yurs0z%2BdNNe9C%2FCG2GZoQWLUvL92ChITeIewIXl3Wz0uGBkF8weuiv%2FKyhWBOHEo421%2FHBmIjHrht4%2Br1T7goTkeeOmcW%2FyEspvuGA0KfpvRhww8oOOVGf8tgibONQP4YYxl1cu7OvIGQf%2FoGYDUCDV2AbQUCLUdTgLo7A3VX14YnqBUMEH%2BUjMcEi%2BUz9E%2BZ2gXiUPFd2FIx1M%2BhWgVVI1UVz7yv%2Bvp0tlk644ITpdxLksgvAmT4rPooc0jOSn3hy8hz8abEJ0BG23bClf2ZvH2fBi1i6OTZK3jNIqouVwwDrN9sWhj9pIu%2BYYd4mVW50%2FZdJ4OPHC53T4e6e%2FyyWPTMKsYPJUFfDgTBfjHsI1WqDFaYOtgrE6VpijR9XJRSpeFtxcgFzQUl1oD8Qzor1tXF0r9qnxYnhdonlx8QZQQ3QP3AJtqh%2F%2Fuz6CXmTBCWahhHq%2BB5iSanNH5TRdmv71%2FystK6KJIoFkZr2Eldbf1wEiodEACdzh5Ky%2FvzeyBwf8e0dPt1NTilgQG5N31TQMyMk%2FE19BMH%2Bvm6Z4rQ%2FVTGDj762KZtN2hkP4Iq%2F7%2FCt4Kp2CfOszpmVTlHoApqyfHmOUnxo%2BygvfJ7mQ%2BWRNhzyGecjFun%2F3IbQR1VsQoZaHMdSIrn2WGz4bERRPDgve7kTfhQUKiFK9tldQ6efCk%2BztDOiyrKxl9lHX9EaoTuJoc1E2iCCWKYrkFrwhoOHp93kgGB51B48dnijpwGpuXcfgAyFX91xaaWOT6JPP1hEkT2SrLvw9Ftxg7SVFFhkUM8nxgMClXM%2FTBGFv5IJ76y887qemUx9xm%2FHbIed03NN0MBkqVmtS5lfcjyfB5kcEejKfTjDb%2BfnXBjqwAYRGlWEjv2rfnThRz4BfQk6%2Fjhhd4kjSb3xwSsSYgiEX6iAl9n6gJiW8SV2woqID634LDQjEjJ2K6dt%2FQVdGNDhhtmMTlyqtooNkxFmJwQCDglfmuZ2Rx72CA0fvKDWgcVZfpX0i8OGP6bBnNb9t3ejBwrGDpn1HCM5T0YDvz9fnTpB4Hd9vzWB06yuF8Sux%2FB96R3ODVFEtk6Llpl2Y%2BgwwosTF%2BzRGiMTjEByy%2BdyR&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20261119T054200Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYZZ6BYNQZ%2F20261119%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=013b9823f6042ea39f9560f14b371eb1a4f03d902bb21ec7cf21d44eb249ce20&hash=324ed710f7a5bb50d520d5ce2871b11c285f8574893089eae709e6a69396195c&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S0167947307000618&tid=spdf-fa0621ce-17c3-482a-89bf-95543c8b68e7&sid=f4c91b1e39b0014698698aa6bf04d44969aegxrqa&type=client&tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&rh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&ua=0e15045a030502555a&rr=a5cce397fc82d1db&cc=kr
 ---
