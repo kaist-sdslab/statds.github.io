@@ -2,14 +2,16 @@
 title: On the number of principal components in high dimensions
 layout: publication
 authors:
-- Jung, S.
-- Lee, M. H.
-- Ahn, J.
-year: 2018
+  - Jung, S.
+  - Lee, M. H.
+  - Ahn, J.
 publication_type: journal
+year: 2018
 venue: Biometrika
-topics:
-- Dimension reduction
-- High-dimension
 venue_details: 105(2):389–402
+topics:
+  - High-dimension
+  - PCA
+  - Skewness test
+url_paper: https://doi.org/10.1093/biomet/asy010
 ---
