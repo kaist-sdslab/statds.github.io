@@ -13,5 +13,5 @@ topics:
   - Density estimation
   - Non-Euclidean data
   - Nonparametric
-url_paper: https://www.tandfonline.com/doi/full/10.1080/00401706.2014.965346#d1e153
+url_paper: https://doi.org/10.1080/00401706.2014.965346
 ---
