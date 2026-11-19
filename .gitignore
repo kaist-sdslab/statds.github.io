@@ -27,3 +27,8 @@ assets/jsconfig.json
 
 # Local CMS editor build dependencies
 node_modules/
+
+# Local assistant memory (never publish to GitHub)
+MEMORY.md
+MEMORY.local.md
+.memory/

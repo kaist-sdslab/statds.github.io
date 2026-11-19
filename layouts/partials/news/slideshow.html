@@ -7,7 +7,7 @@
 {{ $posts := first (int ($settings.limit | default 5)) $eligible }}
 <div class="home-hero-gallery" data-reveal data-reveal-direction="fade">
   {{ if $posts }}
-  <div class="news-slideshow" data-slideshow data-interval="{{ $settings.interval | default 5 }}" data-pause="{{ $settings.pause }}" data-play="{{ $settings.play }}" role="region" aria-roledescription="carousel" aria-label="{{ $settings.heading }}">
+  <div class="news-slideshow" data-slideshow data-interval="{{ $settings.interval | default 5 }}" data-pause="Pause slideshow" data-play="Play slideshow" role="region" aria-roledescription="carousel" aria-label="Lab photos">
     <div class="news-slides">
     {{ range $index, $post := $posts }}
       <article class="news-slide" data-slide {{ if gt $index 0 }}hidden{{ end }} role="group" aria-roledescription="slide" aria-label="{{ add $index 1 }} / {{ len $posts }}">
@@ -17,12 +17,12 @@
     </div>
     {{ if gt (len $posts) 1 }}
     <div class="slideshow-controls" data-slide-controls hidden>
-      <button type="button" data-slide-previous aria-label="{{ $settings.previous }}">←</button>
+      <button type="button" data-slide-previous aria-label="Previous slide">←</button>
       <div class="slide-dots">{{ range $index, $post := $posts }}<button type="button" data-slide-to="{{ $index }}" aria-label="{{ .Title }}" aria-pressed="{{ eq $index 0 }}"><span class="sr-only">{{ add $index 1 }}</span></button>{{ end }}</div>
-      <button type="button" data-slide-next aria-label="{{ $settings.next }}">→</button>
-      <button type="button" data-slide-toggle>{{ $settings.pause }}</button>
+      <button type="button" data-slide-next aria-label="Next slide">→</button>
+      <button type="button" data-slide-toggle>Pause slideshow</button>
     </div>
     {{ end }}
   </div>
-  {{ else }}<div class="home-gallery-empty"><span class="home-gallery-mark" aria-hidden="true">SDS<span>STATISTICAL DATA SCIENCE</span></span><p>{{ $settings.empty }}</p></div>{{ end }}
+  {{ else }}<div class="home-gallery-empty"><span class="home-gallery-mark" aria-hidden="true">SDS<span>STATISTICAL DATA SCIENCE</span></span><p>Lab news and photos will appear here.</p></div>{{ end }}
 </div>

@@ -8,14 +8,8 @@ hero:
     solutions.
   button_label: Explore our research
 slideshow:
-  heading: Lab photos
   interval: 5
   limit: 5
-  empty: Lab news and photos will appear here.
-  previous: Previous slide
-  next: Next slide
-  pause: Pause slideshow
-  play: Play slideshow
 news:
   heading: News
   view_all: View all news

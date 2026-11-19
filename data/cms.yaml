@@ -34,7 +34,7 @@ collections:
       - label: Description
         name: description
         widget: text
-      - label: Research button label
+      - label: Research link label
         name: button_label
         widget: string
         default: Explore our research
@@ -44,9 +44,6 @@ collections:
       widget: object
       hint: Automatically shows the newest published News posts with a cover image.
       fields:
-      - label: Slideshow accessibility label
-        name: heading
-        widget: string
       - label: Seconds between slides
         name: interval
         widget: number
@@ -61,21 +58,6 @@ collections:
         min: 1
         max: 10
         default: 5
-      - label: Empty state
-        name: empty
-        widget: string
-      - label: Previous slide label
-        name: previous
-        widget: string
-      - label: Next slide label
-        name: next
-        widget: string
-      - label: Pause label
-        name: pause
-        widget: string
-      - label: Play label
-        name: play
-        widget: string
     - label: News list below introduction
       name: news
       widget: object

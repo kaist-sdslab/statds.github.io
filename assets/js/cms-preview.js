@@ -162,12 +162,12 @@
     const selected = Math.min(ctx.state.slide || 0, Math.max(0, posts.length - 1));
     const post = posts[selected];
     return node('div', null,
-      node('section', 'hero shell home-hero',
+      node('section', 'shell home-hero',
         node('div', 'home-hero-gallery', post ? node('div', 'news-slideshow',
           node('article', 'news-slide', node('div', 'news-slide-image', image(post.image, post.image_alt, ctx.props))),
-          posts.length > 1 && node('div', 'slideshow-controls', h('button', { type: 'button', onClick: () => ctx.update({ slide: (selected + posts.length - 1) % posts.length }) }, settings.previous), node('span', null, `${selected + 1} / ${posts.length}`), h('button', { type: 'button', onClick: () => ctx.update({ slide: (selected + 1) % posts.length }) }, settings.next)))
-          : node('div', 'home-gallery-empty', node('span', 'home-gallery-mark', 'SDS', node('span', null, 'STATISTICAL DATA SCIENCE')), edit(ctx, 'slideshow.empty', node('p', null, settings.empty)))),
-        node('div', 'lab-introduction', edit(ctx, 'hero.welcome', node('h1', null, data.hero?.welcome)), edit(ctx, 'hero.description', node('p', 'hero-description', data.hero?.description)), edit(ctx, 'hero.button_label', link(data.hero?.button_label, 'home-research-button', [data.hero?.button_label, ' →'])))),
+          posts.length > 1 && node('div', 'slideshow-controls', h('button', { type: 'button', 'aria-label': 'Previous slide', onClick: () => ctx.update({ slide: (selected + posts.length - 1) % posts.length }) }, '←'), node('span', null, `${selected + 1} / ${posts.length}`), h('button', { type: 'button', 'aria-label': 'Next slide', onClick: () => ctx.update({ slide: (selected + 1) % posts.length }) }, '→')))
+          : node('div', 'home-gallery-empty', node('span', 'home-gallery-mark', 'SDS', node('span', null, 'STATISTICAL DATA SCIENCE')), node('p', null, 'Lab news and photos will appear here.'))),
+        node('div', 'lab-introduction', edit(ctx, 'hero.welcome', node('h1', null, data.hero?.welcome)), edit(ctx, 'hero.description', node('p', 'hero-description', data.hero?.description)), edit(ctx, 'hero.button_label', link(data.hero?.button_label, 'text-link home-research-link', [data.hero?.button_label, h('span', { 'aria-hidden': true }, '→')])))),
       node('section', 'shell home-news', node('div', 'section-heading', edit(ctx, 'news.heading', node('h2', null, labels.heading)), edit(ctx, 'news.view_all', link(labels.view_all, 'text-link', `${labels.view_all} →`))),
         top.length ? node('ul', 'home-news-list', ...top.map(post => node('li', null, link(post.title, null, [node('time', null, newsDate(post.date)), node('span', 'home-news-item-title', post.title), post.pinned && node('span', 'news-pin', ctx.labels.news.pinned), node('span', 'home-news-arrow', '↗')]))))
           : edit(ctx, 'news.empty', node('p', 'news-empty', labels.empty))));
