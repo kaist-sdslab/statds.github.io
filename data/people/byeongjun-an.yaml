@@ -1,4 +1,6 @@
 name: ByeongJun An
+biography: I joined SDS Lab in 2026 as a master's student. My research interests
+  include statistical data integration.
 group: masters
 order: 50
 affiliation: Department of Industrial and Systems Engineering
@@ -8,5 +10,7 @@ photo_frame:
   position_y: 54.41400757664166
   zoom: 1.7
 research_interests:
-  - Statistical Learning
+  - Synthetic data
 email: kwn08106@kaist.ac.kr
+linkedin: https://www.linkedin.com/in/병준-안-2571132a6/
+github: https://github.com/Bang-Jun
