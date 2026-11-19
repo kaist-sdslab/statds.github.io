@@ -1,5 +1,5 @@
 ---
-title: Gene selection using support vector machines with nonconvex penalty
+title: Gene selection using support vector machines with non-convex penalty
 layout: publication
 authors:
   - Zhang, H.
