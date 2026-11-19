@@ -1,16 +1,19 @@
 ---
-title: Variable selection and basis learning for ordinal classification
+title: Variable Selection and Basis Learning for Ordinal Classification
 layout: publication
 authors:
-- Kim, M.
-- Han, S.
-- Ahn, J.
-- Jung, S.
-year: 2025
+  - Kim, M.
+  - Han, S.
+  - Ahn, J.
+  - Jung, S.
 publication_type: journal
+year: 2025
 venue: Journal of Computational and Graphical Statistics
-topics:
-- High-dimension
-- Variable selection
 venue_details: 34(4):1432-1445
+topics:
+  - High-dimension
+  - Lasso
+  - Linear Discriminant Analysis
+  - Variable selection
+url_paper: https://doi.org/10.1080/10618600.2025.2451680
 ---
