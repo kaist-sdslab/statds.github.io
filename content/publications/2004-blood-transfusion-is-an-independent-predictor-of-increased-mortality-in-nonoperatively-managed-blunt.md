@@ -22,5 +22,5 @@ topics:
   - Mortality
   - Nonperative management
   - Splenic trauna
-url_paper: https://www.ovid.com/jnls/jtrauma/pdf/10.1097/01.ta.0000153935.18997.14~blood-transfusion-is-an-independent-predictor-of-increased
+url_paper: https://pubmed.ncbi.nlm.nih.gov/15761334/
 ---
