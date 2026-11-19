@@ -1,6 +1,6 @@
 ---
-title: A multiscale analysis of the temporal and spatial characteristics of
-  resting fMRI data
+title: A multiscale analysis of the temporal characteristics of resting-state
+  fMRI data
 layout: publication
 authors:
   - Park, C.
