@@ -64,6 +64,10 @@
   const icon = type => h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true },
     ...(type === 'github' ? ['M9 19c-4.3 1.3-4.3-2.5-6-3m12 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 19 4.77 5.07 5.07 0 0 0 18.91 1S17.73.65 15 2.48a13.38 13.38 0 0 0-6 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22'] : ['M15 3h6v6M10 14 21 3', 'M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5']).map(d => h('path', { d })));
   const link = (label, className, children) => h('a', { href: '#', className, title: label, 'aria-label': label }, children);
+  const arrowLink = (label, className, back = false) => {
+    const children = [node('span', 'link-label', label), h('span', { 'aria-hidden': true }, back ? '←' : '→')];
+    return link(label, className, back ? children.reverse() : children);
+  };
   const resource = (type, url, labels, className) => url
     ? link(labels.github_title, className, icon(type))
     : h('span', { className: `${className || ''} resource-unavailable`, role: 'img', title: labels.no_github }, icon(type));
@@ -148,7 +152,7 @@
   const about = (data, ctx) => node('div', null,
     node('section', 'research-section shell about-research', node('div', 'section-heading', labelEdit(ctx, 'about.research_heading', node('h1', null, ctx.labels.about.research_heading))), node('div', 'research-list', ...list(data.research).map((area, index) =>
       h('article', { className: 'research-item', style: accent(area.color) }, edit(ctx, `research.${index}.title`, node('h2', 'research-heading', link(area.title, null, area.title))), edit(ctx, `research.${index}.image`, node('div', 'research-visual', image(area.image, area.image_alt, ctx.props))),
-        node('div', 'research-copy', edit(ctx, `research.${index}.description`, node('div', 'research-description', ...paragraphs(area.description))), availableTopics(area.publication_topics, ctx, 'filters').length > 0 && edit(ctx, `research.${index}.publication_topics`, labelEdit(ctx, 'about.related_publications', link(ctx.labels.about.related_publications, 'research-publications', `${ctx.labels.about.related_publications} →`)))))))));
+        node('div', 'research-copy', edit(ctx, `research.${index}.description`, node('div', 'research-description', ...paragraphs(area.description))), availableTopics(area.publication_topics, ctx, 'filters').length > 0 && edit(ctx, `research.${index}.publication_topics`, labelEdit(ctx, 'about.related_publications', arrowLink(ctx.labels.about.related_publications, 'research-publications')))))))));
   const publishedNews = () => list(seed.news).filter(post => !post.draft).slice().sort((a, b) => text(b.date).localeCompare(text(a.date)));
   const newsDate = value => {
     const date = new Date(value);
@@ -167,13 +171,13 @@
           node('article', 'news-slide', node('div', 'news-slide-image', image(post.image, post.image_alt, ctx.props))),
           posts.length > 1 && node('div', 'slideshow-controls', h('button', { type: 'button', 'aria-label': 'Previous slide', onClick: () => ctx.update({ slide: (selected + posts.length - 1) % posts.length }) }, '←'), node('span', null, `${selected + 1} / ${posts.length}`), h('button', { type: 'button', 'aria-label': 'Next slide', onClick: () => ctx.update({ slide: (selected + 1) % posts.length }) }, '→')))
           : node('div', 'home-gallery-empty', node('span', 'home-gallery-mark', 'SDS', node('span', null, 'STATISTICAL DATA SCIENCE')), node('p', null, 'Lab news and photos will appear here.'))),
-        node('div', 'lab-introduction', edit(ctx, 'hero.welcome', node('h1', null, data.hero?.welcome)), edit(ctx, 'hero.description', node('p', 'hero-description', data.hero?.description)), edit(ctx, 'hero.button_label', link(data.hero?.button_label, 'text-link home-research-link', [data.hero?.button_label, h('span', { 'aria-hidden': true }, '→')])))),
-      node('section', 'shell home-news', node('div', 'section-heading', edit(ctx, 'news.heading', node('h2', null, labels.heading)), edit(ctx, 'news.view_all', link(labels.view_all, 'text-link', `${labels.view_all} →`))),
-        top.length ? node('ul', 'home-news-list', ...top.map(post => node('li', null, link(post.title, null, [node('time', null, newsDate(post.date)), node('span', 'home-news-item-title', post.title), post.pinned && node('span', 'news-pin', ctx.labels.news.pinned), node('span', 'home-news-arrow', '↗')]))))
+        node('div', 'lab-introduction', edit(ctx, 'hero.welcome', node('h1', null, data.hero?.welcome)), edit(ctx, 'hero.description', node('p', 'hero-description', data.hero?.description)), edit(ctx, 'hero.button_label', arrowLink(data.hero?.button_label, 'text-link home-research-link')))),
+      node('section', 'shell home-news', node('div', 'section-heading', edit(ctx, 'news.heading', node('h2', null, labels.heading)), edit(ctx, 'news.view_all', arrowLink(labels.view_all, 'text-link'))),
+        top.length ? node('ul', 'home-news-list', ...top.map(post => node('li', null, link(post.title, null, [node('time', null, newsDate(post.date)), node('span', 'home-news-item-title link-label', post.title), post.pinned && node('span', 'news-pin', ctx.labels.news.pinned), h('span', { className: 'home-news-arrow', 'aria-hidden': true }, '↗')]))))
           : edit(ctx, 'news.empty', node('p', 'news-empty', labels.empty))));
   };
   const newsArticle = (data, ctx) => node('article', 'shell news-article',
-    node('span', 'text-link news-back', `← ${ctx.labels.news.back}`),
+    arrowLink(ctx.labels.news.back, 'text-link news-back', true),
     node('header', null, edit(ctx, 'date', node('time', null, newsDate(data.date))), edit(ctx, 'title', node('h1', null, data.title))),
     data.image && !window.SDSNewsEditor.parseDocument(data.body) && edit(ctx, 'image', node('figure', 'news-cover', image(data.image, data.image_alt, ctx.props))),
     edit(ctx, 'body', node('div', `news-body news-text-${['left', 'center', 'right', 'justify'].includes(data.body_alignment) ? data.body_alignment : 'left'}`, ctx.props.widgetFor('body'))));
@@ -187,7 +191,7 @@
       node('p', 'news-results', `${posts.length} ${labels.results}`),
       node('div', 'news-list', ...posts.slice((page - 1) * size, page * size).map(post => node('article', 'news-card',
         node('div', `news-thumbnail${post.image ? '' : ' news-thumbnail-empty'}`, post.image ? image(post.image, post.image_alt, ctx.props) : node('span', null, 'SDS', node('span', null, 'LAB NEWS'))),
-        node('div', 'news-card-copy', node('div', 'news-meta', node('time', null, newsDate(post.date)), post.pinned && node('span', 'news-pin', labels.pinned)), node('h2', null, post.title), link(labels.read_more, 'text-link', `${labels.read_more} →`))))),
+        node('div', 'news-card-copy', node('div', 'news-meta', node('time', null, newsDate(post.date)), post.pinned && node('span', 'news-pin', labels.pinned)), node('h2', null, post.title), arrowLink(labels.read_more, 'text-link'))))),
       !posts.length && node('p', 'news-empty', labels.empty),
       pages > 1 && node('nav', 'news-pagination', h('button', { disabled: page === 1, onClick: () => ctx.update({ page: page - 1 }) }, labels.previous), node('span', null, `${labels.page} ${page} / ${pages}`), h('button', { disabled: page === pages, onClick: () => ctx.update({ page: page + 1 }) }, labels.next)));
   };
@@ -326,7 +330,7 @@
       } else if (page === 'software' || page === 'courses') content = resources(collection === 'pages' || name === 'site_settings' ? pageData.title : seed.pages[page].title, collection === 'pages' || name === 'site_settings' ? seed[page] : replaceRecord(seed[page], this.props.entry, data), page, ctx);
       else if (page === 'not_found') content = node('section', 'shell pending-page',
         pageEdit(ctx, 'title', node('h1', null, pageData.title)), pageEdit(ctx, 'description', node('p', null, pageData.description)),
-        pageEdit(ctx, 'back', link(pageData.back, 'pending-home', [pageData.back, ' →'])));
+        pageEdit(ctx, 'back', arrowLink(pageData.back, 'pending-home')));
       else if (name === 'publications' || name === 'publication_filters' || name === 'topic_colors') { content = publications(data.title || seed.pages.publications.title, ctx); page = 'publications'; }
       else if (page === 'publications') content = publications(pageData.title, ctx);
       else { content = home(seed.home, ctx); page = 'home'; }

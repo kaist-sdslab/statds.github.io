@@ -2,6 +2,6 @@
 <section class="shell pending-page" aria-labelledby="page-title">
   <h1 id="page-title">{{ (site.GetPage "not-found").Params.title }}</h1>
   <p>{{ (site.GetPage "not-found").Params.description }}</p>
-  <a class="pending-home" href="{{ site.Home.RelPermalink }}">{{ (site.GetPage "not-found").Params.back }} <span aria-hidden="true">→</span></a>
+  <a class="pending-home" href="{{ site.Home.RelPermalink }}"><span class="link-label">{{ (site.GetPage "not-found").Params.back }}</span><span aria-hidden="true">→</span></a>
 </section>
 {{ partial "site/end.html" . }}

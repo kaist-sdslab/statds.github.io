@@ -4,7 +4,7 @@
   <div class="lab-introduction" data-reveal>
     <h1 id="welcome-title">{{ .Params.hero.welcome }}</h1>
     <p class="hero-description">{{ .Params.hero.description }}</p>
-    <a class="text-link home-research-link" href="{{ "about/" | relURL }}#research">{{ .Params.hero.button_label }} <span aria-hidden="true">→</span></a>
+    <a class="text-link home-research-link" href="{{ "about/" | relURL }}#research"><span class="link-label">{{ .Params.hero.button_label }}</span><span aria-hidden="true">→</span></a>
   </div>
 </section>
 {{ partial "news/home-list.html" . }}

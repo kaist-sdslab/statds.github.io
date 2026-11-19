@@ -1,6 +1,6 @@
 {{ partial "site/start.html" . }}
 <article class="shell news-article">
-  <a class="text-link news-back" href="{{ "news/" | relURL }}">← {{ (site.GetPage "news").Params.labels.back }}</a>
+  <a class="text-link news-back" href="{{ "news/" | relURL }}"><span aria-hidden="true">←</span><span class="link-label">{{ (site.GetPage "news").Params.labels.back }}</span></a>
   <header><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time><h1>{{ .Title }}</h1></header>
   {{ if and .Params.image (not (hasPrefix (trim .RawContent " \t\r\n") "{{< news-content >}}")) }}<figure class="news-cover">{{ partial "news/cover.html" (dict "post" . "width" 1800 "eager" true) }}</figure>{{ end }}
   {{ $align := .Params.body_alignment | default "left" }}
