@@ -47,6 +47,15 @@ if (typeof document !== 'undefined') (() => {
   const defaults = () => ({ q: '', kind: '', year: '', topics: [], sort: 'newest', page: 1 });
   // Display choices do not restrict valid paper metadata or linked group topics.
   const topicIDs = JSON.parse(root.dataset.topicIds || '[]');
+  const topicKeys = new Map(topicIDs.map(id => [PublicationFilters.normalize(id), id]));
+  const topicAliases = new Map(Object.entries(JSON.parse(root.dataset.topicAliases || '{}'))
+    .filter(([, id]) => topicCatalog.has(id))
+    .map(([legacyLabel, id]) => [PublicationFilters.normalize(legacyLabel), id]));
+  const resolveTopic = value => {
+    if (topicCatalog.has(value)) return value;
+    const key = PublicationFilters.normalize(value);
+    return topicKeys.get(key) || topicAliases.get(key);
+  };
   const allowed = filter => {
     if (filter === 'topic') return topicIDs;
     const displayed = buttons().filter(button => button.dataset.filter === filter).map(button => button.dataset.value);
@@ -62,10 +71,7 @@ if (typeof document !== 'undefined') (() => {
       const value = params.get(key) || '';
       if (allowed(key).includes(value)) state[key] = value;
     }
-    // Continue accepting old hyphenated topic links after switching to names.
-    state.topics = [...new Set(params.getAll('topic').map(topic =>
-      topicIDs.find(id => id === topic) || topicIDs.find(id => PublicationFilters.normalize(id) === PublicationFilters.normalize(topic))
-    ).filter(Boolean))];
+    state.topics = [...new Set(params.getAll('topic').map(resolveTopic).filter(Boolean))];
     const value = params.get('sort');
     if (['newest', 'oldest', 'title'].includes(value)) state.sort = value;
     const page = Number(params.get('page'));

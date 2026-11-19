@@ -11,9 +11,9 @@ year: 2026
 venue: Statistical Analysis and Data Mining
 venue_details: ""
 topics:
-  - Clustering
   - High-dimension
-  - Interpretable
-  - Variable selection
+  - Clustering
+  - Interpretability
+  - Variable Selection
 url_paper: https://doi.org/10.1002/sam.70096
 ---

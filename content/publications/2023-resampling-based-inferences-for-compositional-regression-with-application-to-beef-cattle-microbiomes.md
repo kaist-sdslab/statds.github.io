@@ -13,8 +13,9 @@ year: 2023
 venue: Statistical Methods in Medical Research
 venue_details: 32(1), 151-164
 topics:
+  - Non-Euclid Data
   - Bootstrap
-  - Compositional data
+  - Compositional Data
   - Permutation
   - Regression
   - t-Test

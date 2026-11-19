@@ -16,11 +16,11 @@ year: 2004
 venue: Journal of Trauma-Injury Infection & Critical Care
 venue_details: 58:437–445
 topics:
-  - Blood transfusion
-  - Hepatic trauma
   - Interdisciplinary Research
+  - Blood Transfusion
+  - Hepatic Trauma
   - Mortality
-  - Nonperative management
-  - Splenic trauna
+  - Nonoperative Management
+  - Splenic Trauma
 url_paper: https://pubmed.ncbi.nlm.nih.gov/15761334/
 ---

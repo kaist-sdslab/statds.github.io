@@ -10,11 +10,11 @@ year: 2021
 venue: Electronic Journal of Statistics
 venue_details: 15(2):6382-6428
 topics:
-  - Discrimination
   - High-dimension
-  - low-sample-size
-  - Maximal data piling
-  - Negative Ridge
+  - Classification
+  - Data Piling
+  - Low-Sample-Size
+  - Ridge Regularization
   - Spike Covariance Model
 url_paper: https://doi.org/10.1214/21-EJS1945
 ---

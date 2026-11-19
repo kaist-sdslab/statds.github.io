@@ -9,10 +9,10 @@ year: 2016
 venue: Computational Statistics and Data Analysis
 venue_details: 99:81–90
 topics:
-  - Classification
   - High-dimension
+  - Classification
   - Linear Discriminant Analysis
-  - Singular Value Decomposition
-  - Sparse discrimination
+  - Singular Value Decomposition (SVD)
+  - Sparsity
 url_paper: https://www.sciencedirect.com/science/article/pii/S0167947316000207
 ---

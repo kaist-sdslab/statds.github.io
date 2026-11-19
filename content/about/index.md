@@ -22,7 +22,7 @@ research:
 - title: Compositional data analysis
   color: '#176a62'
   publication_topics:
-  - Compositional data
+  - Compositional Data
   description: Compositional data consist of multivariate non-negative variables for which only relative information
     among components is meaningful, subject to a constant-sum constraint. Accordingly, compositional data are
     defined on a simplex rather than in a Euclidean space, which induces an inherent dependence structure among

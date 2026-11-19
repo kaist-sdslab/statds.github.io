@@ -1,7 +1,13 @@
 {{- $catalog := partialCached "publications/topic-catalog.html" site -}}
+{{- $values := . -}}
+{{- $preserveOrder := false -}}
+{{- if reflect.IsMap . -}}
+  {{- $values = .topics -}}
+  {{- $preserveOrder = .preserve_order -}}
+{{- end -}}
 {{- $topics := slice -}}
 {{- $seen := slice -}}
-{{- range . -}}
+{{- range $values -}}
   {{- $key := partial "publications/topic-key.html" . -}}
   {{- with index $catalog.aliases $key -}}
     {{- if not (in $seen .) -}}
@@ -10,4 +16,7 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-{{- return (sort $topics "key") -}}
+{{- if not $preserveOrder -}}
+  {{- $topics = sort $topics "key" -}}
+{{- end -}}
+{{- return $topics -}}

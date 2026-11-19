@@ -10,9 +10,9 @@ year: 2011
 venue: Chemometrics and Intelligent Laboratory Systems
 venue_details: 108:87–92
 topics:
-  - Classification
-  - Density estimation
   - High-dimension
-  - Markov property
+  - Classification
+  - Density Estimation
+  - Markov Property
 url_paper: https://doi.org/10.1016/j.chemolab.2011.06.004
 ---

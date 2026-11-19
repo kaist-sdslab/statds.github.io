@@ -92,11 +92,10 @@
     rules.forEach((rule, i) => { if (list(rule.topics).some(value => key(value) === key(topic))) index = i; });
     return index < 0 ? element : edit({ ...ctx, editable: ctx.name === 'topic_colors' }, `assignments.${index}.color`, element);
   };
-  const availableTopics = (values, ctx, scope) => {
-    if (window.SDSCMSTopics) return window.SDSCMSTopics.resolve(values, scope);
+  const availableTopics = (values, ctx) => {
+    if (window.SDSCMSTopics) return window.SDSCMSTopics.resolve(values);
     const existing = new Map(ctx.papers.flatMap(paper => list(paper.topics)).map(value => [key(value), value]));
-    if (scope === 'filters') for (const id of existing.keys()) if (!list(ctx.filters.topics).some(topic => key(topic) === id)) existing.delete(id);
-    return [...new Set(list(values).map(value => existing.get(key(value))).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base', numeric: true }));
+    return [...new Set(list(values).map(value => existing.get(key(value))).filter(Boolean))];
   };
   const topics = (values, colors, ctx) => list(values).slice().sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base', numeric: true })).map(value => colorEdit(ctx, value, h('a', { href: '#', style: accent(colorFor(value, colors)), onClick: event => {
     if (!['publications', 'publication_filters'].includes(ctx.name) && !(ctx.name === 'site_settings' && ctx.state.previewPage === 'publications')) return;
@@ -152,7 +151,7 @@
   const about = (data, ctx) => node('div', null,
     node('section', 'research-section shell about-research', node('div', 'section-heading', labelEdit(ctx, 'about.research_heading', node('h1', null, ctx.labels.about.research_heading))), node('div', 'research-list', ...list(data.research).map((area, index) =>
       h('article', { className: 'research-item', style: accent(area.color) }, edit(ctx, `research.${index}.title`, node('h2', 'research-heading', link(area.title, null, area.title))), edit(ctx, `research.${index}.image`, node('div', 'research-visual', image(area.image, area.image_alt, ctx.props))),
-        node('div', 'research-copy', edit(ctx, `research.${index}.description`, node('div', 'research-description', ...paragraphs(area.description))), availableTopics(area.publication_topics, ctx, 'filters').length > 0 && edit(ctx, `research.${index}.publication_topics`, labelEdit(ctx, 'about.related_publications', arrowLink(ctx.labels.about.related_publications, 'research-publications')))))))));
+        node('div', 'research-copy', edit(ctx, `research.${index}.description`, node('div', 'research-description', ...paragraphs(area.description))), availableTopics(area.publication_topics, ctx).length > 0 && edit(ctx, `research.${index}.publication_topics`, labelEdit(ctx, 'about.related_publications', arrowLink(ctx.labels.about.related_publications, 'research-publications')))))))));
   const publishedNews = () => list(seed.news).filter(post => !post.draft).slice().sort((a, b) => text(b.date).localeCompare(text(a.date)));
   const newsDate = value => {
     const date = new Date(value);
@@ -236,7 +235,8 @@
     const state = ctx.state;
     const selectedTopics = availableTopics(state.topics || [], ctx);
     const displayedTopics = availableTopics(ctx.filters.topics, ctx);
-    const topicChoices = [...new Set([...displayedTopics, ...selectedTopics])].sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base', numeric: true }));
+    const selectedDetails = selectedTopics.filter(topic => !displayedTopics.includes(topic)).sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base', numeric: true }));
+    const topicChoices = [...displayedTopics, ...selectedDetails];
     const button = (filter, value, label) => {
       const element = h('button', { type: 'button', 'aria-pressed': filter === 'topics' ? (value ? selectedTopics.includes(value) : !selectedTopics.length) : (state[filter] || '') === value,
       style: filter === 'topics' && value ? accent(colorFor(value, ctx.colors)) : undefined, 'data-filter': filter === 'topics' ? 'topic' : filter, 'data-value': value, 'data-temporary-topic': filter === 'topics' && value && !displayedTopics.includes(value) ? '' : undefined,

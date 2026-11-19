@@ -9,10 +9,10 @@ year: 2021
 venue: Journal of Multivariate Analysis
 venue_details: 183, 104713
 topics:
-  - Group invariance
   - High-dimension
-  - low-sample-size
-  - Randomization test
-  - Stiefel manifold
+  - Group Invariance
+  - Low-Sample-Size
+  - Randomization Test
+  - Stiefel Manifold
 url_paper: https://doi.org/10.1016/j.jmva.2020.104713
 ---

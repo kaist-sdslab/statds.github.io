@@ -20,10 +20,10 @@ year: 2020
 venue: Nutrients
 venue_details: "12(7): 2090"
 topics:
-  - brain development
-  - cognition
   - Interdisciplinary Research
-  - maternal nutrition
-  - resting state network
+  - Brain Development
+  - Cognition
+  - Maternal Nutrition
+  - Resting State Network
 url_paper: https://doi.org/10.3390/nu12072090
 ---

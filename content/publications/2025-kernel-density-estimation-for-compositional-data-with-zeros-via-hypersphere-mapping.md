@@ -11,9 +11,10 @@ year: 2025
 venue: Computational Statistics and Data Analysis
 venue_details: 212:108249
 topics:
-  - Compositional data
-  - Density estimation
-  - Von-Mises kernel
-  - Zero components
+  - Non-Euclid Data
+  - Compositional Data
+  - Density Estimation
+  - von Mises Kernel
+  - Zero Components
 url_paper: https://doi.org/10.1016/j.csda.2025.108249
 ---

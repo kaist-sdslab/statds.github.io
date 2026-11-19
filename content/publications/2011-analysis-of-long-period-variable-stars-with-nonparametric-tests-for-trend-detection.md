@@ -13,13 +13,14 @@ month: ""
 venue: Journal of the American Statistical Association
 venue_details: 106(495):832–845
 topics:
-  - Adaptive Neyman test
-  - False discovery rate
-  - Functional clustering
-  - Multiple testing
-  - Non-Euclidean data
-  - Pivotal testing
-  - Principal components
+  - Non-Euclid Data
+  - Adaptive Neyman Test
+  - Clustering
+  - False Discovery Rate
+  - Functional Data
+  - Multiple Testing
+  - Pivotal Test
+  - Principal Component Analysis (PCA)
   - SiZer
   - Wavelet
 url_paper: https://www.tandfonline.com/doi/abs/10.1198/jasa.2011.ap08689

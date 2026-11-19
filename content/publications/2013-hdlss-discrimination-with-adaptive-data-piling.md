@@ -11,8 +11,8 @@ venue: Journal of Computational and Graphical Statistics
 venue_details: 22:433-451
 topics:
   - High-dimension
-  - Linear discrimination
-  - low-sample-size
-  - Maximal data piling
+  - Data Piling
+  - Linear Discrimination
+  - Low-Sample-Size
 url_paper: https://www.tandfonline.com/doi/full/10.1080/10618600.2012.681235
 ---

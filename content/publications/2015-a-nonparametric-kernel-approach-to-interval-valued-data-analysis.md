@@ -10,8 +10,8 @@ year: 2015
 venue: Technometrics
 venue_details: 57 (4), 566-575
 topics:
-  - Density estimation
-  - Non-Euclidean data
-  - Nonparametric
+  - Non-Euclid Data
+  - Density Estimation
+  - Nonparametric Methods
 url_paper: https://doi.org/10.1080/00401706.2014.965346
 ---

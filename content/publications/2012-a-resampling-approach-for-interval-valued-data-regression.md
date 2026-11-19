@@ -11,9 +11,9 @@ year: 2012
 venue: Statistical Analysis and Data Mining
 venue_details: 5:336–348
 topics:
-  - Interval-valued data
-  - Linear regression
-  - Non-Euclidean data
+  - Non-Euclid Data
+  - Interval-Valued Data
+  - Regression
   - Resampling
 url_paper: https://onlinelibrary.wiley.com/doi/full/10.1002/sam.11150
 ---

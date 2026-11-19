@@ -12,10 +12,10 @@ year: 2010
 venue: Journal of Neuroscience Methods
 venue_details: 193:334–342
 topics:
-  - Hurst parameter
-  - Long-range dependence
-  - Non-Euclidean data
-  - PCA
+  - Non-Euclid Data
+  - Hurst Parameter
+  - Long-Range Dependence
+  - Principal Component Analysis (PCA)
   - SiZer
   - Spectrum
   - Wavelet

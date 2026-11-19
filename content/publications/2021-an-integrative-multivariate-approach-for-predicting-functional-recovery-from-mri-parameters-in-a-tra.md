@@ -17,12 +17,12 @@ year: 2021
 venue: Neural Regeneration Research
 venue_details: 16(5), 842–850
 topics:
-  - Behavior testing
-  - Canonical Correlation Analysis
-  - Gait analysis
-  - Gaussian graphical model
   - Interdisciplinary Research
-  - Ischemic stroke
-  - PCA
+  - Behavior Testing
+  - Canonical Correlation Analysis
+  - Gait Analysis
+  - Gaussian Graphical Model
+  - Ischemic Stroke
+  - Principal Component Analysis (PCA)
 url_paper: https://doi.org/10.4103/1673-5374.297079
 ---

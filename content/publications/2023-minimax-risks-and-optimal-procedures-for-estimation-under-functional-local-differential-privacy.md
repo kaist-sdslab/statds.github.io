@@ -13,6 +13,5 @@ venue: Proceedings of the 37th Conference on Neural Information Processing
 venue_details: 2526:57964 - 57975
 topics:
   - Data Privacy
-  - Non-Euclidean data
 url_paper: https://proceedings.neurips.cc/paper_files/paper/2023/hash/b4dde7f1bc45bf9c0fda8db8f272b758-Abstract-Conference.html
 ---

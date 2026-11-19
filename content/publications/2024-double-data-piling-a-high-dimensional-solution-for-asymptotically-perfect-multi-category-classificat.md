@@ -13,10 +13,10 @@ month: ""
 venue: Journal of the Korean Statistical Society
 venue_details: 1-34
 topics:
-  - Classification
-  - Data piling
   - High-dimension
-  - low-sample-size
-  - Ridge
+  - Classification
+  - Data Piling
+  - Low-Sample-Size
+  - Ridge Regularization
 url_paper: https://link.springer.com/article/10.1007/s42952-024-00263-6
 ---

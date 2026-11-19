@@ -9,9 +9,9 @@ year: 2017
 venue: Biometrics
 venue_details: "73(1): 324–333"
 topics:
+  - Non-Euclid Data
   - Clustering
-  - Curve alignment
-  - Functional
-  - Non-Euclidean data
+  - Curve Alignment
+  - Functional Data
 url_paper: https://doi.org/10.1111/biom.12546
 ---

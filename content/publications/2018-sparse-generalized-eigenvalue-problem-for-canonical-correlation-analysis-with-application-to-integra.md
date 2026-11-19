@@ -13,10 +13,10 @@ year: 2018
 venue: Biometrics
 venue_details: 74(4):1362–1371
 topics:
+  - High-dimension
   - Canonical Correlation Analysis
   - Data Integration
   - Generalized Eigenvalue Problem
-  - High-dimension
-  - low-sample-size
+  - Low-Sample-Size
 url_paper: https://doi.org/10.1111/biom.12886
 ---

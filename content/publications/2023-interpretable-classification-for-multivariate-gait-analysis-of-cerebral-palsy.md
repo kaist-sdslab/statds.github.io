@@ -12,10 +12,10 @@ year: 2023
 venue: BioMedical Engineering OnLine
 venue_details: 22, 109
 topics:
-  - Cerebral palsy
+  - Non-Euclid Data
+  - Cerebral Palsy
   - Classification
-  - Functional
+  - Functional Data
   - Linear Discriminant Analysis
-  - Non-Euclidean data
 url_paper: https://link.springer.com/article/10.1186/s12938-023-01168-x
 ---

@@ -1,6 +1,8 @@
 assignments:
 - topics:
-  - Compositional data
+  - Compositional Data
+  - Non-Euclid Data
+  # Some existing student profiles use this label.
   - Non-Euclidean data
   color: '#176a62'
 - topics:

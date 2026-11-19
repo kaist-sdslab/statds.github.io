@@ -11,7 +11,8 @@ venue_details: 144, 106894
 topics:
   - High-dimension
   - Multicollinearity
-  - Sparse regression
-  - Variable selection
+  - Regression
+  - Sparsity
+  - Variable Selection
 url_paper: https://doi.org/10.1016/j.csda.2019.106894
 ---

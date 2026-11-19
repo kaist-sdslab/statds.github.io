@@ -11,9 +11,9 @@ year: 2024
 venue: Biometrics
 venue_details: 80(1):ujad040
 topics:
-  - Classification
   - High-dimension
+  - Classification
   - Linear Discriminant Analysis
-  - Variable selection
+  - Variable Selection
 url_paper: https://doi.org/10.1093/biomtc/ujad040
 ---

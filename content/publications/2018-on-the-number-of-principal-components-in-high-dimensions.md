@@ -11,7 +11,7 @@ venue: Biometrika
 venue_details: 105(2):389–402
 topics:
   - High-dimension
-  - PCA
-  - Skewness test
+  - Principal Component Analysis (PCA)
+  - Skewness Test
 url_paper: https://doi.org/10.1093/biomet/asy010
 ---

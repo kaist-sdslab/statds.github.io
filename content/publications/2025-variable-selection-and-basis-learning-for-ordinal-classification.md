@@ -14,6 +14,6 @@ topics:
   - High-dimension
   - Lasso
   - Linear Discriminant Analysis
-  - Variable selection
+  - Variable Selection
 url_paper: https://doi.org/10.1080/10618600.2025.2451680
 ---

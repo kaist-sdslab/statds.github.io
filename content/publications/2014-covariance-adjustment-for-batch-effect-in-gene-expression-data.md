@@ -10,10 +10,10 @@ year: 2014
 venue: Statistics in Medicine
 venue_details: 33(15):2681–2695
 topics:
-  - Batch effect
-  - Covariance estimation
-  - Factor model
-  - Gene expression
   - High-dimension
+  - Batch Effect
+  - Covariance Estimation
+  - Factor Model
+  - Gene Expression
 url_paper: https://pmc.ncbi.nlm.nih.gov/articles/PMC4065794/
 ---

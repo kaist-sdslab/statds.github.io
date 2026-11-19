@@ -22,6 +22,6 @@ venue: The Korean Journal of Applied Statistics (in Korean)
 venue_details: 36(2), 141-166
 topics:
   - Data Privacy
-  - Synthetic data
+  - Synthetic Data
 url_paper: https://doi.org/10.5351/KJAS.2023.36.2.141
 ---

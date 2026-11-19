@@ -120,8 +120,7 @@ collections:
         widget: publication-tags
         allow_create: false
         required: false
-        hint: Choose from Topics shown in Publications filters. Removed topics are excluded from About automatically.
-        topic_scope: filters
+        hint: Choose any saved publication tag, including tags that do not appear among the preset filters.
       - label: Image
         name: image
         widget: image
@@ -812,8 +811,8 @@ collections:
     name: topics
     widget: publication-tags
     allow_create: true
-    hint: Search existing tags, or type a new tag and press Enter. New tags become reusable when this paper
-      is saved.
+    hint: Add one main topic (Non-Euclid Data, High-dimension, Data Privacy, or Interdisciplinary Research),
+      then add any relevant detail tags. New tags become reusable when this paper is saved.
   - label: Paper URL
     name: url_paper
     widget: string
@@ -1017,10 +1016,11 @@ collections:
       name: topics
       widget: publication-tags
       allow_create: false
+      preserve_order: true
       required: false
       default: []
-      hint: Choose from the union of saved publication topics. About research links can only select topics
-        in this list.
+      hint: Choose the saved publication topics that appear by default. Filters follow the order shown here;
+        remove and re-add topics to reorder them.
   - name: topic_colors
     label: Topic Colors
     file: data/topic_colors.yaml

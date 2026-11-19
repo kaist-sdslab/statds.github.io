@@ -10,12 +10,11 @@ year: 2022
 venue: Biometrika
 venue_details: 109(1):209-226
 topics:
-  - Classification
-  - Domain selection
-  - Functional
   - High-dimension
+  - Classification
+  - Domain Selection
+  - Functional Data
   - Linear Discriminant Analysis
-  - Non-Euclidean data
   - Sparsity
 url_paper: https://doi.org/10.1093/biomet/asaa107
 ---

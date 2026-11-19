@@ -11,11 +11,11 @@ year: 2007
 venue: Computational Statistics and Data Analysis
 venue_details: 51:6380–6394
 topics:
-  - Adaptive penalty
-  - Classification
   - High-dimension
+  - Adaptive Penalty
+  - Classification
   - Shrinkage
-  - Support vector machine
-  - Variable selection
+  - Support Vector Machines (SVM)
+  - Variable Selection
 url_paper: https://www.sciencedirect.com/science/article/pii/S0167947307000618
 ---

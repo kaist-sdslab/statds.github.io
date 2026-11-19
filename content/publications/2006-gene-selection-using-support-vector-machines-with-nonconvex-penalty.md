@@ -12,6 +12,6 @@ venue: Bioinformatics
 venue_details: 22:88–95
 topics:
   - High-dimension
-  - Variable selection
+  - Variable Selection
 url_paper: https://academic.oup.com/bioinformatics/article/22/1/88/218231
 ---

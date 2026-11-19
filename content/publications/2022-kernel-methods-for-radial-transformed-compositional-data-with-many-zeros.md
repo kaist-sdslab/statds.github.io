@@ -11,7 +11,8 @@ year: 2022
 venue: Proceedings of the 39th International Conference on Machine Learning (ICML)
 venue_details: "162: 17458 - 17472"
 topics:
-  - Compositional data
-  - kernel method
+  - Non-Euclid Data
+  - Compositional Data
+  - Kernel Methods
 url_paper: https://proceedings.mlr.press/v162/park22d.html
 ---

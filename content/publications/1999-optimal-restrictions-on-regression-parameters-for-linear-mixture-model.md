@@ -10,10 +10,10 @@ month: ""
 venue: Journal of the Korean Statistical Society
 venue_details: 28:325–336
 topics:
+  - Non-Euclid Data
   - Collinearity
-  - Integrated mean squared error
-  - Mixture experiment
-  - Non-Euclidean data
-  - Restriction amtrix
+  - Integrated Mean Squared Error
+  - Mixture Experiments
+  - Restriction Matrix
 url_paper: https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE09603763
 ---
