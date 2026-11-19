@@ -2,16 +2,20 @@
 title: Interpretable Classification for Multivariate Gait Analysis of Cerebral Palsy
 layout: publication
 authors:
-- Yoon, C.*
-- Jeon, Y.
-- Choi, H.
-- Kwon, S.
-- Ahn, J.
-year: 2023
+  - Yoon, C.*
+  - Jeon, Y.
+  - Choi, H.
+  - Kwon, S.
+  - Ahn, J.
 publication_type: journal
+year: 2023
 venue: BioMedical Engineering OnLine
-topics:
-- Interdisciplinary Research
-- Non-Euclidean data
 venue_details: 22, 109
+topics:
+  - Cerebral palsy
+  - Classification
+  - Functional
+  - Linear Discriminant Analysis
+  - Non-Euclidean data
+url_paper: https://link.springer.com/article/10.1186/s12938-023-01168-x
 ---
