@@ -1,16 +1,19 @@
 ---
-title: Monotone clusters with ordinal interpretation
+title: Monotone Clusters With Ordinal Interpretation
 layout: publication
 authors:
-- Chung, H.C.
-- An, S.
-- Cha, H.
-- Ahn, J.
-year: 2026
+  - Chung, H.C.
+  - An, S.
+  - Cha, H.
+  - Ahn, J.
 publication_type: journal
+year: 2026
 venue: Statistical Analysis and Data Mining
+venue_details: ""
 topics:
-- Clustering
-- High-dimension
-venue_details: accepted
+  - Clustering
+  - High-dimension
+  - Interpretable
+  - Variable selection
+url_paper: https://doi.org/10.1002/sam.70096
 ---
