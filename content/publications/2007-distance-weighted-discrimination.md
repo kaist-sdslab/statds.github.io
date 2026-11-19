@@ -1,5 +1,5 @@
 ---
-title: Distance weighted discrimination
+title: Distance-Weighted Discrimination
 layout: publication
 authors:
   - Marron, J. S.
