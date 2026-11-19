@@ -14,6 +14,7 @@ topics:
   - High-dimension
   - low-sample-size
   - Maximal data piling
+  - Negative Ridge
   - Spike Covariance Model
 url_paper: https://doi.org/10.1214/21-EJS1945
 ---
