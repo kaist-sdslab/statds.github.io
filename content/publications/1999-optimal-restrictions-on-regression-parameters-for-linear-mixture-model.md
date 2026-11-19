@@ -12,6 +12,7 @@ venue_details: 28:325–336
 topics:
   - Collinearity
   - Integrated mean squared error
+  - Interdisciplinary Research
   - Mixture experiment
   - Restriction amtrix
 url_paper: https://scienceon.kisti.re.kr/commons/util/originalView.do?cn=JAKO199911920519798&oCn=JAKO199911920519798&dbt=JAKO&journal=34291
