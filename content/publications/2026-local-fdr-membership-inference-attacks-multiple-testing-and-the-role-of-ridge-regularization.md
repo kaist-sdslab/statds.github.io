@@ -12,5 +12,5 @@ venue: Proceedings of the 40th Conference on Neural Information Processing
   Systems (NeurIPS)
 topics:
   - Data Privacy
-url_paper: https://openreview.net/pdf?id=zR0MYMNUF1
+url_paper: https://neurips.cc/virtual/2026/loc/sydney/poster/148228
 ---
