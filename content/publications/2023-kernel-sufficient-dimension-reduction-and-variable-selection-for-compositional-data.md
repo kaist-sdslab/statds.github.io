@@ -1,16 +1,17 @@
 ---
-title: Kernel sufficient dimension reduction and variable selection for compositional data
+title: Kernel Sufficient Dimension Reduction and Variable Selection for
+  Compositional Data via Amalgamation
 layout: publication
 authors:
-- Park, J.*
-- Ahn, J.
-- Park, C.
-year: 2023
+  - Park, J.*
+  - Ahn, J.
+  - Park, C.
 publication_type: conference
+year: 2023
 venue: Proceedings of the 40th International Conference on Machine Learning (ICML)
-topics:
-- Compositional data
-- Dimension reduction
-- Variable selection
 venue_details: 202:27034-27047
+topics:
+  - Compositional data
+  - Dimension reduction
+  - Variable selection
 ---
