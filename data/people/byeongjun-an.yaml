@@ -1,8 +1,12 @@
 name: ByeongJun An
 group: masters
-affiliation: Department of Industrial and Systems Engineering
 order: 50
+affiliation: Department of Industrial and Systems Engineering
+photo: /statds.github.io/media/people/byeongjun-an.jpeg
+photo_frame:
+  position_x: 50.951388888888886
+  position_y: 54.41400757664166
+  zoom: 1.7
 research_interests:
-- Statistical Learning
+  - Statistical Learning
 email: kwn08106@kaist.ac.kr
-photo: media/people/byeongjun-an.jpg
