@@ -15,5 +15,5 @@ topics:
   - Mixture experiment
   - Non-Euclidean data
   - Restriction amtrix
-url_paper: https://scienceon.kisti.re.kr/commons/util/originalView.do?cn=JAKO199911920519798&oCn=JAKO199911920519798&dbt=JAKO&journal=34291
+url_paper: https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE09603763
 ---
