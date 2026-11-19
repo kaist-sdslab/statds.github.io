@@ -1,5 +1,5 @@
 ---
-title: The high dimension, low sample size geometric representation holds under
+title: The high-dimension, low-sample-size geometric representation holds under
   mild conditions
 layout: publication
 authors:
