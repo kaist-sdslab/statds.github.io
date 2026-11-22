@@ -1,7 +1,10 @@
 name: Giwon Kim
+biography: I'm a Ph.D. student in SDS lab and joined in February 2023. I
+  recieved B.S. in Mathematics from University of Seoul. My research interests
+  include kernel learning and dimension reduction.
 group: phd
-affiliation: Graduate School of Data Science
 order: 20
+affiliation: Graduate School of Data Science
 photo: media/people/giwon-kim.jpg
 photo_frame:
   position_x: 0
@@ -11,3 +14,4 @@ research_interests:
   - Kernel-based ML
   - Dimension Reduction
 email: 71_won@kaist.ac.kr
+google_scholar: ""
