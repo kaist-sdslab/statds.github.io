@@ -3,7 +3,7 @@
 {{ $records = sort $records "date" "desc" }}
 {{ $catalog := partialCached "publications/topic-catalog.html" site }}
 {{ $topicIDs := apply $catalog.topics "index" "." "id" }}
-{{ $visibleTopics := partial "publications/resolve-topics.html" (dict "topics" site.Data.publication_filters.topics "preserve_order" true) }}
+{{ $visibleTopics := partial "publications/resolve-topics.html" (site.Data.publication_filters.topics | default slice) }}
 {{ $visibleYears := slice }}{{ range site.Data.publication_filters.years }}{{ $year := int . }}
   {{ if or (lt $year 1900) (gt $year 2100) }}{{ errorf "Invalid publication filter year %v" . }}{{ end }}
   {{ $visibleYears = $visibleYears | append $year }}

@@ -636,7 +636,7 @@ collections:
     - masters
     required: false
     default: []
-    hint: Add or remove research tags. Suggestions include existing interests and paper topics; student tags
+    hint: Suggestions include existing interests and paper topics. Student tags
       remain independent of Publications.
   - label: Email
     name: email
@@ -1016,11 +1016,9 @@ collections:
       name: topics
       widget: publication-tags
       allow_create: false
-      preserve_order: true
       required: false
       default: []
-      hint: Choose the saved publication topics that appear by default. Filters follow the order shown here;
-        remove and re-add topics to reorder them.
+      hint: Choose the saved publication topics that appear by default. Filters follow the order shown here.
   - name: topic_colors
     label: Topic Colors
     file: data/topic_colors.yaml

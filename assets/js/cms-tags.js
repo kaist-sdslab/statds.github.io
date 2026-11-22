@@ -15,13 +15,11 @@
     return existing || catalog.get(topic.id);
   };
   JSON.parse(document.getElementById('publication-tag-catalog').textContent).forEach(topic => remember(topic, true));
-  const sorted = value => [...value].sort((a, b) => (lookup(a) || { label: a }).label.localeCompare((lookup(b) || { label: b }).label, 'en', { sensitivity: 'base', numeric: true }));
   const values = value => value && typeof value.toArray === 'function' ? value.toArray() : (value || []);
   const lookup = (value, persistedOnly = false) => [...catalog.values()].find(item => (!persistedOnly || item.persisted) && (key(item.id) === key(value) || key(item.label) === key(value)));
 
   const TagsControl = createClass({
     getInitialState() { return { query: '', message: '' }; },
-    ordered(selected) { return this.props.field.get('preserve_order', false) ? selected : sorted(selected); },
     componentDidMount() {
       this.refresh = () => this.forceUpdate();
       listeners.add(this.refresh);
@@ -42,12 +40,12 @@
       }
       const selected = values(this.props.value);
       if (!selected.some(id => key((lookup(id) || { id }).id) === key(topic.id))) {
-        this.props.onChange(this.ordered([...selected, topic.id]));
+        this.props.onChange([...selected, topic.id]);
       }
       this.setState({ query: '', message: '' });
     },
     render() {
-      const selected = this.ordered(values(this.props.value));
+      const selected = values(this.props.value);
       const selectedIDs = new Set(selected.map(value => (lookup(value) || { id: value }).id));
       const canCreate = this.props.field.get('allow_create', false);
       const suggestions = [...catalog.values()].filter(topic => (canCreate || topic.persisted) && !selectedIDs.has(topic.id)).sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base', numeric: true }));
@@ -56,12 +54,13 @@
       const messageID = `${inputID}-message`;
       const canAdd = clean(this.state.query) && (canCreate || lookup(this.state.query, true));
       return h('div', { className: `${this.props.classNameWrapper || ''} publication-tag-editor` },
-        h('div', { className: 'cms-tag-selection' }, selected.map(id => {
-          const label = (lookup(id) || { label: id }).label;
-          return h('span', { className: 'cms-tag-chip', key: id, style: colorStyle((lookup(id) || {}).color) },
-            label,
-            h('button', { type: 'button', 'aria-label': `Remove ${label}`, onClick: () => this.props.onChange(selected.filter(value => value !== id)) }, '×'));
-        })),
+        h(window.SDSCMSTagSelection, {
+          values: selected, onChange: this.props.onChange,
+          describe: id => {
+            const topic = lookup(id);
+            return { label: topic?.label || id, style: colorStyle(topic?.color) };
+          }
+        }),
         h('div', { className: 'cms-tag-input-row' },
           h('input', {
             id: inputID, type: 'text', list: listID, value: this.state.query,
@@ -112,17 +111,11 @@
     listeners.forEach(refresh => refresh());
   } });
   CMS.registerEventListener({ name: 'preSave', handler: ({ entry }) => {
-    const sortFields = (data, paths) => paths.reduce((result, path) => {
-      const current = result.getIn(path);
-      const selected = current && path[path.length - 1] === 'publication_topics' ? current.filter(value => lookup(value, true)) : current;
-      return selected && typeof selected.toArray === 'function' ? result.setIn(path, selected.sort((a, b) => clean(a).localeCompare(clean(b), 'en', { sensitivity: 'base', numeric: true }))) : result;
-    }, data);
-    let data = entry.get('data');
-    if (entry.get('collection') === 'papers') data = sortFields(data, [['topics']]);
-    for (const [field, nested] of [['research', 'publication_topics'], ['assignments', 'topics']]) {
-      if (data.get(field)?.map) data = data.update(field, rows => rows.map(row => sortFields(row, [[nested]])));
-    }
-    return data;
+    const data = entry.get('data');
+    return data.get('research')?.map ? data.update('research', rows => rows.map(row => {
+      const selected = row.get('publication_topics');
+      return selected ? row.set('publication_topics', selected.filter(value => lookup(value, true))) : row;
+    })) : data;
   } });
   CMS.init();
 })();

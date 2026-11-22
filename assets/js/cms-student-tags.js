@@ -31,8 +31,9 @@
       const current = values(this.props.value), listID = `${this.props.forID}-suggestions`;
       const choices = [...suggestions.values()].filter(topic => !current.some(value => key(value) === key(topic))).sort((a, b) => a.localeCompare(b));
       return h('div', { className: `${this.props.classNameWrapper || ''} publication-tag-editor` },
-        h('div', { className: 'cms-tag-selection' }, ...current.map((topic, index) => h('span', { key: index, className: 'cms-tag-chip', style: style(topic) }, topic,
-          h('button', { type: 'button', 'aria-label': `Remove ${topic}`, onClick: () => this.props.onChange(current.filter((_, i) => i !== index)) }, '×')))),
+        h(window.SDSCMSTagSelection, {
+          values: current, describe: topic => ({ label: topic, style: style(topic) }), onChange: this.props.onChange
+        }),
         h('div', { className: 'cms-tag-input-row' },
           h('input', { id: this.props.forID, ref: input => { this.input = input; }, list: listID, value: this.state.query, placeholder: 'Add a research area…', autoComplete: 'off',
             onChange: event => this.setState({ query: event.target.value }), onKeyDown: event => {

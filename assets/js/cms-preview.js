@@ -97,7 +97,7 @@
     const existing = new Map(ctx.papers.flatMap(paper => list(paper.topics)).map(value => [key(value), value]));
     return [...new Set(list(values).map(value => existing.get(key(value))).filter(Boolean))];
   };
-  const topics = (values, colors, ctx) => list(values).slice().sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base', numeric: true })).map(value => colorEdit(ctx, value, h('a', { href: '#', style: accent(colorFor(value, colors)), onClick: event => {
+  const topics = (values, colors, ctx) => list(values).map(value => colorEdit(ctx, value, h('a', { href: '#', style: accent(colorFor(value, colors)), onClick: event => {
     if (!['publications', 'publication_filters'].includes(ctx.name) && !(ctx.name === 'site_settings' && ctx.state.previewPage === 'publications')) return;
     event.preventDefault();
     const selected = availableTopics(ctx.state.topics || [], ctx);

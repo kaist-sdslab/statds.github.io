@@ -2,7 +2,6 @@ assignments:
   - topics:
       - Compositional Data
       - Non-Euclid Data
-      - Non-Euclidean data
     color: "#176a62"
   - topics:
       - High-dimension
