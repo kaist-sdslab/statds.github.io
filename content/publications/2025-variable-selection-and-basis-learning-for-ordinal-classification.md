@@ -13,7 +13,7 @@ venue_details: 34(4):1432-1445
 topics:
   - High-dimension
   - Lasso
-  - Linear Discriminant Analysis
+  - Linear Discriminant Analysis (LDA)
   - Variable Selection
 url_paper: https://doi.org/10.1080/10618600.2025.2451680
 ---

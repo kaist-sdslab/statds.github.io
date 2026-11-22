@@ -6,7 +6,17 @@ years:
 - 2022
 - 2021
 topics:
-- Non-Euclid Data
 - High-dimension
+- Compositional Data
 - Data Privacy
 - Interdisciplinary Research
+- Variable Selection
+- Classification
+- Clustering
+- Regression
+- Low-Sample-Size
+- Sparsity
+- Functional Data
+- Linear Discriminant Analysis (LDA)
+- Data Piling
+- Canonical Correlation Analysis

@@ -6,7 +6,12 @@ assignments:
   - Non-Euclidean data
   color: '#176a62'
 - topics:
+  - High-dimension
+  color: '#96384b'
+- topics:
   - Data Privacy
+  - Synthetic Data
+  - Synthetic Data Generation
   color: '#991abc'
 - topics:
   - Interdisciplinary Research

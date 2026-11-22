@@ -11,7 +11,7 @@ venue_details: 99:81–90
 topics:
   - High-dimension
   - Classification
-  - Linear Discriminant Analysis
+  - Linear Discriminant Analysis (LDA)
   - Singular Value Decomposition (SVD)
   - Sparsity
 url_paper: https://www.sciencedirect.com/science/article/pii/S0167947316000207

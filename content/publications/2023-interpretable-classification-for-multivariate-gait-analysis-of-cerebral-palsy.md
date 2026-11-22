@@ -16,6 +16,6 @@ topics:
   - Cerebral Palsy
   - Classification
   - Functional Data
-  - Linear Discriminant Analysis
+  - Linear Discriminant Analysis (LDA)
 url_paper: https://link.springer.com/article/10.1186/s12938-023-01168-x
 ---

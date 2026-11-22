@@ -4,7 +4,7 @@ description: Research areas of the Statistical Data Science Lab at KAIST.
 layout: about
 research:
 - title: Transfer learning for high-dimensional data
-  color: '#285c9b'
+  color: '#96384b'
   publication_topics:
   - High-dimension
   description: Modern data analysis often involves high-dimensional data where the dimensionality of the data

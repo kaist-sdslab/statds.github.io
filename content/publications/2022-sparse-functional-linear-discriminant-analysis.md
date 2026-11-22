@@ -14,7 +14,7 @@ topics:
   - Classification
   - Domain Selection
   - Functional Data
-  - Linear Discriminant Analysis
+  - Linear Discriminant Analysis (LDA)
   - Sparsity
 url_paper: https://doi.org/10.1093/biomet/asaa107
 ---

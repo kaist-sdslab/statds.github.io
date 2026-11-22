@@ -13,7 +13,7 @@ venue_details: 80(1):ujad040
 topics:
   - High-dimension
   - Classification
-  - Linear Discriminant Analysis
+  - Linear Discriminant Analysis (LDA)
   - Variable Selection
 url_paper: https://doi.org/10.1093/biomtc/ujad040
 ---

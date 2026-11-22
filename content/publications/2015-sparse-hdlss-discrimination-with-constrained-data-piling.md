@@ -12,7 +12,7 @@ topics:
   - High-dimension
   - Classification
   - Data Piling
-  - Linear Discriminant Analysis
+  - Linear Discriminant Analysis (LDA)
   - Linear Programming
   - Low-Sample-Size
   - Sparsity
