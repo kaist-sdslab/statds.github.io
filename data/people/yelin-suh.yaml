@@ -1,8 +1,11 @@
 name: Yelin Suh
+biography: I joined the SDS Lab in February 2026 as a Master's student. My
+  research interests include statistical modeling for social phenomena and
+  synthetic data evaluation.
 group: masters
-affiliation: Department of Industrial and Systems Engineering
 order: 30
-research_interests:
-- Statistical Modeling for Social Phenomena
-email: yelin1995@kaist.ac.kr
+affiliation: Department of Industrial and Systems Engineering
 photo: media/people/yelin-suh.jpg
+research_interests:
+  - Statistical Modeling for Social Phenomena
+email: yelin1995@kaist.ac.kr
