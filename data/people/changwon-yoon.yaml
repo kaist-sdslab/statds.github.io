@@ -1,9 +1,9 @@
 name: Changwon Yoon
 group: phd
-affiliation: Department of Industrial and Systems Engineering
 order: 10
-research_interests:
-- non-Euclidean data analysis
-- Data Privacy
-email: cwyoon@kaist.ac.kr
+affiliation: Department of Industrial and Systems Engineering
 photo: media/people/changwon-yoon.jpg
+research_interests:
+  - Non-Euclid Data
+  - Data Privacy
+email: cwyoon@kaist.ac.kr
