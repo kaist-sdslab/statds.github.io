@@ -1,19 +1,17 @@
 assignments:
-- topics:
-  - Compositional Data
-  - Non-Euclid Data
-  # Some existing student profiles use this label.
-  - Non-Euclidean data
-  color: '#176a62'
-- topics:
-  - High-dimension
-  - Low-Sample-Size
-  color: '#96384b'
-- topics:
-  - Data Privacy
-  - Synthetic Data
-  - Synthetic Data Generation
-  color: '#991abc'
-- topics:
-  - Interdisciplinary Research
-  color: '#9b651e'
+  - topics:
+      - Compositional Data
+      - Non-Euclid Data
+      - Non-Euclidean data
+    color: "#176a62"
+  - topics:
+      - High-dimension
+      - Low-Sample-Size
+    color: "#96384b"
+  - topics:
+      - Data Privacy
+      - Synthetic Data
+    color: "#991abc"
+  - topics:
+      - Interdisciplinary Research
+    color: "#9b651e"
