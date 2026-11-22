@@ -741,6 +741,18 @@ collections:
     - ^https?://[^\s]+$
     - Enter a complete https:// or http:// URL.
     hint: Leave empty to hide this icon.
+  - label: Google Scholar URL
+    name: google_scholar
+    widget: people-conditional
+    control_widget: string
+    groups:
+    - phd
+    - masters
+    required: false
+    pattern:
+    - ^https?://[^\s]+$
+    - Enter a complete https:// or http:// URL.
+    hint: Leave empty to hide this icon.
 - name: papers
   label: Publications
   label_singular: Publication

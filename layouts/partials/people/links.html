@@ -5,11 +5,12 @@
     <div class="person-email-address"><a href="mailto:{{ . }}">{{ . }}</a></div>
   </details>
   {{ end }}
-  {{ if or .linkedin .github .website }}
+  {{ if or .linkedin .github .website .google_scholar }}
   <div class="person-socials">
-    {{ range $type := slice "linkedin" "github" "website" }}
+    {{ $labels := dict "linkedin" "LinkedIn" "github" "GitHub" "website" "Website" "google_scholar" "Google Scholar" }}
+    {{ range $type := slice "linkedin" "github" "website" "google_scholar" }}
       {{ with index $ $type }}
-        {{ $label := index (dict "linkedin" "LinkedIn" "github" "GitHub" "website" "Website") $type }}
+        {{ $label := index $labels $type }}
         <a class="person-social" href="{{ . }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $.name }} — {{ $label }}" title="{{ $label }}">{{ partial "people/icon.html" $type }}</a>
       {{ end }}
     {{ end }}

@@ -103,15 +103,23 @@
     const selected = availableTopics(ctx.state.topics || [], ctx);
     ctx.update({ topics: selected.includes(value) ? selected.filter(topic => topic !== value) : [...selected, value], page: 1 });
   } }, value)));
-  const socialIcon = type => type === 'linkedin'
-    ? h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('rect', { x: 3, y: 3, width: 18, height: 18, rx: 2 }), h('path', { d: 'M7 10v7m0-10v.01M11 17v-7m0 3a3 3 0 0 1 6 0v4' }))
-    : type === 'website' ? h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('circle', { cx: 12, cy: 12, r: 9 }), h('ellipse', { cx: 12, cy: 12, rx: 4, ry: 9 }), h('path', { d: 'M3 12h18' })) : icon('github');
-  const email = (person, ctx) => node('div', 'person-links',
-    person.email && h('details', { className: 'person-email', key: person.name },
-      h('summary', { 'aria-label': `Email — ${person.name}` }, h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('rect', { x: 3, y: 5, width: 18, height: 14, rx: 2 }), h('path', { d: 'm3 6 9 7 9-7' })), node('span', 'sr-only', 'Email')),
-      node('div', 'person-email-address', edit(ctx, 'email', h('a', { href: `mailto:${person.email}` }, person.email)))),
-    ['linkedin', 'github', 'website'].some(type => person[type]) && node('div', 'person-socials',
-      ...['linkedin', 'github', 'website'].filter(type => person[type]).map(type => edit(ctx, type, link(type === 'linkedin' ? 'LinkedIn' : type === 'github' ? 'GitHub' : 'Website', 'person-social', socialIcon(type))))));
+  const socialLabels = { linkedin: 'LinkedIn', github: 'GitHub', website: 'Website', google_scholar: 'Google Scholar' };
+  const socialIcon = type => {
+    const svg = (...children) => h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true }, ...children);
+    if (type === 'linkedin') return svg(h('rect', { x: 3, y: 3, width: 18, height: 18, rx: 2 }), h('path', { d: 'M7 10v7m0-10v.01M11 17v-7m0 3a3 3 0 0 1 6 0v4' }));
+    if (type === 'website') return svg(h('circle', { cx: 12, cy: 12, r: 9 }), h('ellipse', { cx: 12, cy: 12, rx: 4, ry: 9 }), h('path', { d: 'M3 12h18' }));
+    if (type === 'google_scholar') return svg(h('path', { d: 'm2 10 10-5 10 5-10 5-10-5zm4 2v5c3 2.5 9 2.5 12 0v-5m4-2v6' }));
+    return icon('github');
+  };
+  const personLinks = (person, ctx) => {
+    const socials = Object.entries(socialLabels).filter(([type]) => person[type]);
+    return node('div', 'person-links',
+      person.email && h('details', { className: 'person-email', key: person.name },
+        h('summary', { 'aria-label': `Email — ${person.name}` }, h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true }, h('rect', { x: 3, y: 5, width: 18, height: 14, rx: 2 }), h('path', { d: 'm3 6 9 7 9-7' })), node('span', 'sr-only', 'Email')),
+        node('div', 'person-email-address', edit(ctx, 'email', h('a', { href: `mailto:${person.email}` }, person.email)))),
+      socials.length > 0 && node('div', 'person-socials',
+        ...socials.map(([type, label]) => edit(ctx, type, link(label, 'person-social', socialIcon(type))))));
+  };
   const person = (p, context) => {
     const ctx = recordContext(context, p);
     const field = (path, tag, cls, ...children) => edit(ctx, path, node(tag, cls, ...children));
@@ -136,7 +144,7 @@
         node('div', 'person-info', field('name', 'h3', null, p.name), p.affiliation && field('affiliation', 'p', 'person-note', p.affiliation), p.member_note && field('member_note', 'p', 'person-member-note', p.member_note),
           interests.length > 0 && node('div', 'person-interests', edit(ctx, 'research_interests', node('ul', 'person-interest-tags', ...interests.map(topic => h('li', { className: 'person-interest-tag', style: accent(colorFor(topic, ctx.colors)) }, topic))))))),
       (p.biography || ctx.editable) && node('div', 'person-body', p.biography ? field('biography', 'p', 'person-biography', p.biography) : field('biography', 'p', 'person-biography-placeholder', 'Add a self-introduction in the form.')),
-      email(p, ctx));
+      personLinks(p, ctx));
   };
   const paper = (p, context, detail = false) => {
     const ctx = recordContext(context, p);
