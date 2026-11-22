@@ -1,10 +1,14 @@
 name: Yian Kim
-biography: ""
+biography: I'm Yian Kim, a Ph.D. student in GSDS who joined SDSLAB in 2024. My
+  research focuses on non-Euclidean statistics and compositional data analysis,
+  with broader interests in high-dimensional statistics and statistical
+  estimation.
 group: phd
 order: 30
 affiliation: Graduate School of Data Science
 photo: media/people/yian-kim.jpg
 research_interests:
   - Non-Euclid Data
+  - Compositional Data
   - High-dimension
 email: yian9995@kaist.ac.kr
