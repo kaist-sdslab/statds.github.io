@@ -1,8 +1,11 @@
 name: Jinyoung Hong
+biography: I joined SDS Lab in February 2025 as a master's student. My research
+  interests include interpretable AI, particularly statistical methods for
+  interpreting complex models.
 group: masters
-affiliation: Department of Industrial and Systems Engineering
 order: 10
-research_interests:
-- Interpretable AI
-email: urared@kaist.ac.kr
+affiliation: Department of Industrial and Systems Engineering
 photo: media/people/jinyoung-hong.jpg
+research_interests:
+  - Interpretable AI
+email: urared@kaist.ac.kr
