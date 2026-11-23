@@ -31,8 +31,6 @@
   <script src="{{ $newsEditor.RelPermalink }}" integrity="{{ $newsEditor.Data.Integrity }}"></script>
   {{ $portraitScript := resources.Get "js/cms-portrait.js" | minify | fingerprint }}
   <script src="{{ $portraitScript.RelPermalink }}" integrity="{{ $portraitScript.Data.Integrity }}"></script>
-  {{ $peopleScript := resources.Get "js/cms-people.js" | minify | fingerprint }}
-  <script src="{{ $peopleScript.RelPermalink }}" integrity="{{ $peopleScript.Data.Integrity }}"></script>
   {{ $catalog := partialCached "publications/topic-catalog.html" site }}
   <script id="publication-tag-catalog" type="application/json">{{ $catalog.topics | jsonify | safeJS }}</script>
   {{ $previewStyles := slice }}
@@ -41,6 +39,8 @@
   {{ end }}
   {{ $previewStyle := $previewStyles | resources.Concat "css/cms-site-preview.css" | minify | fingerprint }}
   <script id="cms-preview-settings" type="application/json">{{ dict "data" (partial "cms/preview-data.html" .) "styles" (slice $previewStyle.RelPermalink) | jsonify | safeJS }}</script>
+  {{ $peopleScript := resources.Get "js/cms-people.js" | minify | fingerprint }}
+  <script src="{{ $peopleScript.RelPermalink }}" integrity="{{ $peopleScript.Data.Integrity }}"></script>
   {{ $tagSelection := resources.Get "js/cms-tag-selection.js" | minify | fingerprint }}
   <script src="{{ $tagSelection.RelPermalink }}" integrity="{{ $tagSelection.Data.Integrity }}"></script>
   {{ $studentTags := resources.Get "js/cms-student-tags.js" | minify | fingerprint }}

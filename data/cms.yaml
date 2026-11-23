@@ -523,7 +523,6 @@ collections:
   - field: group
     label: Group
     default_sort: desc
-  - order
   - name
   - field: internship.start_date
     label: Internship start date
@@ -572,18 +571,19 @@ collections:
       value: alumni
     hint: Change the group to move a profile between sections. The form shows the fields for the selected group.
       Existing values are preserved when switching groups.
+  - name: order
+    widget: hidden
+    required: false
+    default: 10
   - label: Members display order
-    name: order
+    name: member_order
     widget: people-conditional
-    control_widget: number
+    control_widget: member-order
     groups:
     - phd
     - masters
     required: false
-    value_type: int
-    default: 10
-    min: 0
-    hint: Smaller numbers appear first within the selected member group.
+    hint: Use the arrows to move this profile within its group, then publish to apply the change.
   - label: Member note
     name: member_note
     widget: people-conditional

@@ -1,19 +1,25 @@
-{{- $result := sort .items "order" -}}
-{{- if eq .group "alumni" -}}
 {{- $ranked := slice -}}
+{{- $group := .group -}}
 {{- range .items -}}
-  {{- $alumni := .alumni | default dict -}}
-  {{- $year := int ($alumni.graduation_year | default 0) -}}
-  {{- $ranked = $ranked | append (dict "person" . "key" (printf "%04d-%s" (sub 9999 $year) (lower .name))) -}}
-{{- end -}}
-{{- $result = slice -}}{{- range sort $ranked "key" -}}{{- $result = $result | append .person -}}{{- end -}}
-{{- end -}}
-{{- if eq .group "intern" -}}
-  {{- $ranked := slice -}}
-  {{- range .items -}}
+  {{- $key := "" -}}
+  {{- if eq $group "alumni" -}}
+    {{- $alumni := .alumni | default dict -}}
+    {{- $year := int ($alumni.graduation_year | default 0) -}}
+    {{- $key = printf "%04d-%s" (sub 9999 $year) (lower .name) -}}
+  {{- else if eq $group "intern" -}}
     {{- $period := partial "people/internship.html" (.internship | default dict) -}}
-    {{- $ranked = $ranked | append (dict "person" . "key" (printf "%08d-%08d-%s" (sub 99991231 $period.start_key) (sub 99991231 $period.end_key) (lower .name))) -}}
+    {{- $key = printf "%08d-%08d-%s" (sub 99991231 $period.start_key) (sub 99991231 $period.end_key) (lower .name) -}}
+  {{- else -}}
+    {{- $order := int (.order | default 0) -}}
+    {{- if or (lt $order 0) (gt $order 9007199254740991) -}}{{- $order = 0 -}}{{- end -}}
+    {{- $rank := printf "%016x" $order -}}
+    {{- if findRE "^[0-9a-f]+$" (.member_order | default "" | string) -}}
+      {{- $rank = string .member_order -}}
+    {{- end -}}
+    {{- $key = printf "%s%x%04x1" $rank ._slug (len ._slug) -}}
   {{- end -}}
-  {{- $result = slice -}}{{- range sort $ranked "key" -}}{{- $result = $result | append .person -}}{{- end -}}
+  {{- $ranked = $ranked | append (dict "person" . "key" $key) -}}
 {{- end -}}
+{{- $result := slice -}}
+{{- range sort $ranked "key" -}}{{- $result = $result | append .person -}}{{- end -}}
 {{- return $result -}}

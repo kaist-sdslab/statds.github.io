@@ -224,7 +224,7 @@
         const members = records.filter(p => p.group === group).sort((a, b) => group === 'alumni'
           ? sortDate(b.alumni?.graduation_year, 0) - sortDate(a.alumni?.graduation_year, 0) || text(a.name).localeCompare(text(b.name), 'en', { sensitivity: 'base' })
           : group === 'intern' ? internshipKey(b.internship?.start_date).localeCompare(internshipKey(a.internship?.start_date)) || internshipKey(b.internship?.end_date, true).localeCompare(internshipKey(a.internship?.end_date, true)) || text(a.name).localeCompare(text(b.name), 'en', { sensitivity: 'base' })
-          : (a.order || 0) - (b.order || 0));
+          : window.SDSCMSPeople.compareMembers(a, b));
         return node('section', `people-section people-accent-${color}`, node('div', 'people-section-heading', edit({ ...ctx, editable: ctx.collection === 'people' && ctx.editing?.group === group }, 'group', node('h2', null, heading))), members.length
           ? h('div', group === 'phd' || group === 'masters' ? { className: 'people-grid' } : { className: `people-compact-list people-scroll-list ${group}-list`, tabIndex: 0, role: 'region', 'aria-label': heading }, ...members.map(p => person(p, ctx))) : node('p', 'people-empty', labels.empty));
       }));
@@ -332,7 +332,10 @@
       else if (page === 'professors') content = professor(pageData, ctx);
       else if (name === 'papers') content = node('div', 'shell publications-page', paper(data, ctx));
       else if (page === 'people') {
-        const records = collection === 'people' ? replaceRecord(seed.people, this.props.entry, data) : seed.people;
+        const roster = window.SDSCMSPeople.records();
+        const slug = this.props.entry.get('slug');
+        if (collection === 'people') data._slug = slug || '';
+        const records = collection === 'people' ? replaceRecord(roster, this.props.entry, data) : roster;
         ctx.editing = collection === 'people' ? data : null;
         content = people(collection === 'pages' || name === 'site_settings' ? pageData.title : seed.pages.people.title, records, ctx);
       } else if (page === 'software' || page === 'courses') content = resources(collection === 'pages' || name === 'site_settings' ? pageData.title : seed.pages[page].title, collection === 'pages' || name === 'site_settings' ? seed[page] : replaceRecord(seed[page], this.props.entry, data), page, ctx);

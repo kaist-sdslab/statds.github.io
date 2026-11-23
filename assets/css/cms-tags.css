@@ -26,6 +26,11 @@
 .cms-person-date { display: flex; align-items: center; gap: 10px; }
 .cms-person-date select { flex: 0 0 auto; padding: 10px; border: 1px solid #9ca7b3; border-radius: 4px; background: white; font: inherit; }
 .cms-person-date input { flex: 1; min-width: 0; }
+.cms-person-order { display: inline-flex; align-items: center; gap: 12px; font-size: 14px; }
+.cms-person-order button { min-width: 36px; min-height: 36px; border: 1px solid #afbec9; border-radius: 4px; background: white; color: #285c9b; font: inherit; cursor: pointer; }
+.cms-person-order button[aria-disabled="false"]:hover { background: #edf4fc; }
+.cms-person-order button[aria-disabled="true"] { opacity: .45; cursor: default; }
+.cms-person-order button:focus-visible { outline: 2px solid #285c9b; outline-offset: 2px; }
 
 .cms-portrait-control { padding: 12px; }
 .cms-portrait-control:focus-visible { outline: 2px solid #285c9b; outline-offset: 2px; }

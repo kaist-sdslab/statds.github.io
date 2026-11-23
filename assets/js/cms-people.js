@@ -34,6 +34,76 @@
   });
   const visible = props => props.field.get('groups').includes(group(props));
   const plain = value => value?.toJS ? value.toJS() : value || {};
+  const seed = JSON.parse(document.getElementById('cms-preview-settings').textContent).data;
+  const roster = new Map(seed.people.map(person => [person._slug, person]));
+  const utf8 = new TextEncoder();
+  const entrySlug = entry => entry?.get('slug') || '';
+  const keyForMember = person => {
+    const order = Number(person.order);
+    const oldOrder = Number.isSafeInteger(order) && order >= 0 ? order : 0;
+    const rank = /^[0-9a-f]+$/.test(person.member_order || '') ? person.member_order : oldOrder.toString(16).padStart(16, '0');
+    const slug = utf8.encode(person._slug);
+    // Use the same key as people/sort.html. The slug separates equal ranks.
+    const suffix = Array.from(slug, byte => byte.toString(16).padStart(2, '0')).join('');
+    return rank + suffix + slug.length.toString(16).padStart(4, '0') + '1';
+  };
+  const compareMembers = (a, b) => {
+    const left = keyForMember(a), right = keyForMember(b);
+    return left < right ? -1 : left > right ? 1 : 0;
+  };
+  const rankBetween = (before, after) => {
+    const lower = before ? keyForMember(before) : '';
+    let upper = after ? keyForMember(after) : null;
+    let prefix = '';
+    // A differing digit leaves a gap for this member's slug suffix.
+    for (let i = 0; ; i++) {
+      const left = parseInt(lower[i] || '0', 16);
+      const right = upper === null ? 16 : parseInt(upper[i] || '0', 16);
+      if (right - left > 1) return prefix + Math.floor((left + right) / 2).toString(16);
+      if (right > left) upper = null;
+      prefix += left.toString(16);
+    }
+  };
+  const memberPosition = props => {
+    const slug = entrySlug(props.entry);
+    const member = { _slug: slug, order: props.entry?.getIn(['data', 'order']), member_order: props.value };
+    const peers = [...roster.values()].filter(person => person.group === group(props) && person._slug !== slug).sort(compareMembers);
+    const next = peers.findIndex(person => compareMembers(member, person) < 0);
+    return { peers, index: next < 0 ? peers.length : next };
+  };
+  window.SDSCMSPeople = { records: () => [...roster.values()], compareMembers };
+  CMS.registerEventListener({ name: 'postSave', handler: ({ entry }) => {
+    const slug = entrySlug(entry);
+    if (entry.get('collection') === 'people' && slug) {
+      roster.set(slug, { ...plain(entry.get('data')), _slug: slug });
+    }
+  } });
+  CMS.registerWidget('member-order', createClass({
+    focus() {
+      this.buttons?.querySelector('button[aria-disabled="false"]')?.focus({ preventScroll: true });
+    },
+    move(offset) {
+      const { peers, index } = memberPosition(this.props);
+      const target = index + offset;
+      if (target >= 0 && target <= peers.length) {
+        this.props.onChange(rankBetween(peers[target - 1], peers[target]));
+      }
+    },
+    render() {
+      const { peers, index } = memberPosition(this.props);
+      const button = (offset, icon, label) => {
+        const unavailable = offset < 0 ? index === 0 : index === peers.length;
+        return h('button', {
+          type: 'button', title: label, 'aria-label': label, 'aria-disabled': unavailable,
+          tabIndex: unavailable ? -1 : 0, onClick: () => this.move(offset)
+        }, icon);
+      };
+      return h('div', { className: 'cms-person-order', ref: element => { this.buttons = element; } },
+        button(-1, '←', 'Move earlier'),
+        h('span', { role: 'status' }, `Position ${index + 1} of ${peers.length + 1}`),
+        button(1, '→', 'Move later'));
+    }
+  }));
   const yearOnly = value => /^[1-9]\d{3}$/.test(value || '');
   const validDate = value => yearOnly(value) || /^\d{4}-\d{2}-\d{2}$/.test(value || '') && !Number.isNaN(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
   const dateBound = (value, end = false) => yearOnly(value) ? `${value}-${end ? '12-31' : '01-01'}` : value;
