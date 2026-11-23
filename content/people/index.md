@@ -9,8 +9,6 @@ labels:
   alumni_tab: Alumni
   phd_heading: Ph.D. Students
   masters_heading: M.S. Students
-  interns_heading: Interns
-  alumni_heading: Alumni
   research_interests: Research interests
   empty: Profiles will be added soon.
 ---

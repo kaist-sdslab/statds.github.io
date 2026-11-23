@@ -1,15 +1,14 @@
 {{ partial "site/start.html" . }}
-{{ $groups := slice (dict "id" "phd" "label" (site.GetPage "people").Params.labels.phd_heading "accent" "blue") (dict "id" "masters" "label" (site.GetPage "people").Params.labels.masters_heading "accent" "teal") (dict "id" "intern" "label" (site.GetPage "people").Params.labels.interns_heading "accent" "purple") (dict "id" "alumni" "label" (site.GetPage "people").Params.labels.alumni_heading "accent" "neutral") }}
+{{ $labels := .Params.labels }}
+{{ $groups := slice (dict "id" "phd" "label" $labels.phd_heading "accent" "blue") (dict "id" "masters" "label" $labels.masters_heading "accent" "teal") (dict "id" "intern" "label" $labels.interns_tab "accent" "purple") (dict "id" "alumni" "label" $labels.alumni_tab "accent" "neutral") }}
 {{ $members := slice }}
 {{ range $slug, $person := site.Data.people }}
   {{ if not (in (slice "phd" "masters" "intern" "alumni") .group) }}{{ errorf "Unknown People group %q for %q" .group .name }}{{ end }}
   {{ $members = $members | append (merge $person (dict "_slug" $slug)) }}
 {{ end }}
 <section class="shell people-page" aria-labelledby="people-title" data-people-tabs>
-  <header class="people-intro">
-    <h1 id="people-title">{{ .Title }}</h1>
-  </header>
-  {{ $panels := slice (dict "id" "members" "label" (site.GetPage "people").Params.labels.members_tab "groups" (first 2 $groups)) (dict "id" "interns" "label" (site.GetPage "people").Params.labels.interns_tab "groups" (slice (index $groups 2))) (dict "id" "alumni" "label" (site.GetPage "people").Params.labels.alumni_tab "groups" (slice (index $groups 3))) }}
+  <h1 id="people-title" class="sr-only">{{ .Title }}</h1>
+  {{ $panels := slice (dict "id" "members" "label" $labels.members_tab "groups" (first 2 $groups)) (dict "id" "interns" "label" $labels.interns_tab "groups" (slice (index $groups 2))) (dict "id" "alumni" "label" $labels.alumni_tab "groups" (slice (index $groups 3))) }}
   <div class="people-tabs" role="tablist" aria-label="Student categories" data-people-tablist hidden>
     {{ range $panels }}<button type="button" role="tab" id="people-tab-{{ .id }}" aria-controls="people-panel-{{ .id }}" aria-selected="false" tabindex="-1" data-people-tab="{{ .id }}">{{ .label }}</button>{{ end }}
   </div>
@@ -19,14 +18,14 @@
   {{ $items := partial "people/sort.html" (dict "items" (where $members "group" .id) "group" .id) }}
   {{ $compact := in (slice "alumni" "intern") .id }}
   <section class="people-section people-accent-{{ .accent }}{{ if not $compact }} people-member-section{{ end }}" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
-    <div class="people-section-heading"><h2 id="{{ .id }}-title">{{ .label }}</h2></div>
+    <div class="people-section-heading{{ if $compact }} people-compact-heading{{ end }}"><h2 id="{{ .id }}-title">{{ .label }}</h2></div>
     {{ if $items }}
       <div class="{{ if $compact }}people-compact-list people-scroll-list {{ .id }}-list{{ else }}people-grid{{ end }}"{{ if $compact }} tabindex="0" role="region" aria-labelledby="{{ .id }}-title"{{ end }}>
       {{ range $items }}
         {{ if eq .group "alumni" }}{{ partial "people/alumnus.html" . }}{{ else if eq .group "intern" }}{{ partial "people/intern.html" . }}{{ else }}{{ partial "people/member.html" . }}{{ end }}
       {{ end }}
       </div>
-    {{ else }}<p class="people-empty">{{ (site.GetPage "people").Params.labels.empty }}</p>{{ end }}
+    {{ else }}<p class="people-empty">{{ $labels.empty }}</p>{{ end }}
   </section>
   {{ end }}
   </div>

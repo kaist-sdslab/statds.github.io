@@ -8,7 +8,6 @@ body { margin: 0; }
 .cms-site-preview .site-header { position: static; }
 .cms-site-preview main { opacity: 1; transform: none; }
 .cms-site-preview [data-reveal] { opacity: 1; transform: none; }
-.cms-site-preview .people-tabs { margin-bottom: 24px; }
 .cms-site-preview .research-description p { white-space: pre-line; }
 .cms-site-preview [data-cms-field] { cursor: pointer; }
 .cms-site-preview [data-cms-field]:hover { outline: 1px dashed var(--accent-blue); outline-offset: 3px; }

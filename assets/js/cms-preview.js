@@ -217,18 +217,22 @@
   const people = (title, records, ctx) => {
     const labels = ctx.labels.people;
     const selected = ctx.state.tab || (ctx.editing?.group === 'intern' ? 'interns' : ctx.editing?.group === 'alumni' ? 'alumni' : 'members');
-    const groups = { members: [['phd', labels.phd_heading, 'blue'], ['masters', labels.masters_heading, 'teal']], interns: [['intern', labels.interns_heading, 'purple']], alumni: [['alumni', labels.alumni_heading, 'neutral']] };
-    return node('section', 'shell people-page', node('header', 'people-intro', pageEdit(ctx, 'title', node('h1', null, title))),
-      h('div', { className: 'people-tabs', role: 'tablist' }, ...['members', 'interns', 'alumni'].map(tab => labelEdit(ctx, `people.${tab}_tab`, h('button', { type: 'button', role: 'tab', 'aria-selected': selected === tab, onClick: () => ctx.update({ tab }) }, labels[`${tab}_tab`])))),
-      ...groups[selected].map(([group, heading, color]) => {
+    const groups = { members: [['phd', labels.phd_heading, 'blue'], ['masters', labels.masters_heading, 'teal']], interns: [['intern', labels.interns_tab, 'purple']], alumni: [['alumni', labels.alumni_tab, 'neutral']] };
+    return h('section', { className: 'shell people-page', 'aria-labelledby': 'people-title' },
+      h('h1', { id: 'people-title', className: 'sr-only' }, title),
+      h('div', { className: 'people-tabs', role: 'tablist', 'aria-label': 'Student categories' }, ...Object.keys(groups).map(tab => labelEdit(ctx, `people.${tab}_tab`, h('button', {
+        type: 'button', role: 'tab', id: `people-tab-${tab}`, 'aria-selected': selected === tab,
+        'aria-controls': selected === tab ? `people-panel-${tab}` : undefined, onClick: () => ctx.update({ tab })
+      }, labels[`${tab}_tab`])))),
+      h('div', { className: 'people-panel', role: 'tabpanel', id: `people-panel-${selected}`, 'aria-labelledby': `people-tab-${selected}` }, ...groups[selected].map(([group, heading, color]) => {
         const members = records.filter(p => p.group === group).sort((a, b) => group === 'alumni'
           ? sortDate(b.alumni?.graduation_year, 0) - sortDate(a.alumni?.graduation_year, 0) || text(a.name).localeCompare(text(b.name), 'en', { sensitivity: 'base' })
           : group === 'intern' ? internshipKey(b.internship?.start_date).localeCompare(internshipKey(a.internship?.start_date)) || internshipKey(b.internship?.end_date, true).localeCompare(internshipKey(a.internship?.end_date, true)) || text(a.name).localeCompare(text(b.name), 'en', { sensitivity: 'base' })
           : window.SDSCMSPeople.compareMembers(a, b));
         const isMember = group === 'phd' || group === 'masters';
-        return node('section', `people-section people-accent-${color}${isMember ? ' people-member-section' : ''}`, node('div', 'people-section-heading', edit({ ...ctx, editable: ctx.collection === 'people' && ctx.editing?.group === group }, 'group', node('h2', null, heading))), members.length
+        return node('section', `people-section people-accent-${color}${isMember ? ' people-member-section' : ''}`, isMember && node('div', 'people-section-heading', edit({ ...ctx, editable: ctx.collection === 'people' && ctx.editing?.group === group }, 'group', node('h2', null, heading))), members.length
           ? h('div', isMember ? { className: 'people-grid' } : { className: `people-compact-list people-scroll-list ${group}-list`, tabIndex: 0, role: 'region', 'aria-label': heading }, ...members.map(p => person(p, ctx))) : node('p', 'people-empty', labels.empty));
-      }));
+      })));
   };
   const resources = (title, records, type, ctx) => node('section', 'shell resources-page', pageEdit(ctx, 'title', node('h1', null, title)), node('div', 'resource-list',
     ...records.slice().sort((a, b) => (a.order || 0) - (b.order || 0)).map(item => {

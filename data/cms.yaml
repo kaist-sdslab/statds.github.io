@@ -300,12 +300,6 @@ collections:
       - label: Masters heading
         name: masters_heading
         widget: string
-      - label: Interns heading
-        name: interns_heading
-        widget: string
-      - label: Alumni heading
-        name: alumni_heading
-        widget: string
       - label: Research interests
         name: research_interests
         widget: string
