@@ -1,9 +1,14 @@
 name: Changwon Yoon
+biography: I joined the SDS Lab as a Ph.D. student in September 2023. My
+  research focuses on developing statistical methods for data with complex
+  structures, such as non-Euclidean data, and has recently expanded to
+  high-dimensional data.
 group: phd
 order: 10
 affiliation: Department of Industrial and Systems Engineering
 photo: media/people/changwon-yoon.jpg
 research_interests:
   - Non-Euclid Data
+  - High-dimension
   - Data Privacy
 email: cwyoon@kaist.ac.kr
