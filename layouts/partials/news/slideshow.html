@@ -5,7 +5,7 @@
   {{ if and $cover.image (ne .Params.show_in_slideshow false) }}{{ $eligible = $eligible | append . }}{{ end }}
 {{ end }}
 {{ $posts := first (int ($settings.limit | default 5)) $eligible }}
-<div class="home-hero-gallery" data-reveal data-reveal-direction="fade">
+<div class="home-hero-gallery" data-reveal>
   {{ if $posts }}
   <div class="news-slideshow" data-slideshow data-interval="{{ $settings.interval | default 5 }}" data-pause="Pause slideshow" data-play="Play slideshow" role="region" aria-roledescription="carousel" aria-label="Lab photos">
     <div class="news-slides">
