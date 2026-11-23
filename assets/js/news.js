@@ -10,12 +10,10 @@
   const params = new URLSearchParams(location.search);
   let page = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   const render = (updateURL = false) => {
-    const matches = cards;
-    const totalPages = Math.max(1, Math.ceil(matches.length / size));
+    const totalPages = Math.max(1, Math.ceil(cards.length / size));
     page = Math.min(Math.max(page, 1), totalPages);
-    const visible = new Set(matches.slice((page - 1) * size, page * size));
+    const visible = new Set(cards.slice((page - 1) * size, page * size));
     cards.forEach(card => { card.hidden = !visible.has(card); });
-    root.querySelector('[data-news-total]').textContent = matches.length;
     pager.hidden = totalPages <= 1;
     previous.disabled = page === 1;
     next.disabled = page === totalPages;

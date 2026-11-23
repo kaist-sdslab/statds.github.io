@@ -46,8 +46,7 @@ if (typeof document !== 'undefined') (() => {
   }));
   const defaults = () => ({ q: '', kind: '', year: '', topics: [], sort: 'newest', page: 1 });
   // Display choices do not restrict valid paper metadata or linked group topics.
-  const topicIDs = JSON.parse(root.dataset.topicIds || '[]');
-  const topicKeys = new Map(topicIDs.map(id => [PublicationFilters.normalize(id), id]));
+  const topicKeys = new Map(Array.from(topicCatalog.keys(), id => [PublicationFilters.normalize(id), id]));
   const topicAliases = new Map(Object.entries(JSON.parse(root.dataset.topicAliases || '{}'))
     .filter(([, id]) => topicCatalog.has(id))
     .map(([legacyLabel, id]) => [PublicationFilters.normalize(legacyLabel), id]));
@@ -57,7 +56,6 @@ if (typeof document !== 'undefined') (() => {
     return topicKeys.get(key) || topicAliases.get(key);
   };
   const allowed = filter => {
-    if (filter === 'topic') return topicIDs;
     const displayed = buttons().filter(button => button.dataset.filter === filter).map(button => button.dataset.value);
     return filter === 'year' ? [...displayed, ...papers.map(paper => paper.year)] : displayed;
   };

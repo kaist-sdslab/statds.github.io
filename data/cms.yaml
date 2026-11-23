@@ -4,14 +4,12 @@ backend:
   branch: main
   base_url: https://sds-cms-auth.sdslab486.workers.dev
   auth_endpoint: auth
-  squash_merges: true
 media_folder: assets/media/research
 public_folder: media/research
 collections:
 - name: pages
   label: Pages
   editor:
-    preview: true
     visualEditing: true
   files:
   - name: home
@@ -109,7 +107,6 @@ collections:
       - label: Accent color
         name: color
         widget: color
-        allowInput: true
         pattern:
         - ^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$
         - 'Enter a HEX color such as #285c9b.'
@@ -118,7 +115,6 @@ collections:
       - label: Related publication topics
         name: publication_topics
         widget: publication-tags
-        allow_create: false
         required: false
         hint: Choose any saved publication tag, including tags that do not appear among the preset filters.
       - label: Image
@@ -540,7 +536,6 @@ collections:
   media_folder: ../../assets/media/people
   public_folder: media/people
   editor:
-    preview: true
     visualEditing: true
   fields:
   - label: Name
@@ -764,7 +759,6 @@ collections:
   - month
   - title
   editor:
-    preview: true
     visualEditing: true
   fields:
   - label: Title
@@ -823,11 +817,17 @@ collections:
     name: url_paper
     widget: string
     required: false
+    pattern:
+    - ^https?://[^\s]+$
+    - Enter a complete https:// or http:// URL.
     hint: Optional. Clicking the publication title opens this URL. Without a URL, the title is plain text.
   - label: GitHub URL
     name: url_code
     widget: string
     required: false
+    pattern:
+    - ^https?://[^\s]+$
+    - Enter a complete https:// or http:// URL.
     hint: Optional repository URL. The GitHub button is shown only when this URL is filled in.
 - name: news
   label: News
@@ -847,8 +847,6 @@ collections:
   - pinned
   media_folder: ../../assets/media/news
   public_folder: media/news
-  editor:
-    preview: true
   fields:
   - label: Title
     name: title
@@ -905,7 +903,6 @@ collections:
     default_sort: asc
   - title
   editor:
-    preview: true
     visualEditing: true
   fields:
   - label: Name
@@ -919,6 +916,9 @@ collections:
     name: github
     widget: string
     required: false
+    pattern:
+    - ^https?://[^\s]+$
+    - Enter a complete https:// or http:// URL.
   - label: Display order
     name: order
     widget: number
@@ -928,7 +928,6 @@ collections:
 - name: settings
   label: Site Settings
   editor:
-    preview: true
     visualEditing: true
   files:
   - name: site_settings
@@ -1021,7 +1020,6 @@ collections:
     - label: Topics shown in filters
       name: topics
       widget: publication-tags
-      allow_create: false
       required: false
       default: []
       hint: Choose the saved publication topics that appear by default. Filters follow the order shown here.
@@ -1037,12 +1035,10 @@ collections:
       - label: Topics
         name: topics
         widget: publication-tags
-        allow_create: false
         hint: Choose saved publication tags to use this color. Unassigned tags use blue.
       - label: Color
         name: color
         widget: color
-        allowInput: true
         pattern:
         - ^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$
         - 'Enter a HEX color such as #285c9b.'

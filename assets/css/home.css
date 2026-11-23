@@ -12,7 +12,6 @@
   --accent-blue-soft: #edf4fc;
   --accent-blue-line: #cbdcf1;
   --accent-teal: #176a62;
-  --accent-purple: #75509b;
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
   --heading: var(--sans);
   --academic: 'KaTeX Main', 'Times New Roman', serif;
@@ -34,6 +33,7 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }
 .shell { max-width: 1248px; margin: 0 auto; padding: 0 48px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .skip-link { position: absolute; top: -100px; left: 20px; z-index: 10; padding: 8px 16px; background: var(--ink); color: white; }
 .skip-link:focus { top: 12px; }
 .site-header { border-bottom: 1px solid var(--line); }

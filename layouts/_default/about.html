@@ -1,9 +1,9 @@
 {{ partial "site/start.html" . }}
     <section class="research-section shell about-research" id="research" aria-labelledby="research-title">
-      <div class="section-heading" data-reveal><h1 id="research-title">{{ .Params.labels.research_heading }}</h1></div>
+      <div class="section-heading"><h1 id="research-title">{{ .Params.labels.research_heading }}</h1></div>
       <div class="research-list">{{ range $index, $area := .Params.research }}
         {{ $publicationURL := "" }}{{ with .publication_topics }}{{ $publicationURL = partial "publications/topics-url.html" . }}{{ end }}
-        <article class="research-item" style="{{ partial "color-style.html" .color }}" data-reveal aria-labelledby="research-{{ $index }}">
+        <article class="research-item" style="{{ partial "color-style.html" .color }}" aria-labelledby="research-{{ $index }}">
           <h2 class="research-heading" id="research-{{ $index }}">{{ if $publicationURL }}<a href="{{ $publicationURL }}">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}</h2>
           <div class="research-visual">
             {{ $image := partial "media-resource.html" .image }}

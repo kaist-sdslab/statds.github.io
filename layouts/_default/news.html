@@ -8,8 +8,8 @@
   <header class="news-header"><div><h1 id="news-title">{{ .Title }}</h1><p>{{ .Description }}</p></div>
 
   </header>
-  <p class="news-results" role="status" aria-live="polite" data-news-count hidden><span data-news-total>{{ len $posts }}</span> {{ $labels.results }}</p>
-  <div class="news-list" data-news-list>
+  <p class="news-results" role="status" aria-live="polite" data-news-count hidden>{{ len $posts }} {{ $labels.results }}</p>
+  <div class="news-list">
   {{ range $sorted }}
     {{ $cover := partial "news/cover-data.html" . }}
     <article class="news-card" data-news-card>

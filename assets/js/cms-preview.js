@@ -12,8 +12,8 @@
   const pageEdit = (ctx, path, element) => edit({ ...ctx, editable: ctx.collection === 'pages' }, path, element);
   const labelEdit = (ctx, path, element) => {
     const [section, ...parts] = path.split('.');
-    const owner = { about: 'about', professor: 'professors', people: 'people', publications: 'publications', resources: ctx.page }[section];
-    const common = section === 'site' || section === 'links';
+    const owner = { about: 'about', professor: 'professors', people: 'people', publications: 'publications' }[section];
+    const common = section === 'site';
     return edit({ ...ctx, editable: common ? ctx.name === 'site_settings' : ctx.collection === 'pages' && ctx.name === owner },
       common ? path : `labels.${parts.join('.')}`, element);
   };
@@ -24,22 +24,18 @@
     const resolved = [];
     for (let i = 0; i < parts.length; i++) {
       const field = fields.find(item => item.name === parts[i]);
-      if (!field) return { path };
+      if (!field) return path;
       resolved.push(field.name);
       const widget = field.control_widget || field.widget;
       if (widget === 'object') fields = field.fields || [];
       else if (widget === 'list') {
-        const hasIndex = /^\d+$/.test(parts[i + 1] || '');
-        if (!field.fields && !field.field && !field.types) {
-          return { path: resolved.join('.'), inputName: field.name, index: hasIndex ? Number(parts[i + 1]) : null };
-        }
-        if (hasIndex) resolved.push(parts[++i]);
+        if (/^\d+$/.test(parts[i + 1] || '')) resolved.push(parts[++i]);
         else resolved.push('0');
-        if (field.field) return { path: [...resolved, field.field.name].join('.') };
+        if (field.field) return [...resolved, field.field.name].join('.');
         fields = field.fields || [];
       }
     }
-    return { path: resolved.join('.') };
+    return resolved.join('.');
   };
   const list = value => Array.isArray(value) ? value : [];
   const text = value => value == null ? '' : String(value);
@@ -61,25 +57,17 @@
     const color = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(value || '') ? value : '#285c9b';
     return { '--topic-color': color, '--topic-soft': `color-mix(in srgb, ${color} 9%, white)`, '--topic-line': `color-mix(in srgb, ${color} 25%, white)` };
   };
-  const icon = type => h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true },
-    ...(type === 'github' ? ['M9 19c-4.3 1.3-4.3-2.5-6-3m12 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 19 4.77 5.07 5.07 0 0 0 18.91 1S17.73.65 15 2.48a13.38 13.38 0 0 0-6 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22'] : ['M15 3h6v6M10 14 21 3', 'M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5']).map(d => h('path', { d })));
+  const githubIcon = () => h('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true },
+    h('path', { d: 'M9 19c-4.3 1.3-4.3-2.5-6-3m12 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 19 4.77 5.07 5.07 0 0 0 18.91 1S17.73.65 15 2.48a13.38 13.38 0 0 0-6 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22' }));
   const link = (label, className, children) => h('a', { href: '#', className, title: label, 'aria-label': label }, children);
   const arrowLink = (label, className, back = false) => {
     const children = [node('span', 'link-label', label), h('span', { 'aria-hidden': true }, back ? '←' : '→')];
     return link(label, className, back ? children.reverse() : children);
   };
-  const resource = (type, url, labels, className) => url
-    ? link(labels.github_title, className, icon(type))
-    : h('span', { className: `${className || ''} resource-unavailable`, role: 'img', title: labels.no_github }, icon(type));
   const image = (path, alt, props, className, extra = {}) => path ? h('img', {
     src: String(window.SDSCMSMedia.resolveAsset(props.getAsset, path)), alt: alt || '', className, decoding: 'async', ...extra
   }) : null;
-  const portraitStyle = value => {
-    if (window.SDSCMSPortrait) return window.SDSCMSPortrait.style(value);
-    const bound = (value, low, high, fallback) => Number.isFinite(Number(value)) ? Math.max(low, Math.min(high, Number(value))) : fallback;
-    const x = bound(value?.position_x ?? value?.x ?? 50, 0, 100, 50), y = bound(value?.position_y ?? value?.y ?? 50, 0, 100, 50), zoom = bound(value?.zoom ?? 1, 1, 3, 1);
-    return { objectPosition: `${x}% ${y}%`, transform: `scale(${zoom})`, transformOrigin: `${x}% ${y}%` };
-  };
+  const portraitStyle = value => window.SDSCMSPortrait.style(value);
   const paragraphs = value => text(value).trim().split(/\n\s*\n/).filter(Boolean).map(part => node('p', null, part));
   const colorFor = (topic, colors) => {
     let color = '#285c9b';
@@ -92,15 +80,11 @@
     rules.forEach((rule, i) => { if (list(rule.topics).some(value => key(value) === key(topic))) index = i; });
     return index < 0 ? element : edit({ ...ctx, editable: ctx.name === 'topic_colors' }, `assignments.${index}.color`, element);
   };
-  const availableTopics = (values, ctx) => {
-    if (window.SDSCMSTopics) return window.SDSCMSTopics.resolve(values);
-    const existing = new Map(ctx.papers.flatMap(paper => list(paper.topics)).map(value => [key(value), value]));
-    return [...new Set(list(values).map(value => existing.get(key(value))).filter(Boolean))];
-  };
+  const availableTopics = values => window.SDSCMSTopics.resolve(values);
   const topics = (values, colors, ctx) => list(values).map(value => colorEdit(ctx, value, h('a', { href: '#', style: accent(colorFor(value, colors)), onClick: event => {
     if (!['publications', 'publication_filters'].includes(ctx.name) && !(ctx.name === 'site_settings' && ctx.state.previewPage === 'publications')) return;
     event.preventDefault();
-    const selected = availableTopics(ctx.state.topics || [], ctx);
+    const selected = availableTopics(ctx.state.topics || []);
     ctx.update({ topics: selected.includes(value) ? selected.filter(topic => topic !== value) : [...selected, value], page: 1 });
   } }, value)));
   const socialLabels = { linkedin: 'LinkedIn', github: 'GitHub', website: 'Website', google_scholar: 'Google Scholar' };
@@ -109,7 +93,7 @@
     if (type === 'linkedin') return svg(h('rect', { x: 3, y: 3, width: 18, height: 18, rx: 2 }), h('path', { d: 'M7 10v7m0-10v.01M11 17v-7m0 3a3 3 0 0 1 6 0v4' }));
     if (type === 'website') return svg(h('circle', { cx: 12, cy: 12, r: 9 }), h('ellipse', { cx: 12, cy: 12, rx: 4, ry: 9 }), h('path', { d: 'M3 12h18' }));
     if (type === 'google_scholar') return svg(h('path', { d: 'm2 10 10-5 10 5-10 5-10-5zm4 2v5c3 2.5 9 2.5 12 0v-5m4-2v6' }));
-    return icon('github');
+    return githubIcon();
   };
   const personLinks = (person, ctx) => {
     const socials = Object.entries(socialLabels).filter(([type]) => person[type]);
@@ -146,20 +130,20 @@
       (p.biography || ctx.editable) && node('div', 'person-body', p.biography ? field('biography', 'p', 'person-biography', p.biography) : field('biography', 'p', 'person-biography-placeholder', 'Add a self-introduction in the form.')),
       personLinks(p, ctx));
   };
-  const paper = (p, context, detail = false) => {
+  const paper = (p, context) => {
     const ctx = recordContext(context, p);
     const field = (path, tag, cls, ...children) => edit(ctx, path, node(tag, cls, ...children));
     return node('article', 'publication-card', field('year', 'div', 'publication-year', p.year), node('div', 'publication-card-body',
-      field('title', detail ? 'h1' : 'h2', null, p.url_paper ? h('a', { href: p.url_paper }, p.title) : p.title),
+      field('title', 'h2', null, p.url_paper ? link(p.title, null, p.title) : p.title),
       node('div', 'publication-citation', node('p', 'publication-authors', ...list(p.authors).map((author, index) => field(`authors.${index}`, 'span', null, author, index < p.authors.length - 1 ? ', ' : ''))),
         field('venue', 'p', 'publication-venue', p.venue, p.venue_details && field('venue_details', 'span', null, ` · ${p.venue_details}`))),
       node('div', 'publication-footer', field('publication_type', 'span', 'publication-kind', p.publication_type === 'conference' ? ctx.labels.publications.conference_label : ctx.labels.publications.journal_label),
-        field('topics', 'div', 'publication-topics', ...topics(p.topics, ctx.colors, ctx)), p.url_code && node('div', 'publication-resources', edit(ctx, 'url_code', resource('github', p.url_code, ctx.labels.links))))));
+        field('topics', 'div', 'publication-topics', ...topics(p.topics, ctx.colors, ctx)), p.url_code && node('div', 'publication-resources', edit(ctx, 'url_code', link(ctx.labels.links.github_title, null, githubIcon()))))));
   };
   const about = (data, ctx) => node('div', null,
     node('section', 'research-section shell about-research', node('div', 'section-heading', labelEdit(ctx, 'about.research_heading', node('h1', null, ctx.labels.about.research_heading))), node('div', 'research-list', ...list(data.research).map((area, index) =>
       h('article', { className: 'research-item', style: accent(area.color) }, edit(ctx, `research.${index}.title`, node('h2', 'research-heading', link(area.title, null, area.title))), edit(ctx, `research.${index}.image`, node('div', 'research-visual', image(area.image, area.image_alt, ctx.props))),
-        node('div', 'research-copy', edit(ctx, `research.${index}.description`, node('div', 'research-description', ...paragraphs(area.description))), availableTopics(area.publication_topics, ctx).length > 0 && edit(ctx, `research.${index}.publication_topics`, labelEdit(ctx, 'about.related_publications', arrowLink(ctx.labels.about.related_publications, 'research-publications')))))))));
+        node('div', 'research-copy', edit(ctx, `research.${index}.description`, node('div', 'research-description', ...paragraphs(area.description))), availableTopics(area.publication_topics).length > 0 && edit(ctx, `research.${index}.publication_topics`, labelEdit(ctx, 'about.related_publications', arrowLink(ctx.labels.about.related_publications, 'research-publications')))))))));
   const publishedNews = () => list(seed.news).filter(post => !post.draft).slice().sort((a, b) => text(b.date).localeCompare(text(a.date)));
   const newsDate = value => {
     const date = new Date(value);
@@ -217,7 +201,7 @@
   const people = (title, records, ctx) => {
     const labels = ctx.labels.people;
     const selected = ctx.state.tab || (ctx.editing?.group === 'intern' ? 'interns' : ctx.editing?.group === 'alumni' ? 'alumni' : 'members');
-    const groups = { members: [['phd', labels.phd_heading, 'blue'], ['masters', labels.masters_heading, 'teal']], interns: [['intern', labels.interns_tab, 'purple']], alumni: [['alumni', labels.alumni_tab, 'neutral']] };
+    const groups = { members: [['phd', labels.phd_heading], ['masters', labels.masters_heading, 'teal']], interns: [['intern', labels.interns_tab]], alumni: [['alumni', labels.alumni_tab]] };
     return h('section', { className: 'shell people-page', 'aria-labelledby': 'people-title' },
       h('h1', { id: 'people-title', className: 'sr-only' }, title),
       h('div', { className: 'people-tabs', role: 'tablist', 'aria-label': 'Student categories' }, ...Object.keys(groups).map(tab => labelEdit(ctx, `people.${tab}_tab`, h('button', {
@@ -230,24 +214,27 @@
           : group === 'intern' ? internshipKey(b.internship?.start_date).localeCompare(internshipKey(a.internship?.start_date)) || internshipKey(b.internship?.end_date, true).localeCompare(internshipKey(a.internship?.end_date, true)) || text(a.name).localeCompare(text(b.name), 'en', { sensitivity: 'base' })
           : window.SDSCMSPeople.compareMembers(a, b));
         const isMember = group === 'phd' || group === 'masters';
-        return node('section', `people-section people-accent-${color}${isMember ? ' people-member-section' : ''}`, isMember && node('div', 'people-section-heading', edit({ ...ctx, editable: ctx.collection === 'people' && ctx.editing?.group === group }, 'group', node('h2', null, heading))), members.length
+        const className = ['people-section', isMember && 'people-member-section', color && `people-accent-${color}`].filter(Boolean).join(' ');
+        return node('section', className, isMember && node('div', 'people-section-heading', edit({ ...ctx, editable: ctx.collection === 'people' && ctx.editing?.group === group }, 'group', node('h2', null, heading))), members.length
           ? h('div', isMember ? { className: 'people-grid' } : { className: `people-compact-list people-scroll-list ${group}-list`, tabIndex: 0, role: 'region', 'aria-label': heading }, ...members.map(p => person(p, ctx))) : node('p', 'people-empty', labels.empty));
       })));
   };
-  const resources = (title, records, type, ctx) => node('section', 'shell resources-page', pageEdit(ctx, 'title', node('h1', null, title)), node('div', 'resource-list',
+  const software = (title, records, ctx) => node('section', 'shell resources-page', pageEdit(ctx, 'title', node('h1', null, title)), node('div', 'resource-list',
     ...records.slice().sort((a, b) => (a.order || 0) - (b.order || 0)).map(item => {
       const record = recordContext(ctx, item);
       const field = (path, tag, cls, ...children) => edit(record, path, node(tag, cls, ...children));
-      return node('article', `resource-item ${type === 'courses' ? 'course-item' : 'software-item'}`,
-        node('div', 'resource-information', type === 'courses' && item.code && field('code', 'p', 'course-code', item.code), field('title', 'h2', null, item.title),
-          type === 'courses' ? list(item.terms).length > 0 && node('p', 'course-terms', labelEdit(ctx, 'resources.offered', node('span', null, ctx.labels.resources.offered)), ...item.terms.map((term, i) => field(`terms.${i}`, 'span', null, term, i < item.terms.length - 1 ? ' · ' : ''))) : item.description && field('description', 'p', 'resource-description', item.description)),
-        type === 'software' && node('div', 'resource-links software-links', edit(record, 'github', resource('github', item.github, ctx.labels.links, 'software-github'))));
+      const github = item.github ? link(ctx.labels.links.github_title, 'software-github', githubIcon())
+        : h('span', { className: 'software-github resource-unavailable', role: 'img', title: ctx.labels.links.no_github }, githubIcon());
+      return node('article', 'resource-item software-item',
+        node('div', 'resource-information', field('title', 'h2', null, item.title),
+          item.description && field('description', 'p', 'resource-description', item.description)),
+        node('div', 'resource-links software-links', edit(record, 'github', github)));
     }), records.length === 0 && node('p', 'resources-empty', ctx.labels.resources.empty)));
   const publications = (title, ctx) => {
     const labels = ctx.labels.publications;
     const state = ctx.state;
-    const selectedTopics = availableTopics(state.topics || [], ctx);
-    const displayedTopics = availableTopics(ctx.filters.topics, ctx);
+    const selectedTopics = availableTopics(state.topics || []);
+    const displayedTopics = availableTopics(ctx.filters.topics);
     const selectedDetails = selectedTopics.filter(topic => !displayedTopics.includes(topic)).sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base', numeric: true }));
     const topicChoices = [...displayedTopics, ...selectedDetails];
     const button = (filter, value, label) => {
@@ -297,25 +284,9 @@
       event.stopPropagation();
       const path = target.getAttribute('data-cms-field');
       this.setState({ selectedField: path });
-      const destination = fieldTarget(this.props, path);
       this.cancelFieldFocus?.();
       this.cancelFieldFocus = window.SDSCMSFocus.begin(this.props.document);
-      this.props.onFieldClick(destination.path);
-      // A plain list is one comma-separated input, without child control refs.
-      if (destination.inputName) {
-        const input = [...window.document.querySelectorAll('input[id]')].find(element => element.id.startsWith(`${destination.inputName}-field-`));
-        if (input) {
-          input.focus({ preventScroll: true });
-          if (destination.index !== null) {
-            const values = input.value.split(',');
-            const item = values[destination.index];
-            if (item !== undefined) {
-              const start = values.slice(0, destination.index).reduce((total, value) => total + value.length + 1, 0) + (item.length - item.trimStart().length);
-              input.setSelectionRange(start, start + item.trim().length);
-            }
-          }
-        }
-      }
+      this.props.onFieldClick(fieldTarget(this.props, path));
     },
     render() {
       const data = this.props.entry.get('data').toJS();
@@ -327,8 +298,7 @@
       const ctx = { name, data, collection, editable: ['home', 'about', 'professors', 'news'].includes(name), props: this.props, labels, colors: name === 'topic_colors' ? data : seed.colors, filters: name === 'publication_filters' ? data : seed.filters, papers: seed.papers, state: this.state, update: patch => this.setState(patch) };
       let content, page = name;
       if (name === 'site_settings') page = this.state.previewPage;
-      ctx.page = page;
-      if (page === 'software' || page === 'courses') labels.resources = collection === 'pages' ? data.labels : seed.pages[page].labels;
+      if (page === 'software') labels.resources = collection === 'pages' ? data.labels : seed.pages.software.labels;
       const pageData = name === 'site_settings' ? seed.pages[page] : data;
       if (page === 'home') content = home(pageData, ctx);
       else if (page === 'about') content = about(pageData, ctx);
@@ -343,15 +313,14 @@
         const records = collection === 'people' ? replaceRecord(roster, this.props.entry, data) : roster;
         ctx.editing = collection === 'people' ? data : null;
         content = people(collection === 'pages' || name === 'site_settings' ? pageData.title : seed.pages.people.title, records, ctx);
-      } else if (page === 'software' || page === 'courses') content = resources(collection === 'pages' || name === 'site_settings' ? pageData.title : seed.pages[page].title, collection === 'pages' || name === 'site_settings' ? seed[page] : replaceRecord(seed[page], this.props.entry, data), page, ctx);
+      } else if (page === 'software') content = software(collection === 'software' ? seed.pages.software.title : pageData.title, collection === 'software' ? replaceRecord(seed.software, this.props.entry, data) : seed.software, ctx);
       else if (page === 'not_found') content = node('section', 'shell pending-page',
         pageEdit(ctx, 'title', node('h1', null, pageData.title)), pageEdit(ctx, 'description', node('p', null, pageData.description)),
         pageEdit(ctx, 'back', arrowLink(pageData.back, 'pending-home')));
-      else if (name === 'publications' || name === 'publication_filters' || name === 'topic_colors') { content = publications(data.title || seed.pages.publications.title, ctx); page = 'publications'; }
-      else if (page === 'publications') content = publications(pageData.title, ctx);
-      else { content = home(seed.home, ctx); page = 'home'; }
+      else if (page === 'publications' || name === 'publication_filters' || name === 'topic_colors') { content = publications(pageData.title || seed.pages.publications.title, ctx); page = 'publications'; }
+      else { content = home(seed.pages.home, ctx); page = 'home'; }
       const menu = list(common.navigation).slice().sort((a, b) => (a.weight || 0) - (b.weight || 0));
-      const active = { home: '', about: 'about/', news: 'news/', news_page: 'news/', professors: 'professors/', papers: 'publications/', publications: 'publications/', people: 'people/', software: 'software/', courses: 'courses/' }[page];
+      const active = { home: '', about: 'about/', news: 'news/', news_page: 'news/', professors: 'professors/', papers: 'publications/', publications: 'publications/', people: 'people/', software: 'software/' }[page];
       const footerContext = { ...ctx, editable: name === 'site_settings' };
       return h('div', { className: 'cms-site-preview', onClick: this.selectField, onKeyDown: event => {
         if ((event.key === 'Enter' || event.key === ' ') && !event.target.matches('input, textarea, select, button')) this.selectField(event);

@@ -51,7 +51,6 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--blue); out
 .publication-resources { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-left: auto; font-size: 12px; font-weight: 600; }
 .publication-resources a { display: inline-flex; align-items: center; justify-content: center; min-width: 36px; min-height: 36px; padding: 6px; border-radius: 4px; color: var(--accent-blue); background: var(--accent-blue-soft); }
 .publication-resources a:hover { color: var(--accent-blue); background: var(--accent-blue-line); }
-.publication-resources .resource-unavailable { display: inline-flex; align-items: center; justify-content: center; min-width: 36px; min-height: 36px; padding: 6px; border-radius: 4px; color: #a1aab4; background: #f5f6f8; }
 .publication-resources svg { width: 19px; height: 19px; }
 .publication-list .publication-card { padding: 12px 0; gap: 18px; }
 .publication-list .publication-card h2 { font-size: 18px; line-height: 1.4; }
@@ -95,7 +94,6 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--blue); out
   .publication-detail .publication-card h1 { font-size: clamp(23px, 5vw, 27px); line-height: 1.35; }
   .publication-topics a { display: inline-flex; align-items: center; min-height: 30px; max-width: 100%; padding: 3px 7px; overflow-wrap: anywhere; }
   .publication-resources a { min-width: 44px; min-height: 44px; }
-  .publication-resources .resource-unavailable { min-width: 44px; min-height: 44px; }
 }
 @media (max-width: 420px) {
   .publication-card { gap: 10px; }

@@ -14,8 +14,6 @@
   {{/* Publish originals so CMS image URLs work alongside responsive site images. */}}
   {{ range resources.Match "media/**" }}{{ $url := .RelPermalink }}{{ end }}
   <script>window.CMS_MANUAL_INIT = true;</script>
-  {{ $preferencesScript := resources.Get "js/cms-preferences.js" | minify | fingerprint }}
-  <script src="{{ $preferencesScript.RelPermalink }}" integrity="{{ $preferencesScript.Data.Integrity }}"></script>
   {{ $cmsScript := resources.Get "vendor/decap-cms.js" | fingerprint }}
   <script src="{{ $cmsScript.RelPermalink }}" integrity="{{ $cmsScript.Data.Integrity }}"></script>
   {{ $colorsScript := resources.Get "js/cms-colors.js" | minify | fingerprint }}
@@ -27,8 +25,6 @@
   <script src="{{ $directVendor.RelPermalink }}" integrity="{{ $directVendor.Data.Integrity }}"></script>
   {{ $directWidget := resources.Get "js/cms-news-direct.js" | minify | fingerprint }}
   <script src="{{ $directWidget.RelPermalink }}" integrity="{{ $directWidget.Data.Integrity }}"></script>
-  {{ $newsEditor := resources.Get "js/cms-news-editor.js" | minify | fingerprint }}
-  <script src="{{ $newsEditor.RelPermalink }}" integrity="{{ $newsEditor.Data.Integrity }}"></script>
   {{ $portraitScript := resources.Get "js/cms-portrait.js" | minify | fingerprint }}
   <script src="{{ $portraitScript.RelPermalink }}" integrity="{{ $portraitScript.Data.Integrity }}"></script>
   {{ $catalog := partialCached "publications/topic-catalog.html" site }}

@@ -1,6 +1,6 @@
 {{ partial "site/start.html" . }}
 {{ $labels := .Params.labels }}
-{{ $groups := slice (dict "id" "phd" "label" $labels.phd_heading "accent" "blue") (dict "id" "masters" "label" $labels.masters_heading "accent" "teal") (dict "id" "intern" "label" $labels.interns_tab "accent" "purple") (dict "id" "alumni" "label" $labels.alumni_tab "accent" "neutral") }}
+{{ $groups := slice (dict "id" "phd" "label" $labels.phd_heading) (dict "id" "masters" "label" $labels.masters_heading "accent" "teal") (dict "id" "intern" "label" $labels.interns_tab) (dict "id" "alumni" "label" $labels.alumni_tab) }}
 {{ $members := slice }}
 {{ range $slug, $person := site.Data.people }}
   {{ if not (in (slice "phd" "masters" "intern" "alumni") .group) }}{{ errorf "Unknown People group %q for %q" .group .name }}{{ end }}
@@ -17,7 +17,7 @@
   {{ range .groups }}
   {{ $items := partial "people/sort.html" (dict "items" (where $members "group" .id) "group" .id) }}
   {{ $compact := in (slice "alumni" "intern") .id }}
-  <section class="people-section people-accent-{{ .accent }}{{ if not $compact }} people-member-section{{ end }}" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
+  <section class="people-section{{ if not $compact }} people-member-section{{ end }}{{ with .accent }} people-accent-{{ . }}{{ end }}" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
     <div class="people-section-heading{{ if $compact }} people-compact-heading{{ end }}"><h2 id="{{ .id }}-title">{{ .label }}</h2></div>
     {{ if $items }}
       <div class="{{ if $compact }}people-compact-list people-scroll-list {{ .id }}-list{{ else }}people-grid{{ end }}"{{ if $compact }} tabindex="0" role="region" aria-labelledby="{{ .id }}-title"{{ end }}>

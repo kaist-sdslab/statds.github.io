@@ -18,8 +18,8 @@
       </div>
       {{ if eq $.Params.resource_type "software" }}
         <div class="resource-links software-links">
-          {{ if .github }}<a class="software-github" href="{{ .github | relURL }}" aria-label="{{ printf "GitHub repository: %s" .title }}" title="{{ site.Data.site_settings.links.github_title }}">{{ partial "publications/resource-icon.html" "github" }}</a>
-          {{ else }}<span class="software-github resource-unavailable" role="img" aria-label="{{ site.Data.site_settings.links.no_github }}" title="{{ site.Data.site_settings.links.no_github }}">{{ partial "publications/resource-icon.html" "github" }}</span>{{ end }}
+          {{ if .github }}<a class="software-github" href="{{ .github | relURL }}" aria-label="{{ printf "GitHub repository: %s" .title }}" title="{{ site.Data.site_settings.links.github_title }}">{{ partial "github-icon.html" }}</a>
+          {{ else }}<span class="software-github resource-unavailable" role="img" aria-label="{{ site.Data.site_settings.links.no_github }}" title="{{ site.Data.site_settings.links.no_github }}">{{ partial "github-icon.html" }}</span>{{ end }}
         </div>
       {{ end }}
     </article>

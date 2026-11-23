@@ -2,12 +2,13 @@
   {{ $contact := site.Data.site_settings.contact }}
   <footer><div class="shell footer-inner"><div><p class="footer-title">{{ $contact.title }}</p><address>{{ $contact.address }}</address></div><span class="copyright">© {{ now.Year }} {{ site.Data.site_settings.site.copyright }}</span></div></footer>
   {{ $scripts := slice }}
-  {{ if .IsHome }}{{ $scripts = $scripts | append (resources.Get "js/home.js") (resources.Get "js/slideshow.js") }}{{ end }}
-  {{ if eq .Layout "publications" }}{{ $scripts = $scripts | append (resources.Get "js/publications.js") }}{{ end }}
-  {{ if eq .Layout "people" }}{{ $scripts = $scripts | append (resources.Get "js/people.js") }}{{ end }}
-  {{ if eq .Layout "news" }}{{ $scripts = $scripts | append (resources.Get "js/news.js") }}{{ end }}
+  {{ $key := "base" }}
+  {{ $page := cond .IsHome "home" .Layout }}
+  {{ with index (dict "home" (slice "home" "slideshow") "publications" (slice "publications") "people" (slice "people") "news" (slice "news")) $page }}
+    {{ $key = $page }}
+    {{ range . }}{{ $scripts = $scripts | append (resources.Get (printf "js/%s.js" .)) }}{{ end }}
+  {{ end }}
   {{ $scripts = $scripts | append (resources.Get "js/page-transitions.js") }}
-  {{ $key := cond .IsHome "home" (.Layout | default .Kind) }}
   {{ $script := $scripts | resources.Concat (printf "js/site-%s.js" $key) | minify | fingerprint }}
   <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}" defer></script>
 </body>

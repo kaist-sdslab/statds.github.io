@@ -2,10 +2,10 @@ name = "sds-cms-auth"
 main = "worker.mjs"
 compatibility_date = "2026-10-31"
 workers_dev = true
+preview_urls = false
 
 [vars]
 CMS_ORIGIN = "https://kaist-sdslab.github.io"
 GITHUB_REPO = "kaist-sdslab/statds.github.io"
-GITHUB_SCOPE = "public_repo"
 
 # Add GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET as Cloudflare Worker secrets.

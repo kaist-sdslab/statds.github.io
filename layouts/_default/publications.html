@@ -2,13 +2,12 @@
 {{ $records := slice }}{{ range .RegularPages.ByTitle }}{{ $records = $records | append (partial "publications/record.html" .) }}{{ end }}
 {{ $records = sort $records "date" "desc" }}
 {{ $catalog := partialCached "publications/topic-catalog.html" site }}
-{{ $topicIDs := apply $catalog.topics "index" "." "id" }}
 {{ $visibleTopics := partial "publications/resolve-topics.html" (site.Data.publication_filters.topics | default slice) }}
 {{ $visibleYears := slice }}{{ range site.Data.publication_filters.years }}{{ $year := int . }}
   {{ if or (lt $year 1900) (gt $year 2100) }}{{ errorf "Invalid publication filter year %v" . }}{{ end }}
   {{ $visibleYears = $visibleYears | append $year }}
 {{ end }}
-<section class="shell publications-page" aria-labelledby="publications-title" data-publications data-topic-ids="{{ $topicIDs | jsonify }}" data-topic-catalog="{{ $catalog.topics | jsonify }}" data-topic-aliases="{{ (site.Data.publication_topic_aliases | default dict) | jsonify }}" data-labels="{{ (site.GetPage "publications").Params.labels | jsonify }}">
+<section class="shell publications-page" aria-labelledby="publications-title" data-publications data-topic-catalog="{{ $catalog.topics | jsonify }}" data-topic-aliases="{{ (site.Data.publication_topic_aliases | default dict) | jsonify }}" data-labels="{{ (site.GetPage "publications").Params.labels | jsonify }}">
   <h1 id="publications-title" class="publications-title">{{ .Title }}</h1>
   <div class="publication-controls" data-controls hidden>
     <div class="publication-search" role="search"><label for="publication-query">{{ (site.GetPage "publications").Params.labels.search }}</label><div class="publication-search-field"><input id="publication-query" type="search" placeholder="{{ (site.GetPage "publications").Params.labels.search_placeholder }}" autocomplete="off"><button type="button" class="reset-filters" data-reset><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10a9 9 0 1 1 2.6 8.4"/><path d="M3 4v6h6"/></svg><span>{{ (site.GetPage "publications").Params.labels.reset }}</span></button></div></div>

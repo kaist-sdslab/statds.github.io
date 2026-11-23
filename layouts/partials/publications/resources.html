@@ -1,5 +1,5 @@
 {{ with .Params.url_code }}
 <div class="publication-resources" aria-label="Publication resources">
-  <a href="{{ . | relURL }}" aria-label="{{ site.Data.site_settings.links.github_title }}" title="{{ site.Data.site_settings.links.github_title }}">{{ partial "publications/resource-icon.html" "github" }}</a>
+  <a href="{{ . | relURL }}" aria-label="{{ site.Data.site_settings.links.github_title }}" title="{{ site.Data.site_settings.links.github_title }}">{{ partial "github-icon.html" }}</a>
 </div>
 {{ end }}
