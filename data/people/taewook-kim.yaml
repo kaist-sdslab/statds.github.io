@@ -1,6 +1,10 @@
 name: Taewook Kim
+biography: I joined the SDS Lab as a Master's student in February 2025. My
+  research focuses on synthetic data generation and evaluating the utility and
+  privacy of synthetic data.
 group: masters
 order: 20
+member_order: 000000000000000d
 affiliation: Department of Industrial and Systems Engineering
 photo: media/people/taewook-kim.jpg
 photo_frame:
@@ -9,4 +13,5 @@ photo_frame:
   zoom: 1
 research_interests:
   - Synthetic Data
+  - Data Privacy
 email: twkim@kaist.ac.kr
