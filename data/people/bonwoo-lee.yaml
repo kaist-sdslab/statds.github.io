@@ -1,4 +1,8 @@
 name: Bonwoo Lee
+biography: I joined the SDS Lab as a Ph.D. student in 2024. I am interested in
+  (1) trade-off between utility and privacy under privacy constraints, and (2)
+  developing privacy protecting statistical methods and analyzing their
+  optimality.
 group: phd
 order: 50
 member_note: Co-advising
@@ -8,3 +12,6 @@ photo_frame:
   position_x: 50
   position_y: 100
   zoom: 1
+research_interests:
+  - Data Privacy
+email: righthim@kaist.ac.kr
