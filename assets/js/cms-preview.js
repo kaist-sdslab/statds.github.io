@@ -225,8 +225,9 @@
           ? sortDate(b.alumni?.graduation_year, 0) - sortDate(a.alumni?.graduation_year, 0) || text(a.name).localeCompare(text(b.name), 'en', { sensitivity: 'base' })
           : group === 'intern' ? internshipKey(b.internship?.start_date).localeCompare(internshipKey(a.internship?.start_date)) || internshipKey(b.internship?.end_date, true).localeCompare(internshipKey(a.internship?.end_date, true)) || text(a.name).localeCompare(text(b.name), 'en', { sensitivity: 'base' })
           : window.SDSCMSPeople.compareMembers(a, b));
-        return node('section', `people-section people-accent-${color}`, node('div', 'people-section-heading', edit({ ...ctx, editable: ctx.collection === 'people' && ctx.editing?.group === group }, 'group', node('h2', null, heading))), members.length
-          ? h('div', group === 'phd' || group === 'masters' ? { className: 'people-grid' } : { className: `people-compact-list people-scroll-list ${group}-list`, tabIndex: 0, role: 'region', 'aria-label': heading }, ...members.map(p => person(p, ctx))) : node('p', 'people-empty', labels.empty));
+        const isMember = group === 'phd' || group === 'masters';
+        return node('section', `people-section people-accent-${color}${isMember ? ' people-member-section' : ''}`, node('div', 'people-section-heading', edit({ ...ctx, editable: ctx.collection === 'people' && ctx.editing?.group === group }, 'group', node('h2', null, heading))), members.length
+          ? h('div', isMember ? { className: 'people-grid' } : { className: `people-compact-list people-scroll-list ${group}-list`, tabIndex: 0, role: 'region', 'aria-label': heading }, ...members.map(p => person(p, ctx))) : node('p', 'people-empty', labels.empty));
       }));
   };
   const resources = (title, records, type, ctx) => node('section', 'shell resources-page', pageEdit(ctx, 'title', node('h1', null, title)), node('div', 'resource-list',

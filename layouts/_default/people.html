@@ -17,10 +17,11 @@
   <div class="people-panel" id="people-panel-{{ .id }}" data-people-panel="{{ .id }}">
   {{ range .groups }}
   {{ $items := partial "people/sort.html" (dict "items" (where $members "group" .id) "group" .id) }}
-  <section class="people-section people-accent-{{ .accent }}" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
+  {{ $compact := in (slice "alumni" "intern") .id }}
+  <section class="people-section people-accent-{{ .accent }}{{ if not $compact }} people-member-section{{ end }}" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
     <div class="people-section-heading"><h2 id="{{ .id }}-title">{{ .label }}</h2></div>
     {{ if $items }}
-      <div class="{{ if in (slice "alumni" "intern") .id }}people-compact-list people-scroll-list {{ .id }}-list{{ else }}people-grid{{ end }}"{{ if in (slice "alumni" "intern") .id }} tabindex="0" role="region" aria-labelledby="{{ .id }}-title"{{ end }}>
+      <div class="{{ if $compact }}people-compact-list people-scroll-list {{ .id }}-list{{ else }}people-grid{{ end }}"{{ if $compact }} tabindex="0" role="region" aria-labelledby="{{ .id }}-title"{{ end }}>
       {{ range $items }}
         {{ if eq .group "alumni" }}{{ partial "people/alumnus.html" . }}{{ else if eq .group "intern" }}{{ partial "people/intern.html" . }}{{ else }}{{ partial "people/member.html" . }}{{ end }}
       {{ end }}
