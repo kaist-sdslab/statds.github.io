@@ -1,17 +1,17 @@
-{{ $record := .record }}{{ $page := $record.page }}{{ $p := $page.Params }}
+{{ $record := .record }}{{ $page := $record.page }}{{ $p := $page.Params }}{{ $detail := .detail }}
 {{ $kinds := dict "journal" (site.GetPage "publications").Params.labels.journal_label "conference" (site.GetPage "publications").Params.labels.conference_label }}
 
-<article class="publication-card" data-paper data-kind="{{ $p.publication_type }}" data-year="{{ $p.year }}" data-date="{{ $record.date }}" data-title="{{ $page.Title }}" data-topics="{{ (apply $record.topics "index" "." "id") | jsonify }}" data-search="{{ printf "%s %s %s %s" $page.Title (delimit $p.authors " ") $p.venue (delimit (apply $record.topics "index" "." "label") " ") }}">
+<article class="publication-card"{{ if not $detail }} data-paper data-kind="{{ $p.publication_type }}" data-year="{{ $p.year }}" data-date="{{ $record.date }}" data-title="{{ $page.Title }}" data-topics="{{ (apply $record.topics "index" "." "id") | jsonify }}" data-search="{{ printf "%s %s %s %s" $page.Title (delimit $p.authors " ") $p.venue (delimit (apply $record.topics "index" "." "label") " ") }}"{{ end }}>
   <div class="publication-year">{{ $p.year }}</div>
   <div class="publication-card-body">
 
-    {{ if .detail }}<h1>{{ with $p.url_paper }}<a href="{{ . | relURL }}">{{ $page.Title }}</a>{{ else }}{{ $page.Title }}{{ end }}</h1>{{ else }}<h2>{{ with $p.url_paper }}<a href="{{ . | relURL }}">{{ $page.Title }}</a>{{ else }}{{ $page.Title }}{{ end }}</h2>{{ end }}
+    {{ if $detail }}<h1>{{ with $p.url_paper }}<a href="{{ . | relURL }}">{{ $page.Title }}</a>{{ else }}{{ $page.Title }}{{ end }}</h1>{{ else }}<h2>{{ with $p.url_paper }}<a href="{{ . | relURL }}">{{ $page.Title }}</a>{{ else }}{{ $page.Title }}{{ end }}</h2>{{ end }}
     <div class="publication-citation">
       <p class="publication-authors">{{ delimit $p.authors ", " }}</p>
       <p class="publication-venue">{{ $p.venue }}{{ with $p.venue_details }}<span> · {{ . }}</span>{{ end }}</p>
     </div>
     <div class="publication-footer"><span class="publication-kind">{{ index $kinds $p.publication_type }}</span>
-    <div class="publication-topics" aria-label="Research topics">{{ range $record.topics }}<a href="{{ "publications/" | relURL }}?topic={{ .id | urlquery }}" data-topic="{{ .id }}" style="{{ partial "color-style.html" .color }}">{{ .label }}</a>{{ end }}</div>
+    <div class="publication-topics" aria-label="Research topics">{{ range $record.topics }}<a href="{{ "publications/" | relURL }}?topic={{ .id | urlquery }}"{{ if not $detail }} data-topic="{{ .id }}"{{ end }} style="{{ partial "color-style.html" .color }}">{{ .label }}</a>{{ end }}</div>
     {{ partial "publications/resources.html" $page }}
     </div>
 

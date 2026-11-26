@@ -1,7 +1,7 @@
 title: Statistical Data Science Lab
-baseURL: https://kaist-sdslab.github.io/statds.github.io/
+baseURL: https://statds.kaist.ac.kr/
 defaultContentLanguage: en
-languageCode: en-us
+locale: en-US
 enableRobotsTXT: true
 disableKinds: [taxonomy, term, RSS]
 outputs:
@@ -9,8 +9,11 @@ outputs:
   section: [HTML]
 imaging:
   resampleFilter: lanczos
-  quality: 80
   anchor: smart
+  jpeg:
+    quality: 80
+  webp:
+    quality: 80
 caches:
   images:
     dir: ':cacheDir/images'

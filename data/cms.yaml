@@ -111,7 +111,7 @@ collections:
         - ^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$
         - 'Enter a HEX color such as #285c9b.'
         default: '#285c9b'
-        hint: Color of this research title and related-publications link.
+        hint: Applies to this About section. Publication and student tag colors are managed under Site Settings → Topic Colors.
       - label: Related publication topics
         name: publication_topics
         widget: publication-tags
@@ -1035,7 +1035,7 @@ collections:
       - label: Topics
         name: topics
         widget: publication-tags
-        hint: Choose saved publication tags to use this color. Unassigned tags use blue.
+        hint: Publication tags and matching student interests use this color. If a tag appears in several assignments, the last one applies.
       - label: Color
         name: color
         widget: color

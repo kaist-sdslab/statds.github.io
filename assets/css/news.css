@@ -1,7 +1,6 @@
 [hidden] { display: none !important; }
 .text-link { color: var(--accent-blue); font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 12px; }
 .home-news { padding-top: 16px; padding-bottom: 56px; }
-.home-news .section-heading h2 { font-size: 30px; }
 .home-hero { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 28px; margin-bottom: 28px; }
 .lab-introduction { display: flex; flex-direction: column; gap: 16px; align-self: stretch; grid-column: 2; grid-row: 1; min-width: 0; padding: 12px 0 24px; }
 .lab-introduction h1 { font-family: var(--heading); font-size: clamp(24px, 2vw, 28px); font-weight: 600; line-height: 1.35; letter-spacing: -.02em; text-wrap: initial; }
@@ -25,7 +24,7 @@
 .home-news-item-title { font-size: 16px; font-weight: 500; line-height: 1.6; }
 .home-news-arrow { grid-column: 4; font-size: 18px; color: var(--accent-blue); }
 .news-meta, .news-article time { color: var(--muted); font-size: 13px; }
-.slideshow-controls { position: absolute; z-index: 2; left: 24px; right: auto; bottom: 18px; display: flex; align-items: center; justify-content: end; gap: 6px; padding: 3px 6px; border-radius: 4px; background: rgba(255,255,255,.92); max-width: calc(100% - 48px); flex-wrap: wrap; }
+.slideshow-controls { position: absolute; z-index: 2; left: 24px; bottom: 18px; display: flex; align-items: center; justify-content: end; gap: 6px; padding: 3px 6px; border-radius: 4px; background: rgba(255,255,255,.92); max-width: calc(100% - 48px); flex-wrap: wrap; }
 .slideshow-controls button, .news-pagination button { border: 1px solid var(--line); border-radius: 5px; background: white; color: var(--ink); min-width: 40px; min-height: 40px; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; }
 .slideshow-controls button:hover, .news-pagination button:hover:not(:disabled) { background: #edf4fc; border-color: #b9cde1; }
 .slide-dots { display: flex; flex-wrap: wrap; gap: 2px; }
@@ -72,8 +71,7 @@
   .home-hero { grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 24px; margin-bottom: 24px; }
   .home-hero-gallery { grid-column: 1; grid-row: 1; height: clamp(210px, 56vw, 330px); }
   .lab-introduction { grid-column: 1; grid-row: 2; padding: 0 0 20px; }
-  .slideshow-controls { left: 12px; right: auto; top: auto; bottom: 12px; max-width: calc(100% - 24px); padding: 0 4px; }
-  .slide-dots { display: none; }
+  .slideshow-controls { left: 12px; bottom: 12px; max-width: calc(100% - 24px); padding: 0 4px; }
   .home-gallery-empty { justify-content: flex-start; align-items: center; padding: 20px; gap: 8px; }
   .home-gallery-mark { font-size: 44px; }
   .home-gallery-mark > span { margin-top: 6px; }

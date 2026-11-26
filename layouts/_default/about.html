@@ -3,14 +3,22 @@
       <div class="section-heading"><h1 id="research-title">{{ .Params.labels.research_heading }}</h1></div>
       <div class="research-list">{{ range $index, $area := .Params.research }}
         {{ $publicationURL := "" }}{{ with .publication_topics }}{{ $publicationURL = partial "publications/topics-url.html" . }}{{ end }}
+        {{ $image := partial "media-resource.html" (.image | default "") }}
         <article class="research-item" style="{{ partial "color-style.html" .color }}" aria-labelledby="research-{{ $index }}">
           <h2 class="research-heading" id="research-{{ $index }}">{{ if $publicationURL }}<a href="{{ $publicationURL }}">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}</h2>
+          {{ if and $image (eq $image.ResourceType "image") }}
           <div class="research-visual">
-            {{ $image := partial "media-resource.html" .image }}
+            {{ if in (slice "bmp" "gif" "jpeg" "png" "tiff" "webp") $image.MediaType.SubType }}
             {{ $large := $image.Fit "1200x1200 webp" }}
             {{ $small := $image.Fit "600x600 webp" }}
             <img src="{{ $large.RelPermalink }}" srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ $large.RelPermalink }} {{ $large.Width }}w" sizes="(max-width: 480px) calc(100vw - 60px), (max-width: 760px) calc(100vw - 72px), (max-width: 1248px) 44vw, 540px" width="{{ $large.Width }}" height="{{ $large.Height }}" alt="{{ .image_alt }}" {{ if gt $index 0 }}loading="lazy"{{ end }} decoding="async">
+            {{ else }}
+            <img src="{{ $image.RelPermalink }}" alt="{{ .image_alt }}"{{ if gt $index 0 }} loading="lazy"{{ end }} decoding="async">
+            {{ end }}
           </div>
+          {{ else if .image }}
+            {{ warnf "Research image %q for %q is missing or is not an image asset" .image .title }}
+          {{ end }}
           <div class="research-copy">
             <div class="research-description">{{ .description | markdownify }}</div>
             {{ with $publicationURL }}<a class="research-publications" href="{{ . }}"><span class="link-label">{{ $.Params.labels.related_publications }}</span><span aria-hidden="true">→</span></a>{{ end }}

@@ -1,6 +1,6 @@
 (() => {
-  const key = value => String(value).normalize('NFKC').trim().replace(/\s+/g, ' ').toLowerCase();
   const clean = value => String(value).normalize('NFKC').trim().replace(/\s+/g, ' ');
+  const key = value => clean(value).toLowerCase();
   const colorValue = value => /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(value || '') ? value : '#285c9b';
   const colorStyle = value => {
     const color = colorValue(value);
@@ -82,7 +82,7 @@
     }
   });
   CMS.registerWidget('publication-tags', TagsControl);
-  // Tags belong to papers. Filter/Home selections never create or delete them.
+  // Tags belong to papers. About and filter settings only reference them.
   const previewData = JSON.parse(document.getElementById('cms-preview-settings').textContent).data;
   let colorAssignments = previewData?.colors?.assignments || [];
   const paperUsage = new Map((previewData?.papers || []).map(paper => [paper._slug, paper.topics || []]));
@@ -109,13 +109,6 @@
       });
     });
     listeners.forEach(refresh => refresh());
-  } });
-  CMS.registerEventListener({ name: 'preSave', handler: ({ entry }) => {
-    const data = entry.get('data');
-    return data.get('research')?.map ? data.update('research', rows => rows.map(row => {
-      const selected = row.get('publication_topics');
-      return selected ? row.set('publication_topics', selected.filter(value => lookup(value, true))) : row;
-    })) : data;
   } });
   CMS.init();
 })();

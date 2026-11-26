@@ -75,7 +75,7 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--blue); out
   .publication-search-field .reset-filters { grid-column: 2; grid-row: 1; min-height: 40px; }
   .filter-row { grid-template-columns: 1fr; gap: 6px; margin-top: 12px; }
   .filter-options { gap: 7px; }
-  .filter-options button { font-size: 12px; min-height: 40px; max-width: 100%; padding: 8px 11px; overflow-wrap: anywhere; }
+  .filter-options button { min-height: 40px; max-width: 100%; padding: 8px 11px; overflow-wrap: anywhere; }
   .publication-results-bar { gap: 12px; padding: 20px 0 14px; }
   .publication-sort select { font-size: 16px; min-height: 44px; }
   .publication-pagination { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px; font-size: 12px; }
@@ -87,9 +87,8 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--blue); out
   .publication-page-numbers > span { min-width: 24px; }
   .publication-card { grid-template-columns: max-content minmax(0,1fr); gap: 15px; padding: 17px 0; }
   .publication-year { font-size: 18px; }
-  .publication-card h2 { font-size: 17px; }
   .publication-list .publication-card { gap: 12px; }
-  .publication-list .publication-card h2 { font-size: 17px; }
+  .publication-card h2, .publication-list .publication-card h2 { font-size: 17px; }
   .publication-authors { font-size: 12px; }
   .publication-detail .publication-card h1 { font-size: clamp(23px, 5vw, 27px); line-height: 1.35; }
   .publication-topics a { display: inline-flex; align-items: center; min-height: 30px; max-width: 100%; padding: 3px 7px; overflow-wrap: anywhere; }
@@ -98,7 +97,7 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--blue); out
 @media (max-width: 420px) {
   .publication-card { gap: 10px; }
   .publication-list .publication-card { gap: 10px; }
-  .publication-year { font-size: 18px; padding: 0; }
+  .publication-year { padding: 0; }
   .publication-results-bar { align-items: start; }
   .publication-sort { width: 100%; justify-content: space-between; gap: 8px; }
   .publication-sort select { max-width: 180px; }

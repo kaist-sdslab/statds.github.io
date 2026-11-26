@@ -84,8 +84,10 @@
   const topics = (values, colors, ctx) => list(values).map(value => colorEdit(ctx, value, h('a', { href: '#', style: accent(colorFor(value, colors)), onClick: event => {
     if (!['publications', 'publication_filters'].includes(ctx.name) && !(ctx.name === 'site_settings' && ctx.state.previewPage === 'publications')) return;
     event.preventDefault();
+    const [topic] = availableTopics([value]);
+    if (!topic) return;
     const selected = availableTopics(ctx.state.topics || []);
-    ctx.update({ topics: selected.includes(value) ? selected.filter(topic => topic !== value) : [...selected, value], page: 1 });
+    ctx.update({ topics: selected.includes(topic) ? selected.filter(value => value !== topic) : [...selected, topic], page: 1 });
   } }, value)));
   const socialLabels = { linkedin: 'LinkedIn', github: 'GitHub', website: 'Website', google_scholar: 'Google Scholar' };
   const socialIcon = type => {
@@ -234,6 +236,7 @@
     const labels = ctx.labels.publications;
     const state = ctx.state;
     const selectedTopics = availableTopics(state.topics || []);
+    const selectedTopicKeys = new Set(selectedTopics.map(key));
     const displayedTopics = availableTopics(ctx.filters.topics);
     const selectedDetails = selectedTopics.filter(topic => !displayedTopics.includes(topic)).sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base', numeric: true }));
     const topicChoices = [...displayedTopics, ...selectedDetails];
@@ -245,7 +248,7 @@
     };
     const row = (label, filter, values) => edit({ ...ctx, editable: ctx.name === 'publication_filters' && filter !== 'kind' }, filter === 'year' ? 'years' : 'topics',
       node('div', 'filter-row', labelEdit(ctx, `publications.${filter === 'kind' ? 'type' : filter === 'topics' ? 'topic' : 'year'}`, node('span', 'filter-label', label)), node('div', 'filter-options', button(filter, '', labels.all), ...values.map(v => button(filter, v.value ?? v, v.label ?? v)))));
-    const filtered = ctx.papers.filter(p => (!state.kind || p.publication_type === state.kind) && (!state.year || String(p.year) === String(state.year)) && (!selectedTopics.length || selectedTopics.some(t => list(p.topics).includes(t))) && key(state.query).split(' ').filter(Boolean).every(term => key([p.title, ...list(p.authors), p.venue, ...list(p.topics)].join(' ')).includes(term)))
+    const filtered = ctx.papers.filter(p => (!state.kind || p.publication_type === state.kind) && (!state.year || String(p.year) === String(state.year)) && (!selectedTopicKeys.size || list(p.topics).some(topic => selectedTopicKeys.has(key(topic)))) && key(state.query).split(' ').filter(Boolean).every(term => key([p.title, ...list(p.authors), p.venue, ...list(p.topics)].join(' ')).includes(term)))
       .sort((a, b) => (state.sort === 'title' ? 0 : state.sort === 'oldest' ? sortDate(a.year, a.month) - sortDate(b.year, b.month) : sortDate(b.year, b.month) - sortDate(a.year, a.month)) || text(a.title).localeCompare(text(b.title), 'en', { sensitivity: 'base' }));
     const size = Math.min(100, Math.max(1, Number(labels.page_size) || 10));
     const pages = Math.max(1, Math.ceil(filtered.length / size));
@@ -329,7 +332,11 @@
           value: this.state.previewPage, 'aria-label': 'Preview page', onChange: event => this.setState({ previewPage: event.target.value, tab: null, page: 1 })
         }, ...[['home', 'Home'], ['about', 'About'], ['professors', 'Professor'], ['people', 'Students'], ['publications', 'Publications'], ['news_page', 'News'], ['software', 'Softwares'], ['not_found', 'Not Found']].map(([value, label]) => h('option', { value }, label))))),
         node('header', 'site-header', node('div', 'shell header-inner', link(labels.site.name, 'wordmark', [labelEdit(ctx, 'site.logo', node('span', 'wordmark-logo', labels.site.logo)), node('span', 'wordmark-description', labelEdit(ctx, 'site.name', node('span', null, labels.site.name)), labelEdit(ctx, 'site.institution', node('span', 'wordmark-institution', labels.site.institution)))]),
-          node('nav', null, ...menu.map(item => edit({ ...ctx, editable: name === 'site_settings' }, `navigation.${list(common.navigation).indexOf(item)}.name`, link(item.name, (item.url || '').replace(seed.basePath, '') === active ? 'active' : null, item.name)))))),
+          node('nav', null, ...menu.map(item => {
+            const url = item.url || '';
+            const path = url.startsWith(seed.basePath) ? url.slice(seed.basePath.length) : url;
+            return edit({ ...ctx, editable: name === 'site_settings' }, `navigation.${list(common.navigation).indexOf(item)}.name`, link(item.name, path === active ? 'active' : null, item.name));
+          })))),
         node('main', null, content), node('footer', null, node('div', 'shell footer-inner', node('div', null, edit(footerContext, 'contact.title', node('p', 'footer-title', common.contact?.title)), edit(footerContext, 'contact.address', node('address', null, common.contact?.address))), labelEdit(ctx, 'site.copyright', node('span', 'copyright', `© ${seed.year} ${labels.site.copyright}`)))));
     }
   });

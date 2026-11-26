@@ -19,7 +19,7 @@
 {{- end -}}
 {{- /* Custom previews bind explicit paths, including images and list items.
        Disable automatic hidden-text encoding so URLs and IDs stay intact. */ -}}
-{{- if in (slice "string" "text" "markdown") (index $result "widget") -}}
+{{- if in (slice "string" "text") (index $result "widget") -}}
   {{- $result = merge $result (dict "visualEditing" false) -}}
 {{- end -}}
 {{- return $result -}}
