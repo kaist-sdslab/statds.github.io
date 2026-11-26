@@ -5,7 +5,7 @@ workers_dev = true
 preview_urls = false
 
 [vars]
-CMS_ORIGIN = "https://kaist-sdslab.github.io"
+CMS_ORIGIN = "https://statds.kaist.ac.kr"
 GITHUB_REPO = "kaist-sdslab/statds.github.io"
 
 # Add GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET as Cloudflare Worker secrets.
