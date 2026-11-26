@@ -2,5 +2,5 @@
 
 KAIST SDS Lab website, built with Hugo and published by GitHub Actions.
 
-- Website: https://kaist-sdslab.github.io/statds.github.io/
-- Content manager: https://kaist-sdslab.github.io/statds.github.io/admin/
+- Website: https://statds.kaist.ac.kr/
+- Content manager: https://statds.kaist.ac.kr/admin
